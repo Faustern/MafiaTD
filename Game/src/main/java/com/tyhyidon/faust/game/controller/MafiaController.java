@@ -23,7 +23,7 @@ import java.util.List;
 public class MafiaController {
 
     private static Logger logger = LoggerFactory.getLogger(MafiaController.class);
-    //kkkVasia
+    //kkkVasian
     @Autowired
     private Logic logic;
     
