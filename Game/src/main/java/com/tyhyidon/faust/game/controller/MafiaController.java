@@ -23,9 +23,11 @@ import java.util.List;
 public class MafiaController {
 
     private static Logger logger = LoggerFactory.getLogger(MafiaController.class);
-    //kkk
+    //kkkVasia
     @Autowired
     private Logic logic;
+    
+    private Logic logic2;
 
     @RequestMapping(value = {"/", "/main/*"})
     public String main() {
