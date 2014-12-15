@@ -1,0 +1,16 @@
+table {
+    border-collapse: collapse; /* Отображать двойные линии как одинарные */
+}
+th {
+    background: orangered; /* Цвет фона */
+    text-align: center; /* Выравнивание по левому краю */
+}
+td, th {
+    border: 1px solid black; /* Параметры границы */
+    padding: 4px; /* Поля в ячейках */
+    text-align: center;
+}
+
+td.statistics{
+    text-align: left;
+}
