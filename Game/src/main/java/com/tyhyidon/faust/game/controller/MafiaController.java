@@ -1,12 +1,9 @@
 package com.tyhyidon.faust.game.controller;
 
-import java.io.IOException;
-import java.lang.String;
-import java.text.ParseException;
-import java.util.*;
-
-import com.sun.java_cup.internal.runtime.virtual_parse_stack;
-import com.tyhyidon.faust.game.filter.*;
+import com.tyhyidon.faust.game.filter.PerGameStatistics;
+import com.tyhyidon.faust.game.filter.PlayerStatistics;
+import com.tyhyidon.faust.game.filter.Result;
+import com.tyhyidon.faust.game.filter.ResultPrediction;
 import com.tyhyidon.faust.game.logic.Logic;
 import com.tyhyidon.faust.game.model.Statistics;
 import org.slf4j.Logger;
@@ -15,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/Mafia")
 public class MafiaController {
 
     private static Logger logger = LoggerFactory.getLogger(MafiaController.class);
-
+    //kkk
     @Autowired
     private Logic logic;
 
