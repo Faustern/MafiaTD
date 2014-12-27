@@ -23,7 +23,7 @@ $(document).ready(function () {
     var $trGame = $('<tr></tr>').appendTo($gameTable);
 
     var $tdSeason = $('<td></td>').appendTo($trGame);
-    var $inputSeason = $('<input value="2">').appendTo($tdSeason);
+    var $inputSeason = $('<input value="4">').appendTo($tdSeason);
     $inputSeason.attr({id: 'season'});
 
     var $tdDate = $('<td></td>').appendTo($trGame);
@@ -66,6 +66,9 @@ $(document).ready(function () {
     var $thFinalDecision = $('<th>Final Decision</th>').appendTo($trHeader);
     var $thFouls = $('<th>Fouls</th>').appendTo($trHeader);
     var $thRating = $('<th>Rating</th>').appendTo($trHeader);
+    var $thWho = $('<th>Кто выставил</th>').appendTo($trHeader);
+    var $thWhom = $('<th>Кого выставил</th>').appendTo($trHeader);
+    var $thHowMuch = $('<th>Сколько проголосовало</th>').appendTo($trHeader);
 
     for (var i = 1; i < 11; i++) {
         var $tr = $('<tr></tr>').appendTo($playerTable);
@@ -207,6 +210,15 @@ $(document).ready(function () {
         var $labelRating = $('<label</label>').appendTo($tdRating);
         $labelRating.attr({id: 'rating_' + i});
 
+        var $tdWho = $('<td></td>').appendTo($tr);
+        var $inputWho = $('<input type="text" class="voting"/>').appendTo($tdWho);
+
+        var $tdWhom = $('<td></td>').appendTo($tr);
+        var $inputWhom = $('<input type="text" class="voting"/>').appendTo($tdWhom);
+
+        var $tdHowMany = $('<td></td>').appendTo($tr);
+        var $inputHowMany = $('<input type="text" class="voting"/>').appendTo($tdHowMany);
+
     }
     $('<br>').appendTo('body');
 
@@ -221,9 +233,11 @@ $(document).ready(function () {
     $('<br>').appendTo('body');
     var $selectShowRatingSeason = $('<select></select>').appendTo('body');
     $selectShowRatingSeason.attr({id: 'showRatingSeason'});
-    var $optionShowRatingSeasonAll = $('<option  default>All seasons</option>').appendTo($selectShowRatingSeason);
-    var $optionShowRatingSeasonWinter = $('<option>Winter</option>').appendTo($selectShowRatingSeason);
-    var $optionShowRatingSeasonSpring = $('<option>Spring</option>').appendTo($selectShowRatingSeason);
+    var $optionShowRatingSeasonWinter2 = $('<option>Winter 14/15</option>').appendTo($selectShowRatingSeason);
+    var $optionShowRatingSeasonAll = $('<option>All seasons</option>').appendTo($selectShowRatingSeason);
+    var $optionShowRatingSeasonWinter = $('<option>Winter 13/14</option>').appendTo($selectShowRatingSeason);
+    var $optionShowRatingSeasonSpring = $('<option>Spring 14</option>').appendTo($selectShowRatingSeason);
+    $optionShowRatingSeasonWinter2.attr({value: '4'});
     $optionShowRatingSeasonAll.attr({value: '0'});
     $optionShowRatingSeasonWinter.attr({value: '1'});
     $optionShowRatingSeasonSpring.attr({value: '2'});
@@ -234,16 +248,18 @@ $(document).ready(function () {
 
     var $inputAddPlayerNickName = $('<input>').appendTo('body');
     $inputAddPlayerNickName.attr({id: 'nicknameAddPlayer'});
-    var $inputAddPlayerVkontakte = $('<input>').appendTo('body');
+    var $inputAddPlayerVkontakte = $('<input hidden="hidden">').appendTo('body');
     $inputAddPlayerVkontakte.attr({id: 'vkontakteAddPlayer'});
 
     var $buttonAddPlayerToDB = $('<button>Add Player</button>').appendTo('body');
     $buttonAddPlayerToDB.attr({id: 'addPlayerToDB'});
     $('<br>').appendTo('body');
+    var $buttonClearVoting = $('<button>Очистить после голосования</button>').appendTo('body');
+    $buttonClearVoting.attr({id: 'clearVoting'});
     $('<br>').appendTo('body');
 
 
-    var $playerTableStatistics = $('<table></table>').appendTo('body');
+ /*   var $playerTableStatistics = $('<table></table>').appendTo('body');
 
     var $trHeaderStatistics = $('<tr></tr>').appendTo($playerTableStatistics);
     var $thNumberStatistics = $('<th>Number</th>').appendTo($trHeaderStatistics);
@@ -527,7 +543,7 @@ $(document).ready(function () {
     var $chart1 = $(' <div id="chart1" style="margin-top:20px; margin-left:20px; width:600px; height:300px;"></div>');
     $chart1.appendTo('body');
 
-
+    */
 
     var DATE_FORMAT = "dd-mm-yy";
     $( ".datepicker" ).datepicker({
@@ -685,9 +701,11 @@ $(document).ready(function () {
             },
             cache: false,
             success: function (results) {
+                alert('game successfully saved!');
                 showRating(results);
             },
             error: function (xhr, textStatus, errorThrown) {
+                alert('game FAILED to save');
             }
         });
 
@@ -719,9 +737,10 @@ $(document).ready(function () {
                 $("#plotNickName").autocomplete({
                     source: playersAfterAdd
                 });
+                alert('Player successfully added!');
             },
             error: function (xhr, textStatus, errorThrown) {
-
+                alert('player FAILED to add');
             }
         });
     });
@@ -1105,5 +1124,8 @@ $(document).ready(function () {
         });
     });
 
-
+    $('#clearVoting').unbind();
+    $('#clearVoting').click(function () {
+          $(".voting").val("");
+    });
 });

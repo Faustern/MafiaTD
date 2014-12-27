@@ -10,8 +10,8 @@ import com.tyhyidon.faust.game.rating.RatingCalculatorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +33,7 @@ public class Logic {
         return getPlayersNicknames();
     }
 
+    @Transactional
     public List<Result> saveGameIntoDB(String date, Integer season, String masterNickname, Integer result, List<String> nickNames,
                                        List<Integer> roles, List<Integer> lives, List<Integer> bestVoices,
                                        List<Integer> finalDecisions, List<Integer> fouls) throws ParseException {
