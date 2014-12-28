@@ -66,5 +66,4 @@
 
 	<bean id="playerSeasonDAO"
 		class="com.tyhyidon.faust.game.player.GameDAO" />
-
 </beans>
