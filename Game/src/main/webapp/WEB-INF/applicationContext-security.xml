@@ -7,8 +7,34 @@
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
+
+       <global-method-security pre-post-annotations="enabled"/>
+
+       <beans:bean id="successHandler" class="com.tyhyidon.faust.game.security.AuthenticationSuccessHandler"/>
+       <beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
+       <beans:bean id="authenticationService" class="com.tyhyidon.faust.game.security.AuthenticationServiceImpl"/>
+       <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+       <beans:bean id="authenticationProvider" class="com.tyhyidon.faust.game.security.MafiaAuthenticationProvider">
+              <beans:property name="userDetailsService" ref="authenticationService"/>
+              <beans:property name="passwordEncoder" ref="passwordEncoder"/>
+       </beans:bean>
+
        <http>
-              <form-login login-page="/login" authentication-failure-url="/login?auth=fail"/>
+              <session-management>
+                     <concurrency-control max-sessions="1" expired-url="/login"/>
+              </session-management>
+              <form-login
+                      authentication-failure-handler-ref="failureHandler"
+                      authentication-success-handler-ref="successHandler"
+                      login-processing-url="/j_spring_security_check"
+                      login-page="/login"
+                      default-target-url="/"
+                      authentication-failure-url="/login?auth=fail"/>
+              <logout logout-url="/logout" logout-success-url="/login?logout=true"/>
        </http>
+
+       <authentication-manager alias="authenticationManager">
+           <authentication-provider ref="authenticationProvider"/>
+       </authentication-manager>
 
 </beans:beans>

@@ -15,7 +15,7 @@ public class Statistics {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column
     private int id;
 
     @ManyToOne (targetEntity = Player.class)
@@ -26,13 +26,13 @@ public class Statistics {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @Column(name = "number")
+    @Column
     private int number;
 
-    @Column(name = "role")
+    @Column
     private int role;
 
-    @Column(name = "life")
+    @Column
     private int life;
 
     @Column(name = "best_voices")
@@ -41,7 +41,7 @@ public class Statistics {
     @Column(name = "final_decision")
     private int finalDecision;
 
-    @Column(name = "fouls")
+    @Column
     private int fouls;
 
     @Column(name = "result_rating")

@@ -14,19 +14,19 @@ import java.util.Set;
 public class Player {
 
     @Id
-    @Column(name = "nickname")
+    @Column
     private String nickname;
 
-    @Column(name = "vkontakte")
+    @Column
     private String vkontakte;
 
-    @Column(name = "birthday")
+    @Column
     private Date birthday;
 
-    @Column(name = "mail")
+    @Column
     private String mail;
 
-    @Column(name = "telephone")
+    @Column
     private String telephone;
 
     @JsonIgnore

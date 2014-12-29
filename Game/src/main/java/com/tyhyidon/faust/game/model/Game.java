@@ -16,16 +16,16 @@ public class Game {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column
     private int id;
 
-    @Column(name = "date")
+    @Column
     private Date date;
 
-    @Column(name = "result")
+    @Column
     private int result;
 
-    @Column(name = "season")
+    @Column
     private int season;
 
     @ManyToOne (targetEntity = Player.class)
