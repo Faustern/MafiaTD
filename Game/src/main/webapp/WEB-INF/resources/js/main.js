@@ -207,7 +207,7 @@ $(document).ready(function () {
 
 
         var $tdRating = $('<td></td>').appendTo($tr);
-        var $labelRating = $('<label</label>').appendTo($tdRating);
+        var $labelRating = $('<label></label>').appendTo($tdRating);
         $labelRating.attr({id: 'rating_' + i});
 
         var $tdWho = $('<td></td>').appendTo($tr);

@@ -25,6 +25,5 @@
     <title>Mafia</title>
 </head>
 <body>
-
 </body>
 </html>

@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>Mafia</title>
+    <link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
 </head>
 <body>
     <div class="container" ng-view id="main-page-wrapper"></div>
