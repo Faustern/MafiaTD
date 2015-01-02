@@ -2,7 +2,7 @@ $(document).ready(function () {
     var players = [];
     $.ajax({
         type: 'POST',
-        url: "/Mafia/getAllPlayers",
+        url: "/getAllPlayers",
         cache: false,
         success: function (playersFromDB) {
             $.each(playersFromDB, function (index, nickname) {
@@ -636,7 +636,7 @@ $(document).ready(function () {
     $('#calculateRating').click(function () {
         $.ajax({
             type: 'POST',
-            url: "/Mafia/calculateRating",
+            url: "/calculateRating",
             cache: false,
             data: {
                 season: getSeason(),
@@ -686,7 +686,7 @@ $(document).ready(function () {
     $('#saveToDB').click(function () {
         $.ajax({
             type: 'POST',
-            url: "/Mafia/saveGameIntoDB",
+            url: "/saveGameIntoDB",
             data: {
                 season: getSeason(),
                 date: getDate(),
@@ -717,7 +717,7 @@ $(document).ready(function () {
     $('#addPlayerToDB').click(function () {
         $.ajax({
             type: 'POST',
-            url: "/Mafia/addPlayerToDB",
+            url: "/addPlayerToDB",
             cache: false,
             data: {
                 nickname: $('#nicknameAddPlayer').val(),
@@ -754,7 +754,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'POST',
-                url: "/Mafia/showPlayersRating",
+                url: "/showPlayersRating",
                 data: {
                     season: $('#showRatingSeason').val()
                 },
@@ -804,7 +804,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/Mafia/statistics",
+            url: "/statistics",
             cache: false,
             data: {
                 numbers : numbers,
@@ -851,7 +851,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/Mafia/per_game_statistics",
+            url: "/per_game_statistics",
             cache: false,
             data: {
                 limit : limit,
@@ -894,7 +894,7 @@ $(document).ready(function () {
     $('#statisticsPlayerButton').click(function () {
         $.ajax({
             type: 'POST',
-            url: "/Mafia/statisticsPlayer",
+            url: "/statisticsPlayer",
             cache: false,
             data: {
                 nickname : $('#statisticsNickname').val(),
@@ -989,7 +989,7 @@ $(document).ready(function () {
     $('#drawPlotsButton').click(function () {
             $.ajax({
                 type: 'POST',
-                url: "/Mafia/season_plot",
+                url: "/season_plot",
                 data: {
                     nickname : $('#plotNickName').val(),
                     role : $('#plotRole').val(),
@@ -1067,7 +1067,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/Mafia/role_distribution_result",
+            url: "/role_distribution_result",
             cache: false,
             data: {
                 season : $('#rolesDistributionSeason').val(),

@@ -1,6 +1,5 @@
 package com.tyhyidon.faust.game.managers;
 
-import com.tyhyidon.faust.game.managers.UserManager;
 import com.tyhyidon.faust.game.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,7 @@ import javax.persistence.criteria.Root;
  */
 @Repository
 @Transactional
-public class UserManagerImpl implements UserManager {
+public class UserManagerImpl {
 
     @PersistenceContext
     private EntityManager entityManager;

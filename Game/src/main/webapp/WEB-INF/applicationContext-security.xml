@@ -21,16 +21,16 @@
 
 
     <http use-expressions="true">
-        <intercept-url pattern="/Mafia/login" access="permitAll"/>
-        <intercept-url pattern="/Mafia/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/login" access="permitAll"/>
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
         <session-management>
-            <concurrency-control max-sessions="1" expired-url="/Mafia/login"/>
+            <concurrency-control max-sessions="1" expired-url="/login"/>
         </session-management>
         <form-login
                 authentication-failure-handler-ref="failureHandler"
                 authentication-success-handler-ref="successHandler"
                 login-processing-url="/j_spring_security_check"
-                login-page="/Mafia/login"
+                login-page="/login"
                 default-target-url="/"
                 authentication-failure-url="/login?auth=fail"/>
         <logout logout-url="/logout" logout-success-url="/login?logout=true"/>

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by vasylsavytskyi on 29.12.14.
  */
 @Controller
-@RequestMapping("/Mafia")
 public class LoginController {
 
     private Logger LOG = LoggerFactory.getLogger(LoginController.class);
@@ -20,7 +19,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         if (SecurityUtils.getCurrentUser() != null) {
-            return "redirect:/Mafia/index/";
+            return "redirect:/index";
         }
         return "login";
     }

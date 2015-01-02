@@ -19,7 +19,6 @@ import java.text.ParseException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/Mafia")
 public class MafiaController {
 
     private static Logger logger = LoggerFactory.getLogger(MafiaController.class);
@@ -29,7 +28,7 @@ public class MafiaController {
     
     private Logic logic2;
 
-    @RequestMapping(value = {"/main/*"})
+    @RequestMapping(value = {"/main"})
     public String main() {
         return "main";
     }
