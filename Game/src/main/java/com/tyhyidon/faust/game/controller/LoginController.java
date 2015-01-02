@@ -1,5 +1,6 @@
 package com.tyhyidon.faust.game.controller;
 
+import com.tyhyidon.faust.game.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
@@ -18,6 +19,14 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
+        if (SecurityUtils.getCurrentUser() != null) {
+            return "redirect:/Mafia/index/";
+        }
         return "login";
+    }
+
+    @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
+    public String home() {
+        return "/index";
     }
 }

@@ -79,10 +79,10 @@
                     <systemProperties>
                         <systemProperty>
                             <name>jetty.port</name>
-                            <value>8089</value>
+                            <value>8090</value>
                         </systemProperty>
                     </systemProperties>
-                    <stopPort>8085</stopPort>
+                    <stopPort>8084</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
             </plugin>

@@ -60,6 +60,8 @@
 	</bean>
 	<tx:annotation-driven />
 
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
+
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 

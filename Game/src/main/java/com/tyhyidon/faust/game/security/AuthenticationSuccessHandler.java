@@ -30,7 +30,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response,
                           Authentication authentication) throws IOException {
-        String targetUrl = "/Mafia/main/";
+        String targetUrl = "/Mafia/#/game";
 
         if (response.isCommitted()) {
             LOG.debug("Response has already been committed. Unable to redirect to " + targetUrl);

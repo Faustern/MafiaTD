@@ -29,7 +29,7 @@ public class MafiaController {
     
     private Logic logic2;
 
-    @RequestMapping(value = {"/", "/main/*"})
+    @RequestMapping(value = {"/main/*"})
     public String main() {
         return "main";
     }
