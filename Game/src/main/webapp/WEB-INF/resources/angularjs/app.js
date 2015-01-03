@@ -1,6 +1,7 @@
 angular.module('mafia', [
     'ngRoute',
-    'mafiaControllers'
+    'customServices',
+    'mafia.controllers'
 ])
     .config(['$routeProvider',
         function ($routeProvider) {

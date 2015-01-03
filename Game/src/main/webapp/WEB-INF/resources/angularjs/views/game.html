@@ -1,29 +1,23 @@
 <div id="gameContainer" ng-controller="gameController">
-    {{nicknames}}
     <table>
-        <tr>
+        <thead>
             <th>Season</th>
             <th>Date</th>
             <th>Result</th>
             <th>Master</th>
-        </tr>
+        </thead>
         <tr>
-            <td><input id="season" value="4"></td>
-            <td><input id="date" class="datepicker date"></td>
-            <td><select id="result">
-                <option value="1">clear city win</option>
-                <option value="2">city win</option>
-                <option value="3">mafia win</option>
-                <option value="4">clear mafia win</option>
+            <td><input ng-model="season" value="4"></td>
+            <td><input ng-model="date" class="datepicker date"></td>
+            <td><select ng-model="result">
+                <option ng-repeat="i in RESULTS track by $index" value="{{$index + 1}}">{{i}}</option>
             </select></td>
-            <td>
-                <input id="master">
-            </td>
+            <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="master"></td>
         </tr>
     </table>
     <br>
     <table>
-        <tr>
+        <thead>
             <th>Number</th>
             <th>NickName</th>
             <th>Role</th>
@@ -32,68 +26,46 @@
             <th>Final Decision</th>
             <th>Fouls</th>
             <th>Rating</th>
-            <th>Кто выставил</th>
-            <th>Кого выставил</th>
-            <th>Сколько проголосовало</th>
-        </tr>
+            <th>Who</th>
+            <th>Whom</th>
+            <th>How Much</th>
+        </thead>
         <tr ng-repeat="i in range(PLAYERS_AMOUNT) track by $index">
-            <td>
-                {{$index + 1}}
-            </td>
-            <td>
-                <input id="nickname_{{$index + 1}}">
-            </td>
-            <td>
-                <select id="role_{{$index + 1}}">
-                    <option value="3" default>Citizen</option>
-                    <option value="2">Mafia</option>
-                    <option value="1">Don</option>
-                    <option value="4">Sheriff</option>
-                </select>
-            </td>
-            <td>
-                <select id="life_{{$index + 1}}">
-                    <option value="12" default>not away</option>
-                    <option value="1">killed 1 night</option>
-                    <option value="2">killed 2 night</option>
-                    <option value="3">killed 3 night</option>
-                    <option value="4">killed 4 night</option>
-                    <option value="5">killed 5 plus night</option>
-                    <option value="6">away 0 day</option>
-                    <option value="7">away 1 day</option>
-                    <option value="8">away 2 day</option>
-                    <option value="9">away 3 day</option>
-                    <option value="10">away 4 day</option>
-                    <option value="11">away 5 plus day</option>
-                </select>
-            </td>
-            <td>
-                <select id="bestVoices_{{$index + 1}}">
+            <td>{{$index + 1}}</td>
+            <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="nicknames[$index]"></td>
+            <td><select ng-model="roles[$index]">
+                <option ng-repeat="i in ROLES track by $index" value="{{$index + 1}}">{{i}}</option>
+            </select></td>
+            <td><select ng-model="lives[$index]">
+                <option ng-repeat="i in LIVES track by $index" value="{{$index + 1}}">{{i}}</option>
+            </select></td>
+            <td><select ng-model="bestVoices[$index]">
                     <option ng-repeat="i in range(PLAYERS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
-                </select>
-            </td>
-            <td>
-                <select id="finalDecision_{{$index + 1}}">
+            </select></td>
+            <td><select ng-model="finalDecisions[$index]">
                     <option ng-repeat="i in range(PLAYERS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
-                </select>
-            </td>
-            <td>
-                <select id="fouls_{{$index + 1}}">
+            </select></td>
+            <td><select ng-model="fouls[$index]">
                     <option ng-repeat="i in range(MAX_FOULS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
-                </select>
-            </td>
-            <td>
-                <label id="rating_{{$index + 1}}"></label>
-            </td>
-            <td>
-                <input type="text" class="voting"/>
-            </td>
-            <td>
-                <input type="text" class="voting"/>
-            </td>
-            <td>
-                <input type="text" class="voting"/>
-            </td>
+            </select></td>
+            <td><label ng-model="rating[$index]"></label></td>
+            <td><input type="text" class="voting"/></td>
+            <td><input type="text" class="voting"/></td>
+            <td><input type="text" class="voting"/></td>
         </tr>
     </table>
+    <br>
+    <button ng-click="calculateRating()">Calculate Rating</button>
+    <button id="saveToDB">Save To DB</button>
+    <br>
+    <select ng-model="ratingSeason">
+        <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
+    </select>
+    <button ng-click="showRating(ratingSeason)">Show Rating</button>
+    <br>
+    <input ng-model="newPlayer">
+    <button ng-click="addNewPlayer(newPlayer)">Add New Player</button>
+    <br>
+    <button id="clearVoting">Clear Voting</button>
+    <table><tr ng-repeat="i in ratingStrings"><td>{{i}}</td></tr></table>
 </div>

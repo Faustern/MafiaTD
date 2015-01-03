@@ -44,7 +44,7 @@ public class MafiaController {
     public
     @ResponseBody
     List<String> addPlayerToDB(@RequestParam(value="nickname", required = true) String nickname,
-                               @RequestParam(value="vkontakte", required = true) String vkontakte) {
+                               @RequestParam(value="vkontakte", required = false) String vkontakte) {
         return logic.addPlayerToDB(nickname, vkontakte);
     }
 
