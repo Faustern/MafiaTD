@@ -70,7 +70,7 @@ angular.module('mafia.controllers',['customDirectives'])
                     season: $scope.season,
                     date: $scope.date,
                     result: $scope.result,
-                    master: $scope.master,
+                    masterNickname: $scope.master,
                     nickNames: $scope.nicknames,
                     roles: $scope.roles,
                     lives: $scope.lives,

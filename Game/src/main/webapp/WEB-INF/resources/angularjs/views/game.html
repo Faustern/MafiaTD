@@ -46,7 +46,7 @@
                     <option ng-repeat="i in range(PLAYERS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
             </select></td>
             <td><select ng-model="fouls[$index]">
-                    <option ng-repeat="i in range(MAX_FOULS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
+                    <option ng-repeat="i in range(MAX_FOULS_AMOUNT + 1) track by $index" value="{{$index}}">{{$index}}</option>
             </select></td>
             <td><label ng-model="rating[$index]"></label></td>
             <td><input type="text" class="voting"/></td>

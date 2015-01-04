@@ -52,16 +52,16 @@ public class MafiaController {
     @RequestMapping(value = {"/calculateRating"})
     public
     @ResponseBody
-    List<Statistics> getStatistics(@RequestParam(value="season", required = true) Integer season,
-                                   @RequestParam(value="date", required = true) String date,
-                                   @RequestParam(value="result", required = true) Integer result,
-                                   @RequestParam(value="master", required = true) String masterNickname,
-                                   @RequestParam(value="nickNames[]", required = true) List<String> nickNames,
-                                   @RequestParam(value="roles[]", required = true) List<Integer> roles,
-                                   @RequestParam(value="lives[]", required = true) List<Integer> lives,
-                                   @RequestParam(value="bestVoices[]", required = true) List<Integer> bestVoices,
-                                   @RequestParam(value="finalDecisions[]", required = true) List<Integer> finalDecisions,
-                                   @RequestParam(value="fouls[]", required = true) List<Integer> fouls
+    List<Statistics> getStatistics(@RequestParam Integer season,
+                                   @RequestParam String date,
+                                   @RequestParam Integer result,
+                                   @RequestParam String masterNickname,
+                                   @RequestParam List<String> nickNames,
+                                   @RequestParam List<Integer> roles,
+                                   @RequestParam List<Integer> lives,
+                                   @RequestParam List<Integer> bestVoices,
+                                   @RequestParam List<Integer> finalDecisions,
+                                   @RequestParam List<Integer> fouls
     ) throws IOException, ParseException {
         return logic.getStatistics(result, season, date, masterNickname, nickNames, roles, lives, bestVoices, finalDecisions, fouls);
     }
