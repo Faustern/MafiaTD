@@ -10,16 +10,16 @@
     <meta http-equiv="Content-Language" content="English"/>
 
 
-    <script src="/resources/jquery/jquery-1.10.2.js"></script>
-    <script src="/resources/jquery/jquery-ui-1.10.3.js"></script>
-    <script src="/resources/jquery/jqplot/dist/jquery.jqplot.js"></script>
-    <script src="/resources/jquery/jqplot/dist/plugins/jqplot.canvasTextRenderer.min.js"></script>
-    <script src="/resources/jquery/jqplot/dist/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+    <script src="/resources/libs/js/jquery-1.10.2.js"></script>
+    <script src="/resources/libs/js/jquery-ui-1.10.3.js"></script>
+    <script src="/resources/libs/js/dist/jquery.jqplot.js"></script>
+    <script src="/resources/libs/js/dist/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script src="/resources/libs/js/dist/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
     <script src="<c:url value="/resources/js/main.js"/>"></script>
 
 
-    <link rel="stylesheet" href="<c:url value="/resources/css/jquery-ui-1.10.3.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/jquery/jqplot/dist/jquery.jqplot.css"/>">
+    <link rel="stylesheet" href="<c:url value="/resources/libs/css/jquery-ui-1.10.3.css"/>">
+    <link rel="stylesheet" href="<c:url value="/resources/libs/js/dist/jquery.jqplot.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
     <title>Mafia</title>
