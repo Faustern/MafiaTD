@@ -1,13 +1,11 @@
 package com.tyhyidon.faust.game.rating;
 
 import com.tyhyidon.faust.game.player.Constants;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
 
-/**
- * Created by Василий on 03.01.14.
- */
 public class RatingCalculatorImpl implements RatingCalculator {
 
     private Properties percent;
@@ -18,26 +16,8 @@ public class RatingCalculatorImpl implements RatingCalculator {
     private int finalDecision;
     private int fouls;
 
-    public RatingCalculatorImpl(int result, int role, int life, int bestVoices, int finalDecision, int fouls) {
-        percent = new Properties();
-
-        try {
-            File directory = new File("/");
-            File[] fList = directory.listFiles();
-
-        //    for (File file : fList) {
-        //       System.out.println(file.getAbsolutePath());
-       //     }
-            InputStream fis = getClass().getResourceAsStream(RatingConstants.PROPERTIES_FILE_PATH);
-       //     System.out.println(fis.toString());
-            percent.load(fis);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public RatingCalculatorImpl(int result, int role, int life, int bestVoices, int finalDecision, int fouls, Properties percent) {
+        this.percent = percent;
         this.result = result;
         this.role = role;
         this.life = life;

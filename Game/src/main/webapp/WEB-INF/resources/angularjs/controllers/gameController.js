@@ -1,5 +1,5 @@
 angular.module('mafia.controllers',['customDirectives'])
-    .controller('gameController', function($scope, httpGetService) {
+    .controller('gameController', function($scope, httpService) {
 
         $scope.PLAYERS_AMOUNT = 10;
         $scope.MAX_FOULS_AMOUNT = 4;
@@ -30,12 +30,12 @@ angular.module('mafia.controllers',['customDirectives'])
             return new Array(count);
         };
 
-        httpGetService.get('getAllPlayers', {}, function(result) {
+        httpService.get('getAllPlayers', {}, function(result) {
             $scope.ALL_PLAYERS = result;
         });
 
         $scope.showRating = function(season) {
-            httpGetService.get("showPlayersRating", {season: season},
+            httpService.get("showPlayersRating", {season: season},
                 function(results) {
                     $scope.ratingStrings = [];
                     $.each(results, function (index, result) {
@@ -53,7 +53,7 @@ angular.module('mafia.controllers',['customDirectives'])
         };
 
         $scope.addNewPlayer = function(player) {
-            httpGetService.get("addPlayerToDBd", {nickname: player},
+            httpService.post("addPlayerToDBd", {nickname: player},
                 function(results) {
                     $scope.ALL_PLAYERS.push(player);
                     alert("Player successfully added!");
@@ -65,7 +65,7 @@ angular.module('mafia.controllers',['customDirectives'])
         };
 
         $scope.calculateRating = function() {
-            httpGetService.get("calculateRating",
+            httpService.get("calculateRating",
                 {
                     season: $scope.season,
                     date: $scope.date,
@@ -86,42 +86,27 @@ angular.module('mafia.controllers',['customDirectives'])
             );
         };
 
-
-
-/*
-        $('#saveToDB').unbind();
-        $('#saveToDB').click(function () {
-            $.ajax({
-                type: 'POST',
-                url: "/saveGameIntoDB",
-                data: {
-                    season: getSeason(),
-                    date: getDate(),
-                    result: getResult(),
-                    master: getMaster(),
-                    nickNames: getNicknames(),
-                    roles: getRoles(),
-                    lives: getLives(),
-                    bestVoices: getBestVoices(),
-                    finalDecisions: getFinalDecision(),
-                    fouls: getFouls()
+        $scope.saveGame = function() {
+            httpService.post("saveGameIntoDB",
+                {
+                    season: $scope.season,
+                    date: $scope.date,
+                    result: $scope.result,
+                    masterNickname: $scope.master,
+                    nickNames: $scope.nicknames,
+                    roles: $scope.roles,
+                    lives: $scope.lives,
+                    bestVoices: $scope.bestVoices,
+                    finalDecisions: $scope.finalDecisions,
+                    fouls: $scope.fouls
                 },
-                cache: false,
-                success: function (results) {
+                function(results) {
                     alert('game successfully saved!');
-                    showRating(results);
                 },
-                error: function (xhr, textStatus, errorThrown) {
+                function(error) {
                     alert('game FAILED to save');
                 }
-            });
-
-
-        });
-
-
-
-*/
-
+            );
+        };
 
     });

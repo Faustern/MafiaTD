@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,6 +26,9 @@ public class Logic {
 
     @Autowired
     private GameDAO gameDAO;
+
+    @Resource
+    private Properties ratingProperties;
 
     public static final String DATE_FORMAT_FOR_UI_AS_STRING = "dd-MM-yyyy";
 
@@ -86,7 +90,7 @@ public class Logic {
                     new Game(result, season, parsedDate, gameDAO.getPlayerByNickname(masterNickname)),
                     i + 1, rolesItem, livesItem, bestVoicesItem, finalDecisionsItem, foulsItem,
                     new RatingCalculatorImpl(result, rolesItem, livesItem, bestVoicesItem,
-                            finalDecisionsItem, foulsItem)));
+                            finalDecisionsItem, foulsItem, ratingProperties)));
         }
 
         return statistics;
