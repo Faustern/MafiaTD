@@ -1,4 +1,4 @@
-angular.module('mafia.controllers',['customDirectives'])
+angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
     .controller('gameController', function($scope, httpService) {
 
         $scope.PLAYERS_AMOUNT = 10;
@@ -16,6 +16,22 @@ angular.module('mafia.controllers',['customDirectives'])
         $scope.finalDecisions = new Array($scope.PLAYERS_AMOUNT);
         $scope.fouls = new Array($scope.PLAYERS_AMOUNT);
         $scope.rating = new Array($scope.PLAYERS_AMOUNT);
+
+        $scope.gameDate = {
+            data: $.datepicker.formatDate("yy/mm/dd", new Date()),
+            format:'yyyy/MM/dd',
+            isOpened: false,
+            options: {
+                'starting-day': 1,
+                'show-weeks': false
+            }
+        };
+
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.gameDate.isOpened = true;
+        };
 
         //For Debug
         $.each($scope.nicknames, function (index) {

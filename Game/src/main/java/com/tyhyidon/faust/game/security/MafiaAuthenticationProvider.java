@@ -57,7 +57,7 @@ public class MafiaAuthenticationProvider extends AbstractUserDetailsAuthenticati
            LOG.debug(String.format("Unable to encode %s password ['%s']", username, password));
         }
         //TODO
-        return true;
+        return password.equals("komdon");
     }
 
 

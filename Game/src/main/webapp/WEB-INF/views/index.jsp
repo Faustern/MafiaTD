@@ -17,9 +17,9 @@
     <div class="container" ng-view id="main-page-wrapper"></div>
     <script src="<c:url value="/resources/libs/js/jquery-1.10.2.js"/>"></script>
     <script src="<c:url value="/resources/libs/js/jquery-ui-1.10.3.js"/>"></script>
-    <script src="<c:url value="/resources/libs/js/ui-bootstrap-tpls-0.12.0.js"/>"></script>
     <script src="<c:url value="/resources/libs/js/angular.js"/>"></script>
     <script src="<c:url value="/resources/libs/js/angular-route.js"/>"></script>
+    <script src="<c:url value="/resources/libs/js/ui-bootstrap-tpls-0.12.0.js"/>"></script>
     <script src="<c:url value="/resources/js/directives/customDirectives.js"/>"></script>
     <script src="<c:url value="/resources/js/services/customServices.js"/>"></script>
     <script src="<c:url value="/resources/js/controllers/gameController.js"/>"></script>
