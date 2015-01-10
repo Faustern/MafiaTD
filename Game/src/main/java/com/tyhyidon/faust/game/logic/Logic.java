@@ -30,7 +30,7 @@ public class Logic {
     @Resource
     private Properties ratingProperties;
 
-    public static final String DATE_FORMAT_FOR_UI_AS_STRING = "dd-MM-yyyy";
+    public static final String DATE_FORMAT_FOR_UI_AS_STRING = "yyyy/mm/dd";
 
     public List<String> addPlayerToDB(String nickname, String vkontakte) {
         gameDAO.addPlayer(nickname, vkontakte);

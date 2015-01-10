@@ -1,20 +1,9 @@
-th {
+th, td{
     text-align: center;
 }
 .datepicker-group {
     width: 200px;
 }
-/*table {
-    border-collapse: collapse;
-}
-
-td, th {
-    border: 1px solid black;
-    padding: 4px;
+.accusation {
     text-align: center;
 }
-
-td.statistics{
-    text-align: left;
-}
-*/

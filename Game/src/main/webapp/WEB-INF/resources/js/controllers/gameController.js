@@ -1,4 +1,4 @@
-angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
+angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
     .controller('gameController', function($scope, httpService) {
 
         $scope.PLAYERS_AMOUNT = 10;
@@ -16,6 +16,18 @@ angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
         $scope.finalDecisions = new Array($scope.PLAYERS_AMOUNT);
         $scope.fouls = new Array($scope.PLAYERS_AMOUNT);
         $scope.rating = new Array($scope.PLAYERS_AMOUNT);
+        $scope.accusations = [];
+        $scope.addAccusation = function(){
+            $scope.accusations.push({ accuse: $scope.accuse, accused: $scope.accused});
+            $scope.accused = "";
+            $scope.accuse = "";
+        };
+        $scope.removeAccusation = function(){
+            $scope.accusations = $scope.accusations.slice(0, $scope.accusations.length - 1);
+        };
+        $scope.clearVoting = function(){
+            $scope.accusations = [];
+        };
 
         $scope.gameDate = {
             data: $.datepicker.formatDate("yy/mm/dd", new Date()),
@@ -42,6 +54,25 @@ angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
             $scope.fouls[index] = 0;
         });
 
+        $scope.timerRunning = false;
+
+        $scope.countdown = 60;
+        $scope.time = 60;
+        $scope.startTimer = function (time){
+            $scope.$broadcast('timer-set-countdown', time);
+            $scope.$broadcast('timer-start');
+        };
+
+        $scope.stopTimer = function (){
+            $scope.$broadcast('timer-stop');
+        };
+
+        $scope.$on('timer-stopped', function (event, data){
+            if (data.millis == 0) {
+                alert('Time is out');
+            }
+        });
+
         $scope.range = function (count) {
             return new Array(count);
         };
@@ -54,7 +85,7 @@ angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
             httpService.get("showPlayersRating", {season: season},
                 function(results) {
                     $scope.ratingStrings = [];
-                    $.each(results, function (index, result) {
+                    angular.forEach(results, function (result, index) {
                         var games = result.gamesPlayed.length;
                         var player = result.player;
                         var rating = result.rating.toString().match('^[0-9]+[.]*[0-9]{0,2}')[0];
@@ -84,7 +115,7 @@ angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
             httpService.get("calculateRating",
                 {
                     season: $scope.season,
-                    date: $scope.date,
+                    date: $scope.gameDate.data,
                     result: $scope.result,
                     masterNickname: $scope.master,
                     nickNames: $scope.nicknames,
@@ -95,7 +126,7 @@ angular.module('mafia.controllers',['customDirectives','ui.bootstrap'])
                     fouls: $scope.fouls
                 },
                 function(results) {
-                    $.each(results, function (index, result) {
+                    angular.forEach(results, function (result, index) {
                         $scope.rating[index] = result.totalRating;
                     });
                 }
