@@ -100,7 +100,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         };
 
         $scope.addNewPlayer = function(player) {
-            httpService.post("addPlayerToDBd", {nickname: player},
+            httpService.post("addPlayerToDB", {nickname: player},
                 function(results) {
                     $scope.ALL_PLAYERS.push(player);
                     alert("Player successfully added!");
@@ -137,7 +137,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             httpService.post("saveGameIntoDB",
                 {
                     season: $scope.season,
-                    date: $scope.date,
+                    date: $scope.gameDate.data,
                     result: $scope.result,
                     masterNickname: $scope.master,
                     nickNames: $scope.nicknames,
