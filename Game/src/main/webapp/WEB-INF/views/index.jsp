@@ -23,6 +23,7 @@
     <script src="<c:url value="/resources/js/directives/timer.js"/>"></script>
     <script src="<c:url value="/resources/js/directives/customDirectives.js"/>"></script>
     <script src="<c:url value="/resources/js/services/customServices.js"/>"></script>
+    <script src="<c:url value="/resources/js/controllers/modalController.js"/>"></script>
     <script src="<c:url value="/resources/js/controllers/gameController.js"/>"></script>
     <script src="<c:url value="/resources/js/app.js"/>"></script>
 </body>

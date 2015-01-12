@@ -1,5 +1,5 @@
 angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
-    .controller('gameController', function($scope, httpService) {
+    .controller('gameController', function($scope, $modal, $log, httpService) {
 
         $scope.PLAYERS_AMOUNT = 10;
         $scope.MAX_FOULS_AMOUNT = 4;
@@ -61,6 +61,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         $scope.startTimer = function (time){
             $scope.$broadcast('timer-set-countdown', time);
             $scope.$broadcast('timer-start');
+            $scope.timerRunning  = true;
         };
 
         $scope.stopTimer = function (){
@@ -68,8 +69,9 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         };
 
         $scope.$on('timer-stopped', function (event, data){
+            $scope.timerRunning = false;
             if (data.millis == 0) {
-                alert('Time is out');
+                $scope.openWarningModal('Time Is out');
             }
         });
 
@@ -103,10 +105,10 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             httpService.post("addPlayerToDB", {nickname: player},
                 function(results) {
                     $scope.ALL_PLAYERS.push(player);
-                    alert("Player successfully added!");
+                    $scope.openInfoModal("Player successfully added!");
                 },
                 function(error) {
-                    alert("player FAILED to add;");
+                    $scope.openErrorModal("player FAILED to add;");
                 }
             );
         };
@@ -134,6 +136,8 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         };
 
         $scope.saveGame = function() {
+            $scope.checkMaster();
+
             httpService.post("saveGameIntoDB",
                 {
                     season: $scope.season,
@@ -148,12 +152,72 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
                     fouls: $scope.fouls
                 },
                 function(results) {
-                    alert('game successfully saved!');
+                    $scope.openInfoModal('game successfully saved!');
                 },
                 function(error) {
-                    alert('game FAILED to save');
+                    $scope.openErrorModal('game FAILED to save');
                 }
             );
         };
+
+        $scope.openInfoModal = function(message) {
+            $scope.openMessageModal(message, 'info');
+        };
+
+        $scope.openWarningModal = function(message) {
+            $scope.openMessageModal(message, 'warning');
+        };
+
+        $scope.openErrorModal = function(message) {
+            $scope.openMessageModal(message, 'error');
+        };
+
+        $scope.openMessageModal = function(message, level) {
+            $modal.open({
+                templateUrl: '/resources/js/views/partial/modal/' + level + '.html',
+                controller: 'messageModalController',
+                resolve: {
+                    message: function () {
+                        return message;
+                    }
+                }
+            });
+        };
+
+
+        $scope.checkMaster = function(){
+            if ($scope.master == null || $scope.master == "") {
+                $scope.openErrorModal('Master field is empty');
+            } else if ($scope.ALL_PLAYERS.indexOf($scope.master) == -1) {
+                $scope.openErrorModal('Master field: There are no player with nickname "' + $scope.master + '"!');
+            }
+        };
+
+        $scope.checkNicknames = function(){
+
+        };
+
+        $scope.items = ['item1', 'item2', 'item3'];
+
+        $scope.open = function (size) {
+
+            var modalInstance = $modal.open({
+                templateUrl: '/resources/js/views/modal.html',
+                controller: 'modalController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
 
     });
