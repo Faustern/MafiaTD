@@ -15,8 +15,10 @@ angular.module('main.controllers',[])
         };
     })
     .controller('messageModalController', function ($scope, $modalInstance, message) {
-
-        $scope.message = message;
+        if (typeof message === 'string') {
+            message = [message];
+        }
+        $scope.messages = message;
 
         $scope.ok = function () {
             $modalInstance.close();
