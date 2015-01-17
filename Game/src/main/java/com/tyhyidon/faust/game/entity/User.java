@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.model;
+package com.tyhyidon.faust.game.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

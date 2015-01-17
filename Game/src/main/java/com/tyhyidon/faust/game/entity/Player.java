@@ -1,8 +1,7 @@
-package com.tyhyidon.faust.game.model;
+package com.tyhyidon.faust.game.entity;
 
 import com.tyhyidon.faust.game.player.Constants;
 import com.tyhyidon.faust.game.rating.RatingCalculator;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -11,16 +10,16 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "statistics")
-public class Statistics {
+public class Player {
 
     @Id
     @GeneratedValue
     @Column
     private int id;
 
-    @ManyToOne (targetEntity = Player.class)
+    @ManyToOne (targetEntity = Member.class)
     @JoinColumn(name = "nickname")
-    private Player player;
+    private Member player;
 
     @ManyToOne (targetEntity = Game.class)
     @JoinColumn(name = "game_id")
@@ -62,12 +61,12 @@ public class Statistics {
     @Column(name = "total_rating")
     private double totalRating;
 
-    public Statistics() {
+    public Player() {
 
     }
 
-    public Statistics(Player player, Game game, int number, int role, int life, int bestVoices, int finalDecision, int fouls,
-                      RatingCalculator ratingCalculator) {
+    public Player(Member player, Game game, int number, int role, int life, int bestVoices, int finalDecision, int fouls,
+                  RatingCalculator ratingCalculator) {
         this.player = player;
         this.game = game;
         this.role = role;
@@ -94,11 +93,11 @@ public class Statistics {
         this.id = id;
     }
 
-    public Player getPlayer() {
+    public Member getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(Member player) {
         this.player = player;
     }
 

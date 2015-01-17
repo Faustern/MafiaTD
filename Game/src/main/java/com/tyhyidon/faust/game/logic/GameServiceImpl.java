@@ -1,11 +1,16 @@
 package com.tyhyidon.faust.game.logic;
 
 import com.tyhyidon.faust.game.filter.*;
-import com.tyhyidon.faust.game.model.Game;
-import com.tyhyidon.faust.game.model.Player;
-import com.tyhyidon.faust.game.model.Statistics;
+import com.tyhyidon.faust.game.entity.Game;
+import com.tyhyidon.faust.game.entity.Member;
+import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.mapper.SnapshotToEntity;
+import com.tyhyidon.faust.game.model.GameSnapshot;
+import com.tyhyidon.faust.game.model.PlayerSnapshot;
+import com.tyhyidon.faust.game.model.Result;
 import com.tyhyidon.faust.game.player.Constants;
 import com.tyhyidon.faust.game.player.GameDAO;
+import com.tyhyidon.faust.game.rating.RatingCalculator;
 import com.tyhyidon.faust.game.rating.RatingCalculatorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +23,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static java.util.stream.Collectors.*;
+
 /**
  */
 @Component
-public class Logic {
-    private static Logger logger = LoggerFactory.getLogger(Logic.class);
+public class GameServiceImpl {
+
+    private static Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 
     @Autowired
     private GameDAO gameDAO;
@@ -30,75 +38,36 @@ public class Logic {
     @Resource
     private Properties ratingProperties;
 
-    public static final String DATE_FORMAT_FOR_UI_AS_STRING = "yyyy/mm/dd";
+    public List<Double> calculateRating(List<PlayerSnapshot> playerSnapshots, int result) {
+        RatingCalculator ratingCalculator = new RatingCalculatorImpl(result, ratingProperties);
+        return playerSnapshots.stream().map(p -> ratingCalculator.calculateRating(p)).collect(toList());
+    }
 
-    public List<String> addPlayerToDB(String nickname, String vkontakte) {
-        gameDAO.addPlayer(nickname, vkontakte);
-        return getPlayersNicknames();
+
+    public List<String> addMember(String nickname) {
+        gameDAO.addMember(nickname);
+        return getMembers();
     }
 
     @Transactional
-    public List<Result> saveGameIntoDB(String date, Integer season, String masterNickname, Integer result, List<String> nickNames,
-                                       List<Integer> roles, List<Integer> lives, List<Integer> bestVoices,
-                                       List<Integer> finalDecisions, List<Integer> fouls) throws ParseException {
-
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_FOR_UI_AS_STRING);
-        Date parsedDate =  format.parse(date);
-
-        List<Statistics> statistics = getStatistics(result, season, date, masterNickname, nickNames, roles, lives, bestVoices, finalDecisions, fouls);
-        Game game = gameDAO.addGame(season, result, gameDAO.getPlayerByNickname(masterNickname), parsedDate);
-
-        for (Statistics statistic : statistics) {
-            statistic.setGame(game);
-            gameDAO.addStatistics(statistic);
-        }
-        return showRating(season);
+    public boolean addGame(GameSnapshot gameSnapshot) {
+        Game game = gameDAO.addGame(SnapshotToEntity.map(gameSnapshot));
+        RatingCalculator ratingCalculator = new RatingCalculatorImpl(gameSnapshot.getResult(), ratingProperties);
+        gameSnapshot.getPlayers().stream().map(p -> SnapshotToEntity.map(p)).forEach(p -> {
+            p.setGame(game);
+            ratingCalculator.calculateRating(p);
+            gameDAO.addPlayer(p);
+        });
+        return true;
     }
 
-    public List<String> getPlayersNicknames() {
-        List<String> nicknames = new ArrayList<String>();
-        List<Player> players = gameDAO.getAllPlayers();
-        for (Player player : players) {
-            nicknames.add(player.getNickname());
-        }
-        return nicknames;
-    }
-
-    public List<Statistics> getStatistics(Integer result, Integer season, String date, String masterNickname,
-                                          List<String> nickNames, List<Integer> roles, List<Integer> lives,
-                                          List<Integer> bestVoices, List<Integer> finalDecisions, List<Integer> fouls) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_FOR_UI_AS_STRING);
-        Date parsedDate =  (Date)format.parse(date);
-
-        List<Statistics> statistics = new ArrayList<Statistics>();
-
-        Iterator<String> nickNamesIterator = nickNames.iterator();
-        Iterator<Integer> rolesIterator = roles.iterator();
-        Iterator<Integer> livesIterator = lives.iterator();
-        Iterator<Integer> bestVoicesIterator = bestVoices.iterator();
-        Iterator<Integer> finalDecisionsIterator = finalDecisions.iterator();
-        Iterator<Integer> foulsIterator = fouls.iterator();
-        for (int i = 0; i < nickNames.size(); i++) {
-            String nicknamesItem = nickNamesIterator.next();
-            Integer rolesItem = rolesIterator.next();
-            Integer livesItem = livesIterator.next();
-            Integer bestVoicesItem = bestVoicesIterator.next();
-            Integer finalDecisionsItem = finalDecisionsIterator.next();
-            Integer foulsItem = foulsIterator.next();
-
-            statistics.add(new Statistics(gameDAO.getPlayerByNickname(nicknamesItem),
-                    new Game(result, season, parsedDate, gameDAO.getPlayerByNickname(masterNickname)),
-                    i + 1, rolesItem, livesItem, bestVoicesItem, finalDecisionsItem, foulsItem,
-                    new RatingCalculatorImpl(result, rolesItem, livesItem, bestVoicesItem,
-                            finalDecisionsItem, foulsItem, ratingProperties)));
-        }
-
-        return statistics;
+    public List<String> getMembers() {
+        return gameDAO.getMembers().stream().map(player -> player.getNickname()).collect(toList());
     }
 
     public PlayerStatistics getStatisticsPlayerRequest(String nickname, Integer season) {
 
-        List<Statistics> statisticsList = gameDAO.getPlayerGamesByDefinedData(nickname, season,
+        List<Player> statisticsList = gameDAO.getPlayerGamesByDefinedData(nickname, season,
                 Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING,
                 Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING);
 
@@ -120,7 +89,7 @@ public class Logic {
         int redAwayOneDay = 0;
         int redAway = 0;
 
-        for (Statistics statistics : statisticsList) {
+        for (Player statistics : statisticsList) {
 
             if (statistics.isWin()) {
                 gamesWin++;
@@ -210,22 +179,22 @@ public class Logic {
                                              List<Integer> bestVoices, List<Integer> finalDecisions,
                                              List<Integer> fouls, Integer criteria, Integer limit, Integer season) {
 
-        List<Player> players = gameDAO.getAllPlayers();
+        List<Member> players = gameDAO.getMembers();
 
         List<Result> results = new ArrayList<Result>();
-        List<List<Statistics>> playersGames = new ArrayList<List<Statistics>>();
-        List<List<Statistics>> playersGamesWin = new ArrayList<List<Statistics>>();
+        List<List<Player>> playersGames = new ArrayList<List<Player>>();
+        List<List<Player>> playersGamesWin = new ArrayList<List<Player>>();
 
-        for (Player player : players) {
-            List<Statistics> playerGames = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
+        for (Member player : players) {
+            List<Player> playerGames = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
                     numbers, roles, lives, bestVoices, finalDecisions, fouls);
 
             if (playerGames.size() < limit) continue;
 
             playersGames.add(playerGames);
 
-            List<Statistics> playerGamesWin = new ArrayList<Statistics>();
-            for (Statistics playerGame : playerGames) {
+            List<Player> playerGamesWin = new ArrayList<Player>();
+            for (Player playerGame : playerGames) {
                 if (playerGame.isWin()) {
                     playerGamesWin.add(playerGame);
                 }
@@ -255,7 +224,7 @@ public class Logic {
 
         List<Result> results = new ArrayList<Result>();
 
-        List<List<Statistics>> playerGames = new ArrayList<List<Statistics>>();
+        List<List<Player>> playerGames = new ArrayList<List<Player>>();
 
         ArrayList<Integer> roleList = new ArrayList<Integer>();
 
@@ -274,12 +243,12 @@ public class Logic {
                     Constants.DISABLE_FILTERING));
         }
 
-        for (List<Statistics> gamesNumber : playerGames) {
+        for (List<Player> gamesNumber : playerGames) {
             int currentWins = 0;
-            for (Statistics game : gamesNumber)
+            for (Player game : gamesNumber)
                 if (game.isWin()) currentWins++;
             if (nickname != null) {
-                results.add(new Result(gameDAO.getPlayerByNickname(nickname),
+                results.add(new Result(gameDAO.getMember(nickname),
                         gamesNumber.size(), currentWins));
             } else {
                 results.add(new Result(null,
@@ -294,17 +263,17 @@ public class Logic {
     public List<PerGameStatistics> getStatisticsPerGame(Integer limit, Integer criteria, Integer season) {
 
         List<PerGameStatistics> perGameStatistics = new ArrayList<PerGameStatistics>();
-        List<Player> players = gameDAO.getAllPlayers();
+        List<Member> players = gameDAO.getMembers();
 
-        for (Player player : players) {
-            List<Statistics> statisticsList = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
+        for (Member player : players) {
+            List<Player> statisticsList = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
                     Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING,
                     Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING);
 
             if (statisticsList.size() >= limit) {
                 double foulsPerGame = 0;
                 double bestVoicesPerGame = 0;
-                for (Statistics statistics : statisticsList) {
+                for (Player statistics : statisticsList) {
                     foulsPerGame += statistics.getFouls();
                     bestVoicesPerGame += statistics.getBestVoices();
                 }
@@ -330,11 +299,11 @@ public class Logic {
     public List<Result> showRating(Integer season) {
 
         ArrayList<Result> results = new ArrayList<Result>();
-        List<Player> players = gameDAO.getAllPlayers();
+        List<Member> players = gameDAO.getMembers();
         Integer maxSize = 0;
 
-        for (Player player : players) {
-            List<Statistics> playerGames = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
+        for (Member player : players) {
+            List<Player> playerGames = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
                     Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING,
                     Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING);
 
@@ -345,7 +314,7 @@ public class Logic {
             Double playerRating = 0.0;
             int gamesWin = 0;
 
-            for (Statistics playerGame : playerGames) {
+            for (Player playerGame : playerGames) {
                 if (playerGame.isWin()) {
                     gamesWin++;
                 }
@@ -389,7 +358,7 @@ public class Logic {
         roles.add(roles9);
         roles.add(roles10);
 
-        List<Game> allGames = gameDAO.getAllGames(season);
+        List<Game> allGames = gameDAO.getGames(season);
         List<Game> successGames = new ArrayList<Game>();
         List <List <Game>> games = new ArrayList<List<Game>>();
 
@@ -399,10 +368,10 @@ public class Logic {
             List <Game> gamesNumber = new ArrayList<Game>();
             List <Integer> numbers = new ArrayList<Integer>();
             numbers.add(i);
-            List<Statistics> playerGames = gameDAO.getPlayerGamesByDefinedData(Constants.DEFAULT_PLAYER, season,
+            List<Player> playerGames = gameDAO.getPlayerGamesByDefinedData(Constants.DEFAULT_PLAYER, season,
                     numbers, role, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING,
                     Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING);
-            for(Statistics playerGame : playerGames) {
+            for(Player playerGame : playerGames) {
                 gamesNumber.add(playerGame.getGame());
             }
             games.add(gamesNumber);

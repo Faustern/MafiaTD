@@ -1,6 +1,6 @@
-package com.tyhyidon.faust.game.model;
+package com.tyhyidon.faust.game.entity;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "players")
-public class Player {
+public class Member {
 
     @Id
     @Column
@@ -30,12 +30,12 @@ public class Player {
     private String telephone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "player", targetEntity = Statistics.class)
-    private Set<Statistics> statistics;
+    @OneToMany(mappedBy = "player", targetEntity = Player.class)
+    private Set<Player> statistics;
 
     @JsonIgnore
     @OneToMany(mappedBy = "master", targetEntity = Game.class)
-    private Set<Statistics> masters;
+    private Set<Player> masters;
 
     public String getNickname() {
         return nickname;
@@ -77,19 +77,19 @@ public class Player {
         this.telephone = telephone;
     }
 
-    public Set<Statistics> getMasters() {
+    public Set<Player> getMasters() {
         return masters;
     }
 
-    public void setMasters(Set<Statistics> masters) {
+    public void setMasters(Set<Player> masters) {
         this.masters = masters;
     }
 
-    public Set<Statistics> getStatistics() {
+    public Set<Player> getStatistics() {
         return statistics;
     }
 
-    public void setStatistics(Set<Statistics> statistics) {
+    public void setStatistics(Set<Player> statistics) {
         this.statistics = statistics;
     }
 

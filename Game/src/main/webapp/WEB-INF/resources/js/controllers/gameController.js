@@ -1,8 +1,16 @@
 angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
-    .controller('gameController', function($scope, $modal, $log, httpService) {
+    .controller('gameController', function($scope, $modal, $log, httpService, $http) {
 
-        $scope.range = function (count) {
-            return Array.apply(null, new Array(count)).map(String.prototype.valueOf,"");
+        $scope.range = function (count, defaultValue) {
+            var array = Array.apply(null, new Array(count))
+            switch(typeof defaultValue) {
+                case "undefined":
+                    return array.map(String.prototype.valueOf, "");
+                case "string":
+                    return array.map(String.prototype.valueOf, defaultValue);
+                case "object":
+                    return array.map(Object.prototype.valueOf, defaultValue);
+            }
         };
 
         $scope.PLAYERS_AMOUNT = 10;
@@ -13,13 +21,29 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         $scope.LIVES = ["killed 1 night", "killed 2 night", "killed 3 night", "killed 4 night", "killed 5 plus night",
             "away 0 day", "away 1 day", "away 2 day", "away 3 day", "away 4 day", "away 5 plus day", "not away"];
         $scope.SEASONS = ["All seasons","Winter 13/14","Spring 14","Autumn 14","Winter 14/15"];
-        $scope.nicknames = $scope.range($scope.PLAYERS_AMOUNT);
-        $scope.roles = new Array($scope.PLAYERS_AMOUNT);
-        $scope.lives = new Array($scope.PLAYERS_AMOUNT);
-        $scope.bestVoices = new Array($scope.PLAYERS_AMOUNT);
-        $scope.finalDecisions = new Array($scope.PLAYERS_AMOUNT);
-        $scope.fouls = new Array($scope.PLAYERS_AMOUNT);
-        $scope.rating = new Array($scope.PLAYERS_AMOUNT);
+
+
+
+        $scope.game = {
+            season: 1,
+            master: "Vilka",
+            date: "2015/01/17",
+            result: 1,
+            players: []
+        };
+        angular.forEach($scope.range($scope.PLAYERS_AMOUNT), function () {
+            $scope.game.players.push({
+                nickname: "",
+                role: 1,
+                life: 1,
+                bestVoices: 0,
+                finalDecision: 0,
+                fouls: 0
+            });
+        });
+
+        $scope.rating = $scope.range($scope.PLAYERS_AMOUNT);
+
         $scope.accusations = [];
         $scope.addAccusation = function(){
             $scope.accusations.push({ accuse: $scope.accuse, accused: $scope.accused});
@@ -43,20 +67,11 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             }
         };
 
-        $scope.open = function($event) {
+        $scope.openDatePicker = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
             $scope.gameDate.isOpened = true;
         };
-
-        //For Debug
-        $.each($scope.nicknames, function (index) {
-            $scope.roles[index] = 1;
-            $scope.lives[index] = 1;
-            $scope.bestVoices[index] = 0;
-            $scope.finalDecisions[index] = 0;
-            $scope.fouls[index] = 0;
-        });
 
         $scope.timerRunning = false;
 
@@ -80,12 +95,12 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         });
 
 
-        httpService.get('getAllPlayers', {}, function(result) {
+        httpService.get('members', {}, function(result) {
             $scope.ALL_PLAYERS = result;
         });
 
         $scope.showRating = function(season) {
-            httpService.get("showPlayersRating", {season: season},
+            httpService.get("rating", {season: season},
                 function(results) {
                     $scope.ratingStrings = [];
                     angular.forEach(results, function (result, index) {
@@ -103,7 +118,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         };
 
         $scope.addNewPlayer = function(player) {
-            httpService.post("addPlayerToDB", {nickname: player},
+            httpService.post("member", player,
                 function(results) {
                     $scope.ALL_PLAYERS.push(player);
                     $scope.openInfoModal("Player successfully added!");
@@ -114,26 +129,29 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             );
         };
 
+        $scope.validation = function() {
+            $scope.uniqueNicknames = [];
+            $scope.uniqueNicknamesNumbers = [];
+            $scope.duplicates = [];
+            $scope.duplicateNumbers = [];
+
+            angular.forEach($scope.game.players, function (player, number) {
+                $scope.checkNickname(player.nickname, number);
+            });
+
+            angular.forEach($scope.duplicates, function (duplicate, index) {
+                $scope.validationErrors.push('Players ' + $scope.duplicateNumbers[index] + ' have the same nickname: "' +
+                duplicate + '"');
+            });
+            $scope.checkMaster($scope.game.master);
+        };
+
         $scope.calculateRating = function() {
-            $scope.checkMaster();
-            $scope.checkNicknames();
             if ($scope.validationErrors.length == 0) {
-                httpService.get("calculateRating",
-                    {
-                        season: $scope.season,
-                        date: $scope.gameDate.data,
-                        result: $scope.result,
-                        masterNickname: $scope.master,
-                        nickNames: $scope.nicknames,
-                        roles: $scope.roles,
-                        lives: $scope.lives,
-                        bestVoices: $scope.bestVoices,
-                        finalDecisions: $scope.finalDecisions,
-                        fouls: $scope.fouls
-                    },
+                httpService.post("rating", $scope.game,
                     function (results) {
                         angular.forEach(results, function (result, index) {
-                            $scope.rating[index] = result.totalRating;
+                            $scope.rating[index] = result;
                         });
                     }
                 );
@@ -144,22 +162,9 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         };
 
         $scope.saveGame = function() {
-            $scope.checkMaster();
-            $scope.checkNicknames();
+            $scope.validation();
             if ($scope.validationErrors.length == 0) {
-                httpService.post("saveGameIntoDB",
-                    {
-                        season: $scope.season,
-                        date: $scope.gameDate.data,
-                        result: $scope.result,
-                        masterNickname: $scope.master,
-                        nickNames: $scope.nicknames,
-                        roles: $scope.roles,
-                        lives: $scope.lives,
-                        bestVoices: $scope.bestVoices,
-                        finalDecisions: $scope.finalDecisions,
-                        fouls: $scope.fouls
-                    },
+                httpService.post("game", $scope.game,
                     function (results) {
                         $scope.openInfoModal('game successfully saved!');
                     },
@@ -197,48 +202,37 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             });
         };
 
-
         $scope.validationErrors = [];
 
-        $scope.checkMaster = function(){
-            if ($scope.master == null || $scope.master == "") {
+        $scope.checkMaster = function(master){
+            if (master == null || master == "") {
                 $scope.validationErrors.push('Master field is empty');
-            } else if ($scope.ALL_PLAYERS.indexOf($scope.master) == -1) {
-                $scope.validationErrors.push('Master field: There are no player with nickname "' + $scope.master + '"!');
-            } else if ($scope.nicknames.indexOf($scope.master) != -1) {
-                $scope.validationErrors.push('Master field: "' + $scope.master + '" could not be player  number ' +
-                ($scope.nicknames.indexOf($scope.master) + 1) + ' and master');
+            } else if ($scope.ALL_PLAYERS.indexOf(master) == -1) {
+                $scope.validationErrors.push('Master field: There are no player with nickname "' + master + '"!');
+            } else if ($scope.uniqueNicknames.indexOf(master) != -1) {
+                $scope.validationErrors.push('Master field: "' + master + '" could not be player  number ' +
+                ($scope.uniqueNicknames.indexOf(master) + 1) + ' and master');
             }
         };
 
-        $scope.checkNicknames = function(){
-            var nicknames = [];
-            var numbers = [];
-            var duplicates = [];
-            var duplicateNumbers = [];
-            angular.forEach($scope.nicknames, function (nickname, number) {
-                number++;
-                if (nickname == null || nickname == "") {
-                    $scope.validationErrors.push('Nickname field for player ' + number + ' is empty');
-                } else if ($scope.ALL_PLAYERS.indexOf(nickname) == -1) {
-                    $scope.validationErrors.push('Player number ' + number + ': there are no no player with nickname "' +
-                    nickname + '"');
-                } else if (nicknames.indexOf(nickname) != -1) {
-                   if (duplicates.indexOf(nickname) == -1) {
-                       duplicates.push(nickname);
-                       duplicateNumbers.push([numbers[nicknames.indexOf(nickname)], number]);
-                   } else {
-                       duplicateNumbers[duplicates.indexOf(nickname)].push(number);
-                   }
+        $scope.checkNickname = function(nickname , number) {
+            number++;
+            if (nickname == null || nickname == "") {
+                $scope.validationErrors.push('Nickname field for player ' + number + ' is empty');
+            } else if ($scope.ALL_PLAYERS.indexOf(nickname) == -1) {
+                $scope.validationErrors.push('Player number ' + number + ': there are no no player with nickname "' +
+                nickname + '"');
+            } else if ($scope.uniqueNicknames.indexOf(nickname) != -1) {
+                if ($scope.duplicates.indexOf(nickname) == -1) {
+                    $scope.duplicates.push(nickname);
+                    $scope.duplicateNumbers.push([$scope.uniqueNicknamesNumbers[$scope.uniqueNicknames.indexOf(nickname)], number]);
                 } else {
-                    nicknames.push(nickname);
-                    numbers.push(number);
+                    $scope.duplicateNumbers[$scope.duplicates.indexOf(nickname)].push(number);
                 }
-            });
-            angular.forEach(duplicates, function (duplicate, index) {
-                $scope.validationErrors.push('Players ' + duplicateNumbers[index] + ' have the same nickname: "' +
-                duplicate + '"');
-            });
+            } else {
+                $scope.uniqueNicknames.push(nickname);
+                $scope.uniqueNicknamesNumbers.push(number);
+            }
         };
 
         $scope.items = ['item1', 'item2', 'item3'];

@@ -1,6 +1,6 @@
 package com.tyhyidon.faust.game.managers;
 
-import com.tyhyidon.faust.game.model.User;
+import com.tyhyidon.faust.game.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,11 +1,10 @@
-package com.tyhyidon.faust.game.model;
+package com.tyhyidon.faust.game.entity;
 
-
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Василий on 12.01.14.
@@ -28,15 +27,15 @@ public class Game {
     @Column
     private int season;
 
-    @ManyToOne (targetEntity = Player.class)
+    @ManyToOne (targetEntity = Member.class)
     @JoinColumn(name = "master")
-    private Player master;
+    private Member master;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "game", targetEntity = Statistics.class)
-    private Set<Statistics> seasonGameStatistics;
+    @OneToMany(mappedBy = "game", targetEntity = Player.class)
+    private List<Player> playerSnapshots;
 
-    public Game(int result, int season, Date date, Player master) {
+    public Game(int result, int season, Date date, Member master) {
         this.result = result;
         this.season = season;
         this.date = date;
@@ -70,11 +69,11 @@ public class Game {
         this.result = result;
     }
 
-    public Player getMaster() {
+    public Member getMaster() {
         return master;
     }
 
-    public void setMaster(Player master) {
+    public void setMaster(Member master) {
         this.master = master;
     }
 
@@ -86,12 +85,12 @@ public class Game {
         this.season = season;
     }
 
-    public Set<Statistics> getSeasonGameStatistics() {
-        return seasonGameStatistics;
+    public List<Player> getPlayerSnapshots() {
+        return playerSnapshots;
     }
 
-    public void setSeasonGameStatistics(Set<Statistics> seasonGameStatistics) {
-        this.seasonGameStatistics = seasonGameStatistics;
+    public void setSeasonGameStatistics(List<Player> playerSnapshots) {
+        this.playerSnapshots = playerSnapshots;
     }
 
     @Override

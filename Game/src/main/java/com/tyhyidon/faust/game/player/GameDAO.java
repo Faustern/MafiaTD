@@ -1,8 +1,8 @@
 package com.tyhyidon.faust.game.player;
 
-import com.tyhyidon.faust.game.model.Game;
-import com.tyhyidon.faust.game.model.Statistics;
-import com.tyhyidon.faust.game.model.Player;
+import com.tyhyidon.faust.game.entity.Game;
+import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.entity.Member;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,33 +21,31 @@ public class GameDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
-
-    public List<Player> getAllPlayers() {
+    public List<Member> getMembers() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Player> criteriaQuery = criteriaBuilder.createQuery(Player.class);
-        Root<Player> player = criteriaQuery.from(Player.class);
-        criteriaQuery.select(player);
-        TypedQuery<Player> query = entityManager.createQuery(criteriaQuery);
+        CriteriaQuery<Member> criteriaQuery = criteriaBuilder.createQuery(Member.class);
+        Root<Member> member = criteriaQuery.from(Member.class);
+        criteriaQuery.select(member);
+        TypedQuery<Member> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
 
-    public void addPlayer(String nickname, String vkontakte) {
-        Player player = new Player();
+    public void addMember(String nickname) {
+        Member player = new Member();
         player.setNickname(nickname);
-        player.setVkontakte(vkontakte);
         entityManager.merge(player);
     }
 
-    public Player getPlayerByNickname(String nickname) {
+    public Member getMember(String nickname) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Player> criteriaQuery = criteriaBuilder.createQuery(Player.class);
-        Root<Player> player = criteriaQuery.from(Player.class);
-        criteriaQuery.select(player).where(criteriaBuilder.equal(player.get("nickname"), nickname));
-        TypedQuery<Player> query = entityManager.createQuery(criteriaQuery);
+        CriteriaQuery<Member> criteriaQuery = criteriaBuilder.createQuery(Member.class);
+        Root<Member> member = criteriaQuery.from(Member.class);
+        criteriaQuery.select(member).where(criteriaBuilder.equal(member.get("nickname"), nickname));
+        TypedQuery<Member> query = entityManager.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
 
-    public List<Game> getAllGames(Integer season) {
+    public List<Game> getGames(int season) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Game> criteriaQuery = criteriaBuilder.createQuery(Game.class);
         Root<Game> game = criteriaQuery.from(Game.class);
@@ -57,49 +55,21 @@ public class GameDAO {
         return query.getResultList();
     }
 
-    public Game addGame(int season, int result, Player master, Date date) {
-        Game game = new Game();
-        game.setSeason(season);
-        game.setDate(date);
-        game.setResult(result);
-        game.setMaster(master);
+    public Game addGame(Game game) {
         return entityManager.merge(game);
     }
 
-    public void addStatistics(Player player, Game game, int number, int role, int life, int bestVoices,
-                                        int finalDecision, int fouls, double resultRating, double lifeRating,
-                                        double bestVoicesRating, double finalDecisionRating, double foulsRating,
-                                        double totalRating
-    ) {
-        Statistics gameStatistics = new Statistics();
-        gameStatistics.setPlayer(player);
-        gameStatistics.setGame(game);
-        gameStatistics.setNumber(number);
-        gameStatistics.setRole(role);
-        gameStatistics.setLife(life);
-        gameStatistics.setBestVoices(bestVoices);
-        gameStatistics.setFinalDecision(finalDecision);
-        gameStatistics.setFouls(fouls);
-        gameStatistics.setResultRating(resultRating);
-        gameStatistics.setLifeRating(lifeRating);
-        gameStatistics.setBestVoicesRating(bestVoicesRating);
-        gameStatistics.setFinalDecisionRating(finalDecisionRating);
-        gameStatistics.setFoulsRating(foulsRating);
-        gameStatistics.setTotalRating(totalRating);
-        entityManager.merge(gameStatistics);
+    public void addPlayer(Player player) {;
+        entityManager.merge(player);
     }
 
-    public void addStatistics(Statistics statistic) {;
-        entityManager.merge(statistic);
-    }
-
-    public List<Statistics> getPlayerGamesByDefinedData(String nickname, Integer season,
+    public List<Player> getPlayerGamesByDefinedData(String nickname, Integer season,
                                          List <Integer> numbers, List <Integer> roles,
                                          List <Integer> lives, List <Integer> bestVoices,
                                          List <Integer> finalDecisions, List <Integer> fouls) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Statistics> criteriaQuery = criteriaBuilder.createQuery(Statistics.class);
-        Root playerGame = criteriaQuery.from(Statistics.class);
+        CriteriaQuery<Player> criteriaQuery = criteriaBuilder.createQuery(Player.class);
+        Root playerGame = criteriaQuery.from(Player.class);
 
         int i = 0;
 
@@ -167,8 +137,8 @@ public class GameDAO {
 
         criteriaQuery.select(playerGame).where(summary);
 
-        TypedQuery<Statistics> query = entityManager.createQuery(criteriaQuery);
-        List<Statistics> playerGameList = query.getResultList();
+        TypedQuery<Player> query = entityManager.createQuery(criteriaQuery);
+        List<Player> playerGameList = query.getResultList();
 
         return playerGameList;
     }

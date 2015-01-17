@@ -1,9 +1,9 @@
 package com.tyhyidon.faust.game.rating;
 
+import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.model.PlayerSnapshot;
 import com.tyhyidon.faust.game.player.Constants;
-import org.springframework.stereotype.Component;
 
-import java.io.*;
 import java.util.Properties;
 
 public class RatingCalculatorImpl implements RatingCalculator {
@@ -24,6 +24,11 @@ public class RatingCalculatorImpl implements RatingCalculator {
         this.bestVoices = bestVoices;
         this.finalDecision = finalDecision;
         this.fouls = fouls;
+    }
+
+    public RatingCalculatorImpl(int result, Properties percent) {
+        this.percent = percent;
+        this.result = result;
     }
 
     public int getResult() {
@@ -176,4 +181,32 @@ public class RatingCalculatorImpl implements RatingCalculator {
         }
     }
 
+    public Double calculateRating(PlayerSnapshot playerSnapshot) {
+        role = playerSnapshot.getRole();
+        life = playerSnapshot.getLife();
+        bestVoices =playerSnapshot.getBestVoices();
+        finalDecision = playerSnapshot.getFinalDecision();
+        fouls = playerSnapshot.getFouls();
+
+        Double totalRating = calculateResultRating() + calculateLifeRating() + calculateBestVoicesRating()
+                + calculateFinalDecisionRating() + calculateFoulsRating();
+        if (totalRating>0) {
+            return totalRating;
+        } else {
+            return 0.0;
+        }
+    }
+
+    public void calculateRating(Player player) {
+        this.role = player.getRole();
+        this.life = player.getLife();
+        this.bestVoices = player.getBestVoices();
+        this.finalDecision = player.getFinalDecision();
+        player.setResultRating(calculateResultRating());
+        player.setLifeRating(calculateLifeRating());
+        player.setBestVoicesRating(calculateBestVoicesRating());
+        player.setFinalDecisionRating(calculateFinalDecisionRating());
+        player.setFoulsRating(calculateFoulsRating());
+        player.setTotalRating(calculateTotalRating());
+    }
 }

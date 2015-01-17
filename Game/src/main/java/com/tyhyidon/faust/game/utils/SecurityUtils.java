@@ -1,6 +1,6 @@
 package com.tyhyidon.faust.game.utils;
 
-import com.tyhyidon.faust.game.model.User;
+import com.tyhyidon.faust.game.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

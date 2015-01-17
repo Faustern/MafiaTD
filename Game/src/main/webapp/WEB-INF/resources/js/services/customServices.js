@@ -22,7 +22,24 @@ angular.module('customServices',[])
                 $http({
                     url: url,
                     method: "POST",
-                    params: params
+                    data: params
+                }).success(function(data) {
+                    callback(data);
+                }).error(function(error) {
+                    errorCallback(error);
+                })
+            },
+            json: function(url, params, callback, errorCallback) {
+                if (params == null) {
+                    throw "Config object should be provided";
+                }
+                $http({
+                    url: url,
+                    method: "POST",
+                    params: params,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 }).success(function(data) {
                     callback(data);
                 }).error(function(error) {

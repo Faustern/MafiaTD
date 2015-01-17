@@ -18,21 +18,21 @@
             <th>Master</th>
         </thead>
         <tr>
-            <td><select ng-model="season">
+            <td><select ng-model="game.season">
                 <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
             </select></td>
             <td><p class="input-group datepicker-group">
                 <input type="text" class="form-control" datepicker-popup="{{gameDate.format}}" ng-model="gameDate.data"
                        is-open="gameDate.isOpened" datepicker-options="gameDate.options"
                        ng-required="true" close-text="Close" />
-                <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="open($event)">
+                <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="openDatePicker($event)">
                         <i class="glyphicon glyphicon-calendar"></i>
                 </button></span>
             </p></td>
-            <td><select ng-model="result">
+            <td><select ng-model="game.result">
                 <option ng-repeat="i in RESULTS track by $index" value="{{$index + 1}}">{{i}}</option>
             </select></td>
-            <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="master"></td>
+            <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="game.master"></td>
             <td><button ng-click="calculateRating()">Calculate Rating</button></td>
             <td><button ng-click="saveGame()">Save To DB</button></td>
         </tr>
@@ -58,22 +58,22 @@
             <th>Fouls</th>
             <th>Rating</th>
         </thead>
-        <tr ng-repeat="i in range(PLAYERS_AMOUNT) track by $index">
-            <td>{{$index + 1}}</td>
-            <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="nicknames[$index]"></td>
-            <td><select ng-model="roles[$index]">
+        <tr ng-repeat="player in game.players track by $index">
+            <td>{{$index+1}}</td>
+            <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="player.nickname"></td>
+            <td><select ng-model="player.role">
                 <option ng-repeat="i in ROLES track by $index" value="{{$index + 1}}">{{i}}</option>
             </select></td>
-            <td><select ng-model="lives[$index]">
+            <td><select ng-model="player.life">
                 <option ng-repeat="i in LIVES track by $index" value="{{$index + 1}}">{{i}}</option>
             </select></td>
-            <td><select ng-model="bestVoices[$index]">
+            <td><select ng-model="player.bestVoices">
                     <option ng-repeat="i in range(PLAYERS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
             </select></td>
-            <td><select ng-model="finalDecisions[$index]">
+            <td><select ng-model="player.finalDecision">
                     <option ng-repeat="i in range(PLAYERS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
             </select></td>
-            <td><select ng-model="fouls[$index]">
+            <td><select ng-model="player.fouls">
                     <option ng-repeat="i in range(MAX_FOULS_AMOUNT + 1) track by $index" value="{{$index}}">{{$index}}</option>
             </select></td>
             <td><label>{{rating[$index]}}</label></td>
