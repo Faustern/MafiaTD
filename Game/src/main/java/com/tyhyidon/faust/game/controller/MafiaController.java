@@ -2,16 +2,15 @@ package com.tyhyidon.faust.game.controller;
 
 import com.tyhyidon.faust.game.filter.PerGameStatistics;
 import com.tyhyidon.faust.game.filter.PlayerStatistics;
-import com.tyhyidon.faust.game.model.Result;
 import com.tyhyidon.faust.game.filter.ResultPrediction;
 import com.tyhyidon.faust.game.logic.GameServiceImpl;
 import com.tyhyidon.faust.game.model.GameSnapshot;
+import com.tyhyidon.faust.game.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -54,17 +53,13 @@ public class MafiaController {
     }
 
     @RequestMapping(value = {"/statisticsPlayer"})
-    public
-    @ResponseBody
-    PlayerStatistics getStatisticsPlayerRequest(@RequestParam(value="nickname", required = false) String nickname,
+    public PlayerStatistics getStatisticsPlayerRequest(@RequestParam(value="nickname", required = false) String nickname,
                                                 @RequestParam(value="season", required = false) Integer season) {
         return gameService.getStatisticsPlayerRequest(nickname, season);
     }
 
     @RequestMapping(value = {"/statistics"})
-    public
-    @ResponseBody
-    List<Result> getStatisticsRequest(@RequestParam(value="season", required = true) Integer season,
+    public List<Result> getStatisticsRequest(@RequestParam(value="season", required = true) Integer season,
                                         @RequestParam(value="numbers[]", required = false) List<Integer> numbers,
                                          @RequestParam(value="roles[]", required = true) List <Integer> roles,
                                          @RequestParam(value="lives[]", required = true) List<Integer> lives,
@@ -77,9 +72,7 @@ public class MafiaController {
     }
 
     @RequestMapping(value = {"/season_plot"})
-    public
-    @ResponseBody
-    List <Result> getSeasonPlot(@RequestParam(value="nickname", required = true) String nickname,
+    public List <Result> getSeasonPlot(@RequestParam(value="nickname", required = true) String nickname,
                                                 @RequestParam(value="role", required = true) Integer role,
                                                 @RequestParam(value="criteria", required = true) Integer criteria,
                                                 @RequestParam(value="season", required = true) Integer season) {
@@ -87,19 +80,14 @@ public class MafiaController {
     }
 
     @RequestMapping(value = {"/per_game_statistics"})
-    public
-    @ResponseBody
-    List <PerGameStatistics> getStatisticsPerGame(@RequestParam(value="limit", required = true) Integer limit,
+    public List <PerGameStatistics> getStatisticsPerGame(@RequestParam(value="limit", required = true) Integer limit,
                                                   @RequestParam(value="criteria", required = true) Integer criteria,
                                                   @RequestParam(value="season", required = true) Integer season) {
         return gameService.getStatisticsPerGame(limit, criteria, season);
     }
 
-
     @RequestMapping(value = {"/role_distribution_result"})
-    public
-    @ResponseBody
-    ResultPrediction  getResultFromRoleDistribution(@RequestParam(value="season", required = true) Integer season,
+    public ResultPrediction  getResultFromRoleDistribution(@RequestParam(value="season", required = true) Integer season,
                                        @RequestParam(value="roles1[]", required = true) List <Integer> roles1,
                                        @RequestParam(value="roles2[]", required = true) List <Integer> roles2,
                                        @RequestParam(value="roles3[]", required = true) List <Integer> roles3,
@@ -113,5 +101,4 @@ public class MafiaController {
         return gameService.getResultFromRoleDistribution(season, roles1, roles2, roles3, roles4, roles5, roles6, roles7,
                 roles8, roles9, roles10);
     }
-
 }
