@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
 </head>
 <body>
+    <div id="loadingWidget" class="row-fluid ui-corner-all">
+        <div class="loadingContent">
+            <p><div class="loading-image"></div>
+        </div>
+    </div>
     <div class="container" ng-view id="main-page-wrapper"></div>
     <script src="<c:url value="/resources/libs/js/jquery-1.10.2.js"/>"></script>
     <script src="<c:url value="/resources/libs/js/jquery-ui-1.10.3.js"/>"></script>

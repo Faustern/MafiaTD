@@ -1,5 +1,5 @@
 angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
-    .controller('gameController', function($scope, $modal, $log, httpService, $http) {
+    .controller('gameController', function($scope, $modal, $log, httpService) {
 
         $scope.range = function (count, defaultValue) {
             var array = Array.apply(null, new Array(count))
@@ -41,7 +41,6 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
                 fouls: 0
             });
         });
-
         $scope.rating = $scope.range($scope.PLAYERS_AMOUNT);
 
         $scope.accusations = [];
