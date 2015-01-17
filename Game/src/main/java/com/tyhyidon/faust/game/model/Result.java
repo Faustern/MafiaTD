@@ -1,7 +1,7 @@
-package com.tyhyidon.faust.game.filter;
+package com.tyhyidon.faust.game.model;
 
-import com.tyhyidon.faust.game.model.Statistics;
-import com.tyhyidon.faust.game.model.Player;
+import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.entity.Member;
 
 import java.util.List;
 
@@ -10,24 +10,24 @@ import java.util.List;
  */
 public class Result {
 
-    private Player player;
+    private Member player;
 
     private int games;
 
     private int gamesWin;
 
-    private List<Statistics> gamesPlayed;
+    private List<Player> gamesPlayed;
 
     private double rating;
 
-    public Result(Player player, int games, int gamesWin) {
+    public Result(Member player, int games, int gamesWin) {
         this.player = player;
         this.games = games;
         this.gamesWin = gamesWin;
     }
 
-    public Result(Player player, int games, int gamesWin,
-                  List<Statistics> gamesPlayed, double rating) {
+    public Result(Member player, int games, int gamesWin,
+                  List<Player> gamesPlayed, double rating) {
         this.player = player;
         this.games = games;
         this.gamesWin = gamesWin;
@@ -35,11 +35,11 @@ public class Result {
         this.rating = rating;
     }
 
-    public Player getPlayer() {
+    public Member getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(Member player) {
         this.player = player;
     }
 
@@ -63,11 +63,11 @@ public class Result {
         return (int)(100.0*gamesWin/games*100)/100.0;
     }
 
-    public List<Statistics> getGamesPlayed() {
+    public List<Player> getGamesPlayed() {
         return gamesPlayed;
     }
 
-    public void setGamesPlayed(List<Statistics> gamesPlayed) {
+    public void setGamesPlayed(List<Player> gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
     }
 

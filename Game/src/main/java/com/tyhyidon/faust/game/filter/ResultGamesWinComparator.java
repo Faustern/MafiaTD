@@ -1,5 +1,7 @@
 package com.tyhyidon.faust.game.filter;
 
+import com.tyhyidon.faust.game.model.Result;
+
 import java.util.Comparator;
 
 /**

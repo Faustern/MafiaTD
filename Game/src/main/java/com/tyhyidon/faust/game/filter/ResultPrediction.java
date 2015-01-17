@@ -1,6 +1,6 @@
 package com.tyhyidon.faust.game.filter;
 
-import com.tyhyidon.faust.game.model.Game;
+import com.tyhyidon.faust.game.entity.Game;
 import com.tyhyidon.faust.game.player.Constants;
 
 import java.util.List;

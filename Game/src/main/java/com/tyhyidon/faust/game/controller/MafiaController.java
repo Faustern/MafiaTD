@@ -2,91 +2,55 @@ package com.tyhyidon.faust.game.controller;
 
 import com.tyhyidon.faust.game.filter.PerGameStatistics;
 import com.tyhyidon.faust.game.filter.PlayerStatistics;
-import com.tyhyidon.faust.game.filter.Result;
+import com.tyhyidon.faust.game.model.Result;
 import com.tyhyidon.faust.game.filter.ResultPrediction;
-import com.tyhyidon.faust.game.logic.Logic;
-import com.tyhyidon.faust.game.model.Statistics;
+import com.tyhyidon.faust.game.logic.GameServiceImpl;
+import com.tyhyidon.faust.game.model.GameSnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-@Controller
+@RestController
 public class MafiaController {
 
     private static Logger logger = LoggerFactory.getLogger(MafiaController.class);
 
     @Autowired
-    private Logic logic;
+    private GameServiceImpl gameService;
 
     @RequestMapping(value = {"/main"})
     public String main() {
         return "main";
     }
 
-    @RequestMapping(value = {"/getAllPlayers"})
-    public
-    @ResponseBody
-    List<String> getAllPlayers() {
-        return logic.getPlayersNicknames();
+    @RequestMapping(value = {"/members"})
+    public List<String> getMembers() {
+        return gameService.getMembers();
     }
 
-    @RequestMapping(value = {"/addPlayerToDB"})
-    public
-    @ResponseBody
-    List<String> addPlayerToDB(@RequestParam(value="nickname", required = true) String nickname,
-                               @RequestParam(value="vkontakte", required = false) String vkontakte) {
-        return logic.addPlayerToDB(nickname, vkontakte);
+    @RequestMapping(method = RequestMethod.POST, value = {"/member"})
+    public List<String> addMember(@RequestBody String nickname) {
+        return gameService.addMember(nickname);
     }
 
-
-    @RequestMapping(value = {"/calculateRating"})
-    public
-    @ResponseBody
-    List<Statistics> getStatistics(@RequestParam Integer season,
-                                   @RequestParam String date,
-                                   @RequestParam Integer result,
-                                   @RequestParam String masterNickname,
-                                   @RequestParam List<String> nickNames,
-                                   @RequestParam List<Integer> roles,
-                                   @RequestParam List<Integer> lives,
-                                   @RequestParam List<Integer> bestVoices,
-                                   @RequestParam List<Integer> finalDecisions,
-                                   @RequestParam List<Integer> fouls
-    ) throws IOException, ParseException {
-        return logic.getStatistics(result, season, date, masterNickname, nickNames, roles, lives, bestVoices, finalDecisions, fouls);
+    @RequestMapping(method = RequestMethod.POST, value = {"/rating"})
+    public List<Double> calculateRating(@RequestBody GameSnapshot game) {
+        return gameService.calculateRating(game.getPlayers(), game.getResult());
     }
 
-    @RequestMapping(value = {"/showPlayersRating"})
-    public
-    @ResponseBody
-    List<Result> showRating(@RequestParam(value="season", required = true) Integer season) {
-        return logic.showRating(season);
+    @RequestMapping(value = {"/rating"})
+    public List<Result> getRating(@RequestParam int season) {
+        return gameService.showRating(season);
     }
 
 
-    @RequestMapping(value = {"/saveGameIntoDB"})
-    public
-    @ResponseBody
-    List<Result> saveGameIntoDB(
-            @RequestParam Integer season,
-            @RequestParam String date,
-            @RequestParam Integer result,
-            @RequestParam String masterNickname,
-            @RequestParam List<String> nickNames,
-            @RequestParam List<Integer> roles,
-            @RequestParam List<Integer> lives,
-            @RequestParam List<Integer> bestVoices,
-            @RequestParam List<Integer> finalDecisions,
-            @RequestParam List<Integer> fouls) throws ParseException {
-        return logic.saveGameIntoDB(date, season, masterNickname, result, nickNames, roles,lives,bestVoices,finalDecisions,fouls);
+    @RequestMapping(method = RequestMethod.POST, value = {"/game"})
+    public boolean addGame(@RequestBody GameSnapshot game) {
+        return gameService.addGame(game);
     }
 
     @RequestMapping(value = {"/statisticsPlayer"})
@@ -94,7 +58,7 @@ public class MafiaController {
     @ResponseBody
     PlayerStatistics getStatisticsPlayerRequest(@RequestParam(value="nickname", required = false) String nickname,
                                                 @RequestParam(value="season", required = false) Integer season) {
-        return logic.getStatisticsPlayerRequest(nickname, season);
+        return gameService.getStatisticsPlayerRequest(nickname, season);
     }
 
     @RequestMapping(value = {"/statistics"})
@@ -109,7 +73,7 @@ public class MafiaController {
                                          @RequestParam(value="fouls[]", required = true) List<Integer> fouls,
                                          @RequestParam(required = false) Integer criteria,
                                          @RequestParam(required = false) Integer limit) {
-        return logic.getStatisticsRequest(numbers, roles, lives, bestVoices, finalDecisions, fouls, criteria, limit, season);
+        return gameService.getStatisticsRequest(numbers, roles, lives, bestVoices, finalDecisions, fouls, criteria, limit, season);
     }
 
     @RequestMapping(value = {"/season_plot"})
@@ -119,7 +83,7 @@ public class MafiaController {
                                                 @RequestParam(value="role", required = true) Integer role,
                                                 @RequestParam(value="criteria", required = true) Integer criteria,
                                                 @RequestParam(value="season", required = true) Integer season) {
-        return logic.getSeasonPlot(nickname, role, criteria, season);
+        return gameService.getSeasonPlot(nickname, role, criteria, season);
     }
 
     @RequestMapping(value = {"/per_game_statistics"})
@@ -128,7 +92,7 @@ public class MafiaController {
     List <PerGameStatistics> getStatisticsPerGame(@RequestParam(value="limit", required = true) Integer limit,
                                                   @RequestParam(value="criteria", required = true) Integer criteria,
                                                   @RequestParam(value="season", required = true) Integer season) {
-        return logic.getStatisticsPerGame(limit, criteria, season);
+        return gameService.getStatisticsPerGame(limit, criteria, season);
     }
 
 
@@ -146,7 +110,7 @@ public class MafiaController {
                                        @RequestParam(value="roles8[]", required = true) List <Integer> roles8,
                                        @RequestParam(value="roles9[]", required = true) List <Integer> roles9,
                                        @RequestParam(value="roles10[]", required = true) List <Integer> roles10) {
-        return logic.getResultFromRoleDistribution(season, roles1, roles2, roles3, roles4, roles5, roles6, roles7,
+        return gameService.getResultFromRoleDistribution(season, roles1, roles2, roles3, roles4, roles5, roles6, roles7,
                 roles8, roles9, roles10);
     }
 
