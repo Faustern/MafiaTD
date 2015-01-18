@@ -61,6 +61,11 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
+
+	<bean id="template" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
 	<tx:annotation-driven />
 
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
