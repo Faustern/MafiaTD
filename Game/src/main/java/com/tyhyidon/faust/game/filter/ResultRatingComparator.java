@@ -1,7 +1,7 @@
 package com.tyhyidon.faust.game.filter;
 
 import com.tyhyidon.faust.game.model.Result;
-import com.tyhyidon.faust.game.player.Constants;
+import com.tyhyidon.faust.game.legacy.Constants;
 
 import java.util.Comparator;
 

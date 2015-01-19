@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.player;
+package com.tyhyidon.faust.game.legacy;
 
 import java.util.ArrayList;
 import java.util.List;

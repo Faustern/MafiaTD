@@ -3,7 +3,7 @@ package com.tyhyidon.faust.game.controller;
 import com.tyhyidon.faust.game.filter.PerGameStatistics;
 import com.tyhyidon.faust.game.filter.PlayerStatistics;
 import com.tyhyidon.faust.game.filter.ResultPrediction;
-import com.tyhyidon.faust.game.logic.GameServiceImpl;
+import com.tyhyidon.faust.game.services.GameServiceImpl;
 import com.tyhyidon.faust.game.model.GameSnapshot;
 import com.tyhyidon.faust.game.model.Result;
 import org.slf4j.Logger;

@@ -1,15 +1,16 @@
-package com.tyhyidon.faust.game.logic;
+package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.filter.*;
 import com.tyhyidon.faust.game.entity.Game;
 import com.tyhyidon.faust.game.entity.Member;
 import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.managers.GameManagerImpl;
 import com.tyhyidon.faust.game.mapper.SnapshotToEntity;
 import com.tyhyidon.faust.game.model.GameSnapshot;
 import com.tyhyidon.faust.game.model.PlayerSnapshot;
 import com.tyhyidon.faust.game.model.Result;
-import com.tyhyidon.faust.game.player.Constants;
-import com.tyhyidon.faust.game.player.GameDAO;
+import com.tyhyidon.faust.game.legacy.Constants;
+import com.tyhyidon.faust.game.legacy.GameDAO;
 import com.tyhyidon.faust.game.rating.RatingCalculator;
 import com.tyhyidon.faust.game.rating.RatingCalculatorImpl;
 import org.slf4j.Logger;
@@ -19,8 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.util.stream.Collectors.*;
@@ -35,6 +34,9 @@ public class GameServiceImpl {
     @Autowired
     private GameDAO gameDAO;
 
+    @Autowired
+    private GameManagerImpl gameManager;
+
     @Resource
     private Properties ratingProperties;
 
@@ -42,7 +44,6 @@ public class GameServiceImpl {
         RatingCalculator ratingCalculator = new RatingCalculatorImpl(result, ratingProperties);
         return playerSnapshots.stream().map(p -> ratingCalculator.calculateRating(p)).collect(toList());
     }
-
 
     public List<String> addMember(String nickname) {
         gameDAO.addMember(nickname);
@@ -62,7 +63,7 @@ public class GameServiceImpl {
     }
 
     public List<String> getMembers() {
-        return gameDAO.getMembers().stream().map(player -> player.getNickname()).collect(toList());
+        return gameManager.getMembers().stream().map(player -> player.getNickname()).collect(toList());
     }
 
     public PlayerStatistics getStatisticsPlayerRequest(String nickname, Integer season) {
@@ -297,16 +298,11 @@ public class GameServiceImpl {
     }
 
     public List<Result> showRating(Integer season) {
-
         ArrayList<Result> results = new ArrayList<Result>();
-        List<Member> players = gameDAO.getMembers();
         Integer maxSize = 0;
-
-        for (Member player : players) {
-            List<Player> playerGames = gameDAO.getPlayerGamesByDefinedData(player.getNickname(), season,
-                    Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING,
-                    Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING, Constants.DISABLE_FILTERING);
-
+        Map<String,List<Player>> players = gameManager.getPlayers(season).stream()
+                .collect(groupingBy(p -> p.getMember().getNickname()));
+        for (List<Player> playerGames: players.values()) {
             if (maxSize < playerGames.size()) {
                 maxSize = playerGames.size();
             }
@@ -325,7 +321,7 @@ public class GameServiceImpl {
                 playerRating /= playerGames.size();
             }
 
-            results.add(new Result(player, playerGames.size(), gamesWin,
+            results.add(new Result(playerGames.get(0).getMember(), playerGames.size(), gamesWin,
                     playerGames, playerRating));
         }
 

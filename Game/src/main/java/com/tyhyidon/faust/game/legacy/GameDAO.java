@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.player;
+package com.tyhyidon.faust.game.legacy;
 
 import com.tyhyidon.faust.game.entity.Game;
 import com.tyhyidon.faust.game.entity.Player;
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
-import java.util.Date;
 import java.util.List;
 
 /**

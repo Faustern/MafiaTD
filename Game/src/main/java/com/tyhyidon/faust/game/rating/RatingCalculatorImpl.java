@@ -2,7 +2,7 @@ package com.tyhyidon.faust.game.rating;
 
 import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.model.PlayerSnapshot;
-import com.tyhyidon.faust.game.player.Constants;
+import com.tyhyidon.faust.game.legacy.Constants;
 
 import java.util.Properties;
 

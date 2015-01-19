@@ -10,9 +10,14 @@ import java.sql.SQLException;
  */
 public class MemberEntityConverter implements RowMapper<Member> {
 
+    @Override
     public Member mapRow(ResultSet rowSet, int rowNum) throws SQLException {
         Member member = new Member();
         member.setNickname(rowSet.getString("nickname"));
+        member.setVkontakte(rowSet.getString("vkontakte"));
+        member.setBirthday(rowSet.getDate("birthday"));
+        member.setMail(rowSet.getString("mail"));
+        member.setTelephone(rowSet.getString("telephone"));
         return member;
     }
 }

@@ -26,7 +26,7 @@ public class SnapshotToEntity{
         Player player = new Player();
         Member member = new Member();
         member.setNickname(playerSnapshot.getNickname());
-        player.setPlayer(member);
+        player.setMember(member);
         player.setNumber(playerSnapshot.getNumber());
         player.setRole(playerSnapshot.getRole());
         player.setLife(playerSnapshot.getLife());

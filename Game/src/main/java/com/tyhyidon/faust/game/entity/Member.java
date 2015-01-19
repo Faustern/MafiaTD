@@ -30,7 +30,7 @@ public class Member {
     private String telephone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "player", targetEntity = Player.class)
+    @OneToMany(mappedBy = "member", targetEntity = Player.class)
     private Set<Player> statistics;
 
     @JsonIgnore
@@ -95,7 +95,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Player{" +
+        return "Member{" +
                 "nickname='" + nickname + '\'' +
                 ", vkontakte='" + vkontakte + '\'' +
                 ", birthday=" + birthday +

@@ -1,6 +1,6 @@
 package com.tyhyidon.faust.game.entity;
 
-import com.tyhyidon.faust.game.player.Constants;
+import com.tyhyidon.faust.game.legacy.Constants;
 import com.tyhyidon.faust.game.rating.RatingCalculator;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class Player {
 
     @ManyToOne (targetEntity = Member.class)
     @JoinColumn(name = "nickname")
-    private Member player;
+    private Member member;
 
     @ManyToOne (targetEntity = Game.class)
     @JoinColumn(name = "game_id")
@@ -65,9 +65,9 @@ public class Player {
 
     }
 
-    public Player(Member player, Game game, int number, int role, int life, int bestVoices, int finalDecision, int fouls,
+    public Player(Member member, Game game, int number, int role, int life, int bestVoices, int finalDecision, int fouls,
                   RatingCalculator ratingCalculator) {
-        this.player = player;
+        this.member = member;
         this.game = game;
         this.role = role;
         this.life = life;
@@ -93,12 +93,12 @@ public class Player {
         this.id = id;
     }
 
-    public Member getPlayer() {
-        return player;
+    public Member getMember() {
+        return member;
     }
 
-    public void setPlayer(Member player) {
-        this.player = player;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public Game getGame() {
@@ -240,7 +240,7 @@ public class Player {
     public String toString() {
         return "Statistics{" +
                 "id=" + id +
-                ", player=" + player +
+                ", member=" + member +
                 ", game=" + game +
                 ", number=" + number +
                 ", role=" + role +
