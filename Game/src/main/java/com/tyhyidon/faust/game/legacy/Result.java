@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.model;
+package com.tyhyidon.faust.game.legacy;
 
 import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.Member;

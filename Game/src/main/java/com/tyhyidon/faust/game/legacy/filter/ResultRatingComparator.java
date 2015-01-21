@@ -1,6 +1,6 @@
-package com.tyhyidon.faust.game.filter;
+package com.tyhyidon.faust.game.legacy.filter;
 
-import com.tyhyidon.faust.game.model.Result;
+import com.tyhyidon.faust.game.legacy.Result;
 import com.tyhyidon.faust.game.legacy.Constants;
 
 import java.util.Comparator;

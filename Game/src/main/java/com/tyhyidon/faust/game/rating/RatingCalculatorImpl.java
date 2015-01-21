@@ -1,86 +1,25 @@
 package com.tyhyidon.faust.game.rating;
 
 import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.mapper.EntityToSnapshot;
 import com.tyhyidon.faust.game.model.PlayerSnapshot;
 import com.tyhyidon.faust.game.legacy.Constants;
+import com.tyhyidon.faust.game.model.RatingSnapshot;
 
-import java.util.Properties;
+import java.util.*;
+
+import static java.util.stream.Collectors.*;
+import java.util.stream.Stream;
 
 public class RatingCalculatorImpl implements RatingCalculator {
 
     private Properties percent;
-    private int result;
-    private int role;
-    private int life;
-    private int bestVoices;
-    private int finalDecision;
-    private int fouls;
 
-    public RatingCalculatorImpl(int result, int role, int life, int bestVoices, int finalDecision, int fouls, Properties percent) {
+    public RatingCalculatorImpl(Properties percent) {
         this.percent = percent;
-        this.result = result;
-        this.role = role;
-        this.life = life;
-        this.bestVoices = bestVoices;
-        this.finalDecision = finalDecision;
-        this.fouls = fouls;
     }
 
-    public RatingCalculatorImpl(int result, Properties percent) {
-        this.percent = percent;
-        this.result = result;
-    }
-
-    public int getResult() {
-        return result;
-    }
-
-    public void setResult(int result) {
-        this.result = result;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public int getLife() {
-        return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-    public int getBestVoices() {
-        return bestVoices;
-    }
-
-    public void setBestVoices(int bestVoices) {
-        this.bestVoices = bestVoices;
-    }
-
-    public int getFinalDecision() {
-        return finalDecision;
-    }
-
-    public void setFinalDecision(int finalDecision) {
-        this.finalDecision = finalDecision;
-    }
-
-    public int getFouls() {
-
-        return fouls;
-    }
-
-    public void setFouls(int fouls) {
-        this.fouls = fouls;
-    }
-
-    private String getResultString() {
+    private String getResultString(int result) {
         switch (result) {
             case Constants.RESULT_MAFIA_CLEAR_WIN:
                 return RatingConstants.RESULT_MAFIA_CLEAR_WIN;
@@ -95,7 +34,7 @@ public class RatingCalculatorImpl implements RatingCalculator {
         }
     }
 
-    private String getRoleString() {
+    private String getRoleString(int role) {
         switch (role) {
             case Constants.ROLE_DON:
                 return RatingConstants.ROLE_DON;
@@ -110,7 +49,7 @@ public class RatingCalculatorImpl implements RatingCalculator {
         }
     }
 
-    private String getLifeString() {
+    private String getLifeString(int life) {
         switch (life) {
             case Constants.LIFE_KILLED_ONE_NIGHT:
                 return RatingConstants.LIFE_KILLED_ONE_NIGHT;
@@ -142,38 +81,44 @@ public class RatingCalculatorImpl implements RatingCalculator {
     }
 
     @Override
-    public Double calculateResultRating() {
-        return Double.parseDouble(percent.getProperty(getResultString() + getRoleString() + RatingConstants.RESULT));
+    public Double calculateResultRating(PlayerSnapshot player) {
+        return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) +
+                getRoleString(player.getRole()) + RatingConstants.RESULT));
     }
 
     @Override
-    public Double calculateLifeRating() {
-        return Double.parseDouble(percent.getProperty(getResultString() + getRoleString() + RatingConstants.LIFE + getLifeString()));
+    public Double calculateLifeRating(PlayerSnapshot player) {
+        return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) +
+                getRoleString(player.getRole()) + RatingConstants.LIFE + getLifeString(player.getLife())));
     }
 
     @Override
-    public Double calculateBestVoicesRating() {
-        return bestVoices*Double.parseDouble(percent.getProperty(getResultString() + getRoleString() + RatingConstants.VOICES_BEST));
+    public Double calculateBestVoicesRating(PlayerSnapshot player) {
+        return player.getBestVoices()*Double.parseDouble(percent.getProperty(getResultString(player.getResult()) +
+                getRoleString(player.getRole()) + RatingConstants.VOICES_BEST));
     }
 
     @Override
-    public Double calculateFinalDecisionRating() {
-        if (finalDecision>0) {
-            return Double.parseDouble(percent.getProperty(getResultString() + getRoleString() + RatingConstants.FINAL_DECISION))/finalDecision;
+    public Double calculateFinalDecisionRating(PlayerSnapshot player) {
+        if (player.getFinalDecision()>0) {
+            return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
+                    RatingConstants.FINAL_DECISION))/player.getFinalDecision();
         } else {
             return 0.0;
         }
     }
 
     @Override
-    public Double calculateFoulsRating() {
-        return Double.parseDouble(percent.getProperty(getResultString() + getRoleString() + RatingConstants.FOULS + fouls));
+    public Double calculateFoulsRating(PlayerSnapshot player) {
+        return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
+                RatingConstants.FOULS + player.getFouls()));
     }
 
     @Override
-    public Double calculateTotalRating() {
-        Double totalRating = calculateResultRating() + calculateLifeRating() + calculateBestVoicesRating()
-                + calculateFinalDecisionRating() + calculateFoulsRating();
+    public Double calculateRating(PlayerSnapshot player) {
+        Double totalRating = calculateResultRating(player) + calculateLifeRating(player) +
+                calculateBestVoicesRating(player) + calculateFinalDecisionRating(player)
+                + calculateFoulsRating(player);
         if (totalRating>0) {
             return totalRating;
         } else {
@@ -181,32 +126,40 @@ public class RatingCalculatorImpl implements RatingCalculator {
         }
     }
 
-    public Double calculateRating(PlayerSnapshot playerSnapshot) {
-        role = playerSnapshot.getRole();
-        life = playerSnapshot.getLife();
-        bestVoices =playerSnapshot.getBestVoices();
-        finalDecision = playerSnapshot.getFinalDecision();
-        fouls = playerSnapshot.getFouls();
 
-        Double totalRating = calculateResultRating() + calculateLifeRating() + calculateBestVoicesRating()
-                + calculateFinalDecisionRating() + calculateFoulsRating();
-        if (totalRating>0) {
-            return totalRating;
-        } else {
-            return 0.0;
-        }
+    @Override
+    public Double calculateTotalRating(List<PlayerSnapshot> players) {
+        return players.parallelStream().map(p -> calculateRating(p)).reduce((x, y) -> x + y).orElse(0.0)/players.size();
+    }
+    
+    @Override
+    public List<RatingSnapshot> calculateSeasonRating(Collection<List<PlayerSnapshot>> data) {
+
+        Map<Boolean, List<RatingSnapshot>> map = data.parallelStream().map(
+                l -> (new RatingSnapshot(l.get(0).getNickname(), calculateTotalRating(l), l.size()))).
+                collect(partitioningBy(r -> r.getGames() >= Constants.RATING_GAMES_LIMIT));
+
+        int max =  data.stream().map(l -> l.size()).max(Comparator.comparing(Integer::intValue)).orElse(0);
+        map.get(true).parallelStream().forEach(r -> r.setRating(r.getRating() * (1 - (max - r.getGames()) / (2.0 * max))));
+
+        return map.values().parallelStream().map(l -> l.stream().sorted(Comparator.comparing(r -> -r.getRating())).
+                collect(toList())).reduce((x, y) -> Stream.concat(y.stream(), x.stream()).
+                collect(toList())).orElse(Collections.emptyList());
     }
 
-    public void calculateRating(Player player) {
-        this.role = player.getRole();
-        this.life = player.getLife();
-        this.bestVoices = player.getBestVoices();
-        this.finalDecision = player.getFinalDecision();
-        player.setResultRating(calculateResultRating());
-        player.setLifeRating(calculateLifeRating());
-        player.setBestVoicesRating(calculateBestVoicesRating());
-        player.setFinalDecisionRating(calculateFinalDecisionRating());
-        player.setFoulsRating(calculateFoulsRating());
-        player.setTotalRating(calculateTotalRating());
+    //legacy
+    @Override
+    public void fillRating(Player player) {
+        PlayerSnapshot playerSnapshot = new PlayerSnapshot();
+        playerSnapshot.setRole(player.getRole());
+        playerSnapshot.setLife(player.getLife());
+        playerSnapshot.setBestVoices(player.getBestVoices());
+        playerSnapshot.setFinalDecision(player.getFinalDecision());
+        player.setResultRating(calculateResultRating(playerSnapshot));
+        player.setLifeRating(calculateLifeRating(playerSnapshot));
+        player.setBestVoicesRating(calculateBestVoicesRating(playerSnapshot));
+        player.setFinalDecisionRating(calculateFinalDecisionRating(playerSnapshot));
+        player.setFoulsRating(calculateFoulsRating(playerSnapshot));
+        player.setTotalRating(calculateRating(playerSnapshot));
     }
 }

@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.filter;
+package com.tyhyidon.faust.game.legacy.filter;
 
 import java.util.Comparator;
 

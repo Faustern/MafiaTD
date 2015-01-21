@@ -65,8 +65,7 @@ public class Player {
 
     }
 
-    public Player(Member member, Game game, int number, int role, int life, int bestVoices, int finalDecision, int fouls,
-                  RatingCalculator ratingCalculator) {
+    public Player(Member member, Game game, int number, int role, int life, int bestVoices, int finalDecision, int fouls) {
         this.member = member;
         this.game = game;
         this.role = role;
@@ -77,12 +76,6 @@ public class Player {
             this.finalDecision = 1 / finalDecision;
         }
         this.fouls = fouls;
-        this.resultRating = ratingCalculator.calculateResultRating();
-        this.lifeRating = ratingCalculator.calculateLifeRating();
-        this.bestVoicesRating = ratingCalculator.calculateBestVoicesRating();
-        this.finalDecisionRating = ratingCalculator.calculateFinalDecisionRating();
-        this.foulsRating = ratingCalculator.calculateFoulsRating();
-        this.totalRating = ratingCalculator.calculateTotalRating();
     }
 
     public int getId() {

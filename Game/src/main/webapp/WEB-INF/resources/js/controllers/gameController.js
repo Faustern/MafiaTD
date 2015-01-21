@@ -103,14 +103,12 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
                 function(results) {
                     $scope.ratingStrings = [];
                     angular.forEach(results, function (result, index) {
-                        var games = result.gamesPlayed.length;
-                        var player = result.player;
+                        var games = result.games;
+                        var nickname = result.nickname;
                         var rating = result.rating.toString().match('^[0-9]+[.]*[0-9]{0,2}')[0];
-                        if (games > 0) {
-                            var prefix = games > 10 ? '' : index + 1 + '. ';
-                            $scope.ratingStrings.push(
-                                prefix+'@'+player.vkontakte+' ('+player.nickname+')  '+rating+'% ('+games+')');
-                        }
+                        var prefix = games > 10 ? index + 1 + '. ' : '';
+                        $scope.ratingStrings.push(
+                            prefix+'@'+nickname+' ('+nickname+')  '+rating+'% ('+games+')');
                     });
                 }
             );
