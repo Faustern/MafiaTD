@@ -1,23 +1,22 @@
 package com.tyhyidon.faust.game.rating;
 
 import com.tyhyidon.faust.game.entity.Player;
-import com.tyhyidon.faust.game.mapper.EntityToSnapshot;
 import com.tyhyidon.faust.game.model.PlayerSnapshot;
 import com.tyhyidon.faust.game.legacy.Constants;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 import static java.util.stream.Collectors.*;
 import java.util.stream.Stream;
 
+@Component
 public class RatingCalculatorImpl implements RatingCalculator {
 
-    private Properties percent;
-
-    public RatingCalculatorImpl(Properties percent) {
-        this.percent = percent;
-    }
+    @Resource
+    private Properties ratingProperties;
 
     private String getResultString(int result) {
         switch (result) {
@@ -82,26 +81,26 @@ public class RatingCalculatorImpl implements RatingCalculator {
 
     @Override
     public Double calculateResultRating(PlayerSnapshot player) {
-        return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) +
+        return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) +
                 getRoleString(player.getRole()) + RatingConstants.RESULT));
     }
 
     @Override
     public Double calculateLifeRating(PlayerSnapshot player) {
-        return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) +
+        return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) +
                 getRoleString(player.getRole()) + RatingConstants.LIFE + getLifeString(player.getLife())));
     }
 
     @Override
     public Double calculateBestVoicesRating(PlayerSnapshot player) {
-        return player.getBestVoices()*Double.parseDouble(percent.getProperty(getResultString(player.getResult()) +
+        return player.getBestVoices()*Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) +
                 getRoleString(player.getRole()) + RatingConstants.VOICES_BEST));
     }
 
     @Override
     public Double calculateFinalDecisionRating(PlayerSnapshot player) {
         if (player.getFinalDecision()>0) {
-            return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
+            return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
                     RatingConstants.FINAL_DECISION))/player.getFinalDecision();
         } else {
             return 0.0;
@@ -110,7 +109,7 @@ public class RatingCalculatorImpl implements RatingCalculator {
 
     @Override
     public Double calculateFoulsRating(PlayerSnapshot player) {
-        return Double.parseDouble(percent.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
+        return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
                 RatingConstants.FOULS + player.getFouls()));
     }
 
@@ -155,11 +154,5 @@ public class RatingCalculatorImpl implements RatingCalculator {
         playerSnapshot.setLife(player.getLife());
         playerSnapshot.setBestVoices(player.getBestVoices());
         playerSnapshot.setFinalDecision(player.getFinalDecision());
-        player.setResultRating(calculateResultRating(playerSnapshot));
-        player.setLifeRating(calculateLifeRating(playerSnapshot));
-        player.setBestVoicesRating(calculateBestVoicesRating(playerSnapshot));
-        player.setFinalDecisionRating(calculateFinalDecisionRating(playerSnapshot));
-        player.setFoulsRating(calculateFoulsRating(playerSnapshot));
-        player.setTotalRating(calculateRating(playerSnapshot));
     }
 }

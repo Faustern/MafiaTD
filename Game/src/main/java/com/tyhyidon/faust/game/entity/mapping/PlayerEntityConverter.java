@@ -33,12 +33,6 @@ public class PlayerEntityConverter implements RowMapper<Player> {
         player.setBestVoices(rowSet.getInt("best_voices"));
         player.setFinalDecision(rowSet.getInt("final_decision"));
         player.setFouls(rowSet.getInt("fouls"));
-        player.setResultRating(rowSet.getDouble("result_rating"));
-        player.setLifeRating(rowSet.getDouble("life_rating"));
-        player.setBestVoicesRating(rowSet.getDouble("best_voices_rating"));
-        player.setFinalDecisionRating(rowSet.getDouble("final_decision_rating"));
-        player.setFoulsRating(rowSet.getDouble("fouls_rating"));
-        player.setTotalRating(rowSet.getDouble("total_rating"));
         return player;
     }
 }

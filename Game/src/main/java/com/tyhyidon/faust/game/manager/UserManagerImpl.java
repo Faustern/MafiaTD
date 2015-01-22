@@ -1,8 +1,11 @@
-package com.tyhyidon.faust.game.managers;
+package com.tyhyidon.faust.game.manager;
 
 import com.tyhyidon.faust.game.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,8 +18,12 @@ import javax.persistence.criteria.Root;
  * Created by vasylsavytskyi on 29.12.14.
  */
 @Repository
-@Transactional
-public class UserManagerImpl {
+public class UserManagerImpl implements UserManager {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserManagerImpl.class);
+
+    @Autowired
+    private JdbcTemplate template;
 
     @PersistenceContext
     private EntityManager entityManager;

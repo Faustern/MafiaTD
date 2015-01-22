@@ -1,6 +1,7 @@
 package com.tyhyidon.faust.game.security;
 
-import com.tyhyidon.faust.game.managers.UserManagerImpl;
+import com.tyhyidon.faust.game.manager.UserManager;
+import com.tyhyidon.faust.game.manager.UserManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AuthenticationServiceImpl implements UserDetailsService{
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     @Autowired
-    private UserManagerImpl userManager;
+    private UserManager userManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

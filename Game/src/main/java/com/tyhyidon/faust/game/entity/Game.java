@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Василий on 12.01.14.
  */
 @Entity
-@Table(name = "games")
+@Table(name = "Game")
 public class Game {
 
     @Id

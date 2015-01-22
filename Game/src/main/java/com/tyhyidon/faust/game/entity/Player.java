@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by Василий on 12.01.14.
  */
 @Entity
-@Table(name = "statistics")
+@Table(name = "Player")
 public class Player {
 
     @Id
@@ -42,24 +42,6 @@ public class Player {
 
     @Column
     private int fouls;
-
-    @Column(name = "result_rating")
-    private double resultRating;
-
-    @Column(name = "life_rating")
-    private double lifeRating;
-
-    @Column(name = "best_voices_rating")
-    private double bestVoicesRating;
-
-    @Column(name = "final_decision_rating")
-    private double finalDecisionRating;
-
-    @Column(name = "fouls_rating")
-    private double foulsRating;
-
-    @Column(name = "total_rating")
-    private double totalRating;
 
     public Player() {
 
@@ -150,54 +132,6 @@ public class Player {
         this.fouls = fouls;
     }
 
-    public double getResultRating() {
-        return resultRating;
-    }
-
-    public void setResultRating(double resultRating) {
-        this.resultRating = resultRating;
-    }
-
-    public double getLifeRating() {
-        return lifeRating;
-    }
-
-    public void setLifeRating(double lifeRating) {
-        this.lifeRating = lifeRating;
-    }
-
-    public double getBestVoicesRating() {
-        return bestVoicesRating;
-    }
-
-    public void setBestVoicesRating(double bestVoicesRating) {
-        this.bestVoicesRating = bestVoicesRating;
-    }
-
-    public double getFinalDecisionRating() {
-        return finalDecisionRating;
-    }
-
-    public void setFinalDecisionRating(double finalDecisionRating) {
-        this.finalDecisionRating = finalDecisionRating;
-    }
-
-    public double getFoulsRating() {
-        return foulsRating;
-    }
-
-    public void setFoulsRating(double foulsRating) {
-        this.foulsRating = foulsRating;
-    }
-
-    public double getTotalRating() {
-        return totalRating;
-    }
-
-    public void setTotalRating(double totalRating) {
-        this.totalRating = totalRating;
-    }
-
     public boolean isWin() {
         switch (role) {
             case Constants.ROLE_DON:
@@ -231,7 +165,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Statistics{" +
+        return "Player{" +
                 "id=" + id +
                 ", member=" + member +
                 ", game=" + game +
@@ -241,12 +175,6 @@ public class Player {
                 ", bestVoices=" + bestVoices +
                 ", finalDecision=" + finalDecision +
                 ", fouls=" + fouls +
-                ", resultRating=" + resultRating +
-                ", lifeRating=" + lifeRating +
-                ", bestVoicesRating=" + bestVoicesRating +
-                ", finalDecisionRating=" + finalDecisionRating +
-                ", foulsRating=" + foulsRating +
-                ", totalRating=" + totalRating +
                 '}';
     }
 }
