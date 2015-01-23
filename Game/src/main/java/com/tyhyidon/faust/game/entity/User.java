@@ -12,24 +12,16 @@ import java.util.Collection;
 /**
  * Created by vasylsavytskyi on 29.12.14.
  */
-@Entity
-@Table(name = "User")
 public class User implements UserDetails{
 
-    @Id
-    @Column
     private String username;
 
-    @Column
     private String password;
 
-    @Column
     private String email;
 
-    @Column
     private String vk;
 
-    @Column
     private String fb;
 
     @Override

@@ -9,16 +9,17 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class GameManagerImpl {
+public class GameManagerImpl implements GameManager{
 
     private static final Logger LOG = LoggerFactory.getLogger(GameManagerImpl.class);
 
     @Autowired
     private JdbcTemplate template;
 
+    @Override
     public void addGame(Game game) {
-        template.update("INSERT INTO Game (date, result, season, master)\n" + "VALUES (" + game.getDate() + "," +
-                game.getResult() + "," + game.getSeason() + "," + game.getMaster().getNickname() + ")");
+        template.update("INSERT INTO Game (date, result, season, master)\n" + "VALUES (" + "'2012-01-02'" + "," +
+                game.getResult() + "," + game.getSeason() + ",'" + game.getMaster() + "')");
     }
 
 }

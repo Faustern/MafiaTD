@@ -21,10 +21,12 @@ public class MemberManagerImpl implements MemberManager{
     @Autowired
     private JdbcTemplate template;
 
+    @Override
     public List<Member> getMembers() {
         return template.query("SELECT * FROM Member", new MemberEntityConverter());
     }
 
+    @Override
     public void addMember(String nickname) {
         template.update("INSERT INTO Member (nickname) VALUES ('" + nickname + "')");
     }

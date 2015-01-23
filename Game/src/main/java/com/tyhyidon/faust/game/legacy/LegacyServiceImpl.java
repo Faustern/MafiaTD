@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * Created by vasylsavytskyi on 20.01.15.
  */
-@Service
+//@Service
 public class LegacyServiceImpl {
 
-    @Autowired
+  /*  @Autowired
     private GameDAO gameDAO;
 
     public ResultPrediction getResultFromRoleDistribution(Integer season, List<Integer> roles1, List <Integer> roles2,
@@ -300,5 +300,5 @@ public class LegacyServiceImpl {
                 redAway, redAwayOneDay);
     }
 
-
+*/
 }

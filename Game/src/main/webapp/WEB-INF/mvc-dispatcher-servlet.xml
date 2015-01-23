@@ -35,7 +35,6 @@
 
 	<context:component-scan base-package="com.tyhyidon.faust.game.controller" />
 	<context:component-scan base-package="com.tyhyidon.faust.game.services" />
-	<context:component-scan base-package="com.tyhyidon.faust.game.legacy" />
 	<context:component-scan base-package="com.tyhyidon.faust.game.rating" />
 	<context:component-scan base-package="com.tyhyidon.faust.game.manager" />
 

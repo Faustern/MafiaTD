@@ -22,8 +22,6 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             "away 0 day", "away 1 day", "away 2 day", "away 3 day", "away 4 day", "away 5 plus day", "not away"];
         $scope.SEASONS = ["All seasons","Winter 13/14","Spring 14","Autumn 14","Winter 14/15"];
 
-
-
         $scope.game = {
             season: 1,
             master: "Vilka",
@@ -31,9 +29,11 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             result: 1,
             players: []
         };
-        angular.forEach($scope.range($scope.PLAYERS_AMOUNT), function () {
+
+        angular.forEach($scope.range($scope.PLAYERS_AMOUNT), function (item, index) {
             $scope.game.players.push({
-                nickname: "",
+                member: "",
+                number: index + 1,
                 role: 1,
                 life: 1,
                 bestVoices: 0,
@@ -133,7 +133,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             $scope.duplicateNumbers = [];
 
             angular.forEach($scope.game.players, function (player, number) {
-                $scope.checkNickname(player.nickname, number);
+                $scope.checkNickname(player.member, number);
             });
 
             angular.forEach($scope.duplicates, function (duplicate, index) {

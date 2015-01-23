@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.legacy;
+package com.tyhyidon.faust.game.rating;
 
 import java.util.ArrayList;
 import java.util.List;

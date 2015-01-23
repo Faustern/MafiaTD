@@ -1,7 +1,6 @@
 package com.tyhyidon.faust.game.rating;
 
 import com.tyhyidon.faust.game.entity.Player;
-import com.tyhyidon.faust.game.model.PlayerSnapshot;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 
 import java.util.Collection;
@@ -12,21 +11,20 @@ import java.util.List;
  */
 public interface RatingCalculator {
 
-    Double calculateResultRating(PlayerSnapshot player);
+    Double calculateResultRating(Player player);
 
-    Double calculateLifeRating(PlayerSnapshot player);
+    Double calculateLifeRating(Player player);
 
-    Double calculateBestVoicesRating(PlayerSnapshot player);
+    Double calculateBestVoicesRating(Player player);
 
-    Double calculateFinalDecisionRating(PlayerSnapshot player);
+    Double calculateFinalDecisionRating(Player player);
 
-    Double calculateFoulsRating(PlayerSnapshot player);
+    Double calculateFoulsRating(Player player);
 
-    Double calculateRating(PlayerSnapshot player);
+    Double calculateRating(Player player);
 
-    Double calculateTotalRating(List<PlayerSnapshot> players);
+    Double calculateTotalRating(List<Player> players);
 
-    List<RatingSnapshot>  calculateSeasonRating(Collection<List<PlayerSnapshot>> players);
+    List<RatingSnapshot>  calculateSeasonRating(Collection<List<Player>> players);
 
-    void fillRating(Player player);
 }

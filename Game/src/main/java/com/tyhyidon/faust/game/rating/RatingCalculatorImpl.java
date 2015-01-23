@@ -1,8 +1,6 @@
 package com.tyhyidon.faust.game.rating;
 
 import com.tyhyidon.faust.game.entity.Player;
-import com.tyhyidon.faust.game.model.PlayerSnapshot;
-import com.tyhyidon.faust.game.legacy.Constants;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 import org.springframework.stereotype.Component;
 
@@ -80,25 +78,25 @@ public class RatingCalculatorImpl implements RatingCalculator {
     }
 
     @Override
-    public Double calculateResultRating(PlayerSnapshot player) {
+    public Double calculateResultRating(Player player) {
         return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) +
                 getRoleString(player.getRole()) + RatingConstants.RESULT));
     }
 
     @Override
-    public Double calculateLifeRating(PlayerSnapshot player) {
+    public Double calculateLifeRating(Player player) {
         return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) +
                 getRoleString(player.getRole()) + RatingConstants.LIFE + getLifeString(player.getLife())));
     }
 
     @Override
-    public Double calculateBestVoicesRating(PlayerSnapshot player) {
+    public Double calculateBestVoicesRating(Player player) {
         return player.getBestVoices()*Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) +
                 getRoleString(player.getRole()) + RatingConstants.VOICES_BEST));
     }
 
     @Override
-    public Double calculateFinalDecisionRating(PlayerSnapshot player) {
+    public Double calculateFinalDecisionRating(Player player) {
         if (player.getFinalDecision()>0) {
             return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
                     RatingConstants.FINAL_DECISION))/player.getFinalDecision();
@@ -108,13 +106,13 @@ public class RatingCalculatorImpl implements RatingCalculator {
     }
 
     @Override
-    public Double calculateFoulsRating(PlayerSnapshot player) {
+    public Double calculateFoulsRating(Player player) {
         return Double.parseDouble(ratingProperties.getProperty(getResultString(player.getResult()) + getRoleString(player.getRole()) +
                 RatingConstants.FOULS + player.getFouls()));
     }
 
     @Override
-    public Double calculateRating(PlayerSnapshot player) {
+    public Double calculateRating(Player player) {
         Double totalRating = calculateResultRating(player) + calculateLifeRating(player) +
                 calculateBestVoicesRating(player) + calculateFinalDecisionRating(player)
                 + calculateFoulsRating(player);
@@ -127,15 +125,15 @@ public class RatingCalculatorImpl implements RatingCalculator {
 
 
     @Override
-    public Double calculateTotalRating(List<PlayerSnapshot> players) {
+    public Double calculateTotalRating(List<Player> players) {
         return players.parallelStream().map(p -> calculateRating(p)).reduce((x, y) -> x + y).orElse(0.0)/players.size();
     }
     
     @Override
-    public List<RatingSnapshot> calculateSeasonRating(Collection<List<PlayerSnapshot>> data) {
+    public List<RatingSnapshot> calculateSeasonRating(Collection<List<Player>> data) {
 
         Map<Boolean, List<RatingSnapshot>> map = data.parallelStream().map(
-                l -> (new RatingSnapshot(l.get(0).getNickname(), calculateTotalRating(l), l.size()))).
+                l -> (new RatingSnapshot(l.get(0).getMember(), calculateTotalRating(l), l.size()))).
                 collect(partitioningBy(r -> r.getGames() >= Constants.RATING_GAMES_LIMIT));
 
         int max =  data.stream().map(l -> l.size()).max(Comparator.comparing(Integer::intValue)).orElse(0);
@@ -146,13 +144,4 @@ public class RatingCalculatorImpl implements RatingCalculator {
                 collect(toList())).orElse(Collections.emptyList());
     }
 
-    //legacy
-    @Override
-    public void fillRating(Player player) {
-        PlayerSnapshot playerSnapshot = new PlayerSnapshot();
-        playerSnapshot.setRole(player.getRole());
-        playerSnapshot.setLife(player.getLife());
-        playerSnapshot.setBestVoices(player.getBestVoices());
-        playerSnapshot.setFinalDecision(player.getFinalDecision());
-    }
 }

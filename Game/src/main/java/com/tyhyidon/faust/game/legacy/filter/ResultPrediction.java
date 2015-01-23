@@ -1,7 +1,7 @@
 package com.tyhyidon.faust.game.legacy.filter;
 
 import com.tyhyidon.faust.game.entity.Game;
-import com.tyhyidon.faust.game.legacy.Constants;
+import com.tyhyidon.faust.game.rating.Constants;
 
 import java.util.List;
 

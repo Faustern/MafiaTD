@@ -1,14 +1,10 @@
 package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.entity.Game;
+import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.manager.GameManager;
 import com.tyhyidon.faust.game.manager.MemberManager;
 import com.tyhyidon.faust.game.manager.PlayerManager;
-import com.tyhyidon.faust.game.mapper.EntityToSnapshot;
-import com.tyhyidon.faust.game.mapper.SnapshotToEntity;
-import com.tyhyidon.faust.game.model.GameSnapshot;
-import com.tyhyidon.faust.game.model.PlayerSnapshot;
-import com.tyhyidon.faust.game.legacy.GameDAO;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 import com.tyhyidon.faust.game.rating.RatingCalculator;
 import org.slf4j.Logger;
@@ -29,13 +25,10 @@ public class GameServiceImpl {
     private static Logger LOG = LoggerFactory.getLogger(GameServiceImpl.class);
 
     @Autowired
-    private GameDAO gameDAO;
-
-    @Autowired
     private MemberManager memberManager;
 
-  //  @Autowired
-  //   private GameManager gameManager;
+    @Autowired
+    private GameManager gameManager;
 
     @Autowired
     private PlayerManager playerManager;
@@ -43,8 +36,8 @@ public class GameServiceImpl {
     @Autowired
     private RatingCalculator ratingCalculator;
 
-    public List<Double> calculateRating(List<PlayerSnapshot> playerSnapshots, int result) {
-        return playerSnapshots.stream().map(p -> {p.setResult(result);return ratingCalculator.calculateRating(p);}).
+    public List<Double> calculateRating(List<Player> players, int result) {
+        return players.stream().map(p -> {p.setResult(result);return ratingCalculator.calculateRating(p);}).
                 collect(toList());
     }
 
@@ -53,9 +46,8 @@ public class GameServiceImpl {
     }
 
     public List<RatingSnapshot> showRating(Integer season) {
-        Collection<List<PlayerSnapshot>> players = playerManager.getPlayers(season).stream().map(ps ->
-                EntityToSnapshot.map(ps)).collect(groupingBy(p -> p.getNickname())).values();
-        return ratingCalculator.calculateSeasonRating(players);
+        return ratingCalculator.calculateSeasonRating(playerManager.getPlayers(season).stream().
+                collect(groupingBy(p -> p.getMember())).values());
     }
 
     public List<String> addMember(String nickname) {
@@ -64,10 +56,10 @@ public class GameServiceImpl {
     }
 
     @Transactional
-    public boolean addGame(GameSnapshot gameSnapshot) {
-        Game game = gameDAO.addGame(SnapshotToEntity.map(gameSnapshot));
-            gameSnapshot.getPlayers().stream().map(p -> SnapshotToEntity.map(p)).forEach(p ->
-            {p.setGame(game);gameDAO.addPlayer(p);});
+    public boolean addGame(Game game) {
+        gameManager.addGame(game);
+        playerManager.addPlayers(game.getPlayers().stream().map(p -> {p.setGameId(game.getId());return p;}).
+                collect(toList()));
         return true;
     }
 }

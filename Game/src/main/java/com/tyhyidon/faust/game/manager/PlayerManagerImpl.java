@@ -1,7 +1,9 @@
 package com.tyhyidon.faust.game.manager;
 
 import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.entity.User;
 import com.tyhyidon.faust.game.entity.mapping.PlayerEntityConverter;
+import com.tyhyidon.faust.game.entity.mapping.UserEntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class PlayerManagerImpl implements PlayerManager {
     @Autowired
     private JdbcTemplate template;
 
+    @Override
     public List<Player> getPlayers(int season) {
         return template.query("SELECT  p.*, g.result, m.vkontakte FROM Player p " +
                 "inner join Game g on p.game_id = g.id  " +
@@ -28,9 +31,10 @@ public class PlayerManagerImpl implements PlayerManager {
                 "where g.season = ?", new PlayerEntityConverter(), season);
     }
 
+    @Override
     public void addPlayers(List<Player> players) {
         template.update("INSERT INTO Player (nickname, game_id, number, role, life, best_voices, final_decision, fouls)" +
-                "VALUES " + players.stream().map(p -> "(" + p.getMember().getNickname() + "," + p.getGame().getId() + "," +
+                "VALUES " + players.stream().map(p -> "('" + p.getMember() + "'," + 202 + "," +
                 p.getNumber() + "," + p.getRole() + "," + p.getLife() + "," + p.getBestVoices() + "," +
                 p.getFinalDecision() + "," + p.getFouls() + ")").reduce((x, y) -> x + "," + y).orElse(""));
     }

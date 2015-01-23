@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by Василий on 18.01.14.
  */
-@Repository
-@Transactional
+//@Repository
+//@Transactional
 public class GameDAO {
 
-    @PersistenceContext
+  /*  @PersistenceContext
     private EntityManager entityManager;
 
     public List<Member> getMembers() {
@@ -140,5 +140,5 @@ public class GameDAO {
         List<Player> playerGameList = query.getResultList();
 
         return playerGameList;
-    }
+    } */
 }

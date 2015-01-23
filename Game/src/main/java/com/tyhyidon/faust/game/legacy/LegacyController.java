@@ -13,10 +13,10 @@ import java.util.List;
 /**
  * Created by vasylsavytskyi on 20.01.15.
  */
-@Controller
+//@Controller
 public class LegacyController {
 
-    @Autowired
+ /*   @Autowired
     LegacyServiceImpl legacyService;
 
     @RequestMapping(value = {"/statisticsPlayer"})
@@ -67,5 +67,5 @@ public class LegacyController {
                                                           @RequestParam(value="roles10[]", required = true) List <Integer> roles10) {
         return legacyService.getResultFromRoleDistribution(season, roles1, roles2, roles3, roles4, roles5, roles6, roles7,
                 roles8, roles9, roles10);
-    }
+    } */
 }
