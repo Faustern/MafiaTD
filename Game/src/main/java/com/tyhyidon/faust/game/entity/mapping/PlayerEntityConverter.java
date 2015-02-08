@@ -21,10 +21,10 @@ public class PlayerEntityConverter implements RowMapper<Player> {
         Player player = new Player();
         player.setId(rowSet.getInt("id"));
         player.setMember(rowSet.getString("nickname"));
-        player.setResult(Result.values()[rowSet.getInt("result") - 1]);
+        player.setResult(Result.values()[rowSet.getInt("result")]);
         player.setNumber(rowSet.getInt("number"));
-        player.setRole(Role.values()[rowSet.getInt("role") - 1]);
-        player.setLife(Life.values()[rowSet.getInt("life") -1]);
+        player.setRole(Role.values()[rowSet.getInt("role")]);
+        player.setLife(Life.values()[rowSet.getInt("life")]);
         player.setBestVoices(rowSet.getInt("best_voices"));
         player.setFinalDecision(rowSet.getInt("final_decision"));
         player.setFouls(rowSet.getInt("fouls"));

@@ -35,7 +35,7 @@ public class PlayerManagerImpl implements PlayerManager {
     public void addPlayers(List<Player> players) {
         template.update("INSERT INTO Player (nickname, game_id, number, role, life, best_voices, final_decision, fouls)" +
                 "VALUES " + players.stream().map(p -> "('" + p.getMember() + "'," + 202 + "," +
-                p.getNumber() + "," + (p.getRole().ordinal()+1) + "," + (p.getLife().ordinal()+1) + "," + p.getBestVoices() + "," +
+                p.getNumber() + "," + p.getRole().ordinal() + "," + p.getLife().ordinal() + "," + p.getBestVoices() + "," +
                 p.getFinalDecision() + "," + p.getFouls() + ")").reduce((x, y) -> x + "," + y).orElse(""));
     }
 
