@@ -2,6 +2,7 @@ package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.entity.Game;
 import com.tyhyidon.faust.game.entity.Player;
+import com.tyhyidon.faust.game.entity.Result;
 import com.tyhyidon.faust.game.manager.GameManager;
 import com.tyhyidon.faust.game.manager.MemberManager;
 import com.tyhyidon.faust.game.manager.PlayerManager;
@@ -36,7 +37,7 @@ public class GameServiceImpl {
     @Autowired
     private RatingCalculator ratingCalculator;
 
-    public List<Double> calculateRating(List<Player> players, int result) {
+    public List<Double> calculateRating(List<Player> players, Result result) {
         return players.stream().map(p -> {p.setResult(result);return ratingCalculator.calculateRating(p);}).
                 collect(toList());
     }

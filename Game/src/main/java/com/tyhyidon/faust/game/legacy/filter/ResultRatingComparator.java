@@ -1,7 +1,6 @@
 package com.tyhyidon.faust.game.legacy.filter;
 
 import com.tyhyidon.faust.game.legacy.Result;
-import com.tyhyidon.faust.game.rating.Constants;
 
 import java.util.Comparator;
 
@@ -11,7 +10,7 @@ public class ResultRatingComparator implements Comparator <Result>{
 
     @Override
     public int compare (Result sr1, Result sr2) {
-        if ((sr1.getGamesPlayed().size()>= Constants.RATING_GAMES_LIMIT) &&
+        /*if ((sr1.getGamesPlayed().size()>= Constants.RATING_GAMES_LIMIT) &&
                 (sr2.getGamesPlayed().size()>= Constants.RATING_GAMES_LIMIT) ||
                 (sr1.getGamesPlayed().size()< Constants.RATING_GAMES_LIMIT) &&
                 (sr2.getGamesPlayed().size()< Constants.RATING_GAMES_LIMIT)) {
@@ -26,5 +25,7 @@ public class ResultRatingComparator implements Comparator <Result>{
         } else {
             return 1;
         }
+    } */
+        return 0;
     }
 }

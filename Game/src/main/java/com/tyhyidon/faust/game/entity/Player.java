@@ -1,9 +1,5 @@
 package com.tyhyidon.faust.game.entity;
 
-import com.tyhyidon.faust.game.rating.Constants;
-
-import javax.persistence.*;
-
 /**
  * Created by Василий on 12.01.14.
  */
@@ -15,13 +11,13 @@ public class Player {
 
     private String member;
 
-    private int result;
+    private Result result;
 
     private int number;
 
-    private int role;
+    private Role role;
 
-    private int life;
+    private Life life;
 
     private int bestVoices;
 
@@ -53,11 +49,11 @@ public class Player {
         this.member = member;
     }
 
-    public int getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 
@@ -69,19 +65,19 @@ public class Player {
         this.number = number;
     }
 
-    public int getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public int getLife() {
+    public Life getLife() {
         return life;
     }
 
-    public void setLife(int life) {
+    public void setLife(Life life) {
         this.life = life;
     }
 

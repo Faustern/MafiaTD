@@ -15,18 +15,13 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
 
         $scope.PLAYERS_AMOUNT = 10;
         $scope.MAX_FOULS_AMOUNT = 4;
-        $scope.ALL_PLAYERS = [];
-        $scope.RESULTS = ["clear city win","city win","mafia win","clear mafia win"];
-        $scope.ROLES = ["Don", "Mafia", "Citizen", "Sheriff"];
-        $scope.LIVES = ["killed 1 night", "killed 2 night", "killed 3 night", "killed 4 night", "killed 5 plus night",
-            "away 0 day", "away 1 day", "away 2 day", "away 3 day", "away 4 day", "away 5 plus day", "not away"];
         $scope.SEASONS = ["All seasons","Winter 13/14","Spring 14","Autumn 14","Winter 14/15"];
 
         $scope.game = {
             season: 1,
             master: "Vilka",
             date: "2015/01/17",
-            result: 1,
+            result: 0,
             players: []
         };
 
@@ -34,14 +29,30 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             $scope.game.players.push({
                 member: "",
                 number: index + 1,
-                role: 1,
-                life: 1,
+                role: 0,
+                life: 0,
                 bestVoices: 0,
                 finalDecision: 0,
                 fouls: 0
             });
         });
         $scope.rating = $scope.range($scope.PLAYERS_AMOUNT);
+
+        httpService.get('members', {}, function(result) {
+            $scope.ALL_PLAYERS = result;
+        });
+
+        httpService.get('results', {}, function(result) {
+            $scope.RESULTS = result;
+        });
+
+        httpService.get('roles', {}, function(result) {
+            $scope.ROLES = result;
+        });
+
+        httpService.get('lives', {}, function(result) {
+            $scope.LIVES = result;
+        });
 
         $scope.accusations = [];
         $scope.addAccusation = function(){
@@ -91,11 +102,6 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             if (data.millis == 0) {
                 $scope.openWarningModal('Time Is out');
             }
-        });
-
-
-        httpService.get('members', {}, function(result) {
-            $scope.ALL_PLAYERS = result;
         });
 
         $scope.showRating = function(season) {

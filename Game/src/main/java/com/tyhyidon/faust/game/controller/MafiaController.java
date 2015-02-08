@@ -1,6 +1,9 @@
 package com.tyhyidon.faust.game.controller;
 
 import com.tyhyidon.faust.game.entity.Game;
+import com.tyhyidon.faust.game.entity.Life;
+import com.tyhyidon.faust.game.entity.Result;
+import com.tyhyidon.faust.game.entity.Role;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 import com.tyhyidon.faust.game.services.GameServiceImpl;
 import org.slf4j.Logger;
@@ -13,7 +16,7 @@ import java.util.List;
 @RestController
 public class MafiaController {
 
-    private static Logger logger = LoggerFactory.getLogger(MafiaController.class);
+    private static Logger LOG = LoggerFactory.getLogger(MafiaController.class);
 
     @Autowired
     private GameServiceImpl gameService;
@@ -21,6 +24,21 @@ public class MafiaController {
     @RequestMapping(value = {"/main"})
     public String main() {
         return "main";
+    }
+
+    @RequestMapping(value = {"/results"})
+    public Result[] getResults() {
+        return Result.values();
+    }
+
+    @RequestMapping(value = {"/roles"})
+    public Role [] getRoles() {
+        return Role.values();
+    }
+
+    @RequestMapping(value = {"/lives"})
+    public Life[] getLives() {
+        return Life.values();
     }
 
     @RequestMapping(value = {"/members"})

@@ -1,7 +1,7 @@
 package com.tyhyidon.faust.game.legacy.filter;
 
 import com.tyhyidon.faust.game.entity.Game;
-import com.tyhyidon.faust.game.rating.Constants;
+
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ResultPrediction {
 
     private double mafiaClearWinProbability = 0.0;
 
-    public ResultPrediction(List <Game> games, int sampling) {
+  /*  public ResultPrediction(List <Game> games, int sampling) {
         this.sampling = sampling;
         if (games.size()!=0) {
             int cityClearWin = 0;
@@ -54,7 +54,7 @@ public class ResultPrediction {
             this.mafiaClearWinProbability = 100.0*mafiaClearWin/games.size();
         }
 
-    }
+    } */
 
     public int getSampling() {
         return sampling;

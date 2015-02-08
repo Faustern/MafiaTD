@@ -17,7 +17,7 @@ public class Game {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date date;
 
-    private int result;
+    private Result result;
 
     private int season;
 
@@ -41,11 +41,11 @@ public class Game {
         this.date = date;
     }
 
-    public int getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 

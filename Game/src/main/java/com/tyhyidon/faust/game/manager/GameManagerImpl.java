@@ -19,7 +19,7 @@ public class GameManagerImpl implements GameManager{
     @Override
     public void addGame(Game game) {
         template.update("INSERT INTO Game (date, result, season, master)\n" + "VALUES (" + "'2012-01-02'" + "," +
-                game.getResult() + "," + game.getSeason() + ",'" + game.getMaster() + "')");
+                (game.getResult().ordinal()+1) + "," + game.getSeason() + ",'" + game.getMaster() + "')");
     }
 
 }

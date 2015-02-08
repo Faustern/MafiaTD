@@ -30,7 +30,7 @@
                 </button></span>
             </p></td>
             <td><select ng-model="game.result">
-                <option ng-repeat="i in RESULTS track by $index" value="{{$index + 1}}">{{i}}</option>
+                <option ng-repeat="i in RESULTS track by $index" value="{{$index}}">{{i}}</option>
             </select></td>
             <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="game.master"></td>
             <td><button ng-click="calculateRating()">Calculate Rating</button></td>
@@ -62,10 +62,10 @@
             <td>{{$index+1}}</td>
             <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="player.member"></td>
             <td><select ng-model="player.role">
-                <option ng-repeat="i in ROLES track by $index" value="{{$index + 1}}">{{i}}</option>
+                <option ng-repeat="i in ROLES track by $index" value="{{$index}}">{{i}}</option>
             </select></td>
             <td><select ng-model="player.life">
-                <option ng-repeat="i in LIVES track by $index" value="{{$index + 1}}">{{i}}</option>
+                <option ng-repeat="i in LIVES track by $index" value="{{$index}}">{{i}}</option>
             </select></td>
             <td><select ng-model="player.bestVoices">
                     <option ng-repeat="i in range(PLAYERS_AMOUNT) track by $index" value="{{$index}}">{{$index}}</option>
