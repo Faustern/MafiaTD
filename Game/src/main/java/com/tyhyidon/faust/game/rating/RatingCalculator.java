@@ -11,15 +11,15 @@ import java.util.List;
  */
 public interface RatingCalculator {
 
-    Double calculateResultRating(Player player);
+    Double calcResultRating(Player player);
 
-    Double calculateLifeRating(Player player);
+    Double calcLifeRating(Player player);
 
-    Double calculateBestVoicesRating(Player player);
+    Double calcVoicesRating(Player player);
 
-    Double calculateFinalDecisionRating(Player player);
+    Double calcDecisionRating(Player player);
 
-    Double calculateFoulsRating(Player player);
+    Double calcFoulsRating(Player player);
 
     Double calculateRating(Player player);
 

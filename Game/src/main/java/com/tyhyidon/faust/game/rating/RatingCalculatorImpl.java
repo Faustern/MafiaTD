@@ -17,51 +17,36 @@ public class RatingCalculatorImpl implements RatingCalculator {
     private Properties ratingProperties;
 
     @Override
-    public Double calculateResultRating(Player player) {
-        return Double.parseDouble(ratingProperties.getProperty(
-                player.getResult().toString().toLowerCase() + "." +
-                        player.getRole().toString().toLowerCase() + ".result"));
+    public Double calcResultRating(Player player) {
+        return getRating(player.getResult() + "." + player.getRole() + ".RESULT");
     }
 
     @Override
-    public Double calculateLifeRating(Player player) {
-        return Double.parseDouble(ratingProperties.getProperty(
-                player.getResult().toString().toLowerCase() + "." + player.getRole().toString().toLowerCase() +
-                        ".life." + player.getLife().toString().toLowerCase()));
+    public Double calcLifeRating(Player player) {
+        return getRating(player.getResult() + "." + player.getRole() + ".LIFE." + player.getLife());
     }
 
     @Override
-    public Double calculateBestVoicesRating(Player player) {
-        return player.getBestVoices()*Double.parseDouble(ratingProperties.getProperty(
-                player.getResult().toString().toLowerCase()  + "." + player.getRole().toString().toLowerCase()  +
-                        ".best_voices"));
+    public Double calcVoicesRating(Player player) {
+        return player.getBestVoices() * getRating(player.getResult()  + "." + player.getRole()  + ".VOICES");
     }
 
     @Override
-    public Double calculateFinalDecisionRating(Player player) {
-        if (player.getFinalDecision()>0) {
-            return Double.parseDouble(ratingProperties.getProperty(player.getResult().toString().toLowerCase()  + "." +
-                            player.getRole().toString().toLowerCase()  + ".final_decision"))/player.getFinalDecision();
-        } else {
-            return 0.0;
-        }
+    public Double calcDecisionRating(Player player) {
+        return player.getFinalDecision()>0 ? getRating(player.getResult()  + "." + player.getRole()  + ".DECISION")/
+                player.getFinalDecision() : 0.0;
     }
 
     @Override
-    public Double calculateFoulsRating(Player player) {
-        return Double.parseDouble(ratingProperties.getProperty(player.getResult().toString().toLowerCase()  + "." +
-                        player.getRole().toString().toLowerCase()  + ".fouls." + player.getFouls()));
+    public Double calcFoulsRating(Player player) {
+        return getRating(player.getResult()  + "." + player.getRole()  + ".FOULS." + player.getFouls());
     }
 
     @Override
     public Double calculateRating(Player player) {
-        Double totalRating = calculateResultRating(player) + calculateLifeRating(player) +
-                calculateBestVoicesRating(player) + calculateFinalDecisionRating(player) + calculateFoulsRating(player);
-        if (totalRating>0) {
-            return totalRating;
-        } else {
-            return 0.0;
-        }
+        Double totalRating = calcResultRating(player) + calcLifeRating(player) + calcVoicesRating(player) +
+                calcDecisionRating(player) + calcFoulsRating(player);
+        return totalRating > 0 ? totalRating : 0.0;
     }
 
     @Override
@@ -82,5 +67,9 @@ public class RatingCalculatorImpl implements RatingCalculator {
         return map.values().parallelStream().map(l -> l.stream().sorted(Comparator.comparing(r -> -r.getRating())).
                 collect(toList())).reduce((x, y) -> Stream.concat(y.stream(), x.stream()).
                 collect(toList())).orElse(Collections.emptyList());
+    }
+
+    private Double getRating(String condition) {
+        return Double.parseDouble(ratingProperties.getProperty(condition));
     }
 }
