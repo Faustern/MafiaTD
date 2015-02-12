@@ -1,5 +1,11 @@
 <div class="track"></div>
 <div class="info"></div>
 <div class="game"></div>
-<div class="timer"></div>
+<div class="timer">
+    <div id="time"><h1 data-fittext>
+    <timer id="timer" auto-start="false" max-time-unit="'second'" countdown="countdown" interval="1000">
+        {{seconds}}0:54</timer>    </h1></div>
+    <button id="start-button" class="timer-button">START</button>
+    <button id="pause-button" class="timer-button">PAUSE</button>
+</div>
 <div class="accusation"></div>

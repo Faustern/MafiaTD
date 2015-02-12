@@ -1,7 +1,8 @@
 angular.module('mafia', [
     'ngRoute',
     'customServices',
-    'mafia.controllers'
+    'mafia.controllers',
+    'ngFitText'
 ])
     .config(['$routeProvider',
         function ($routeProvider) {

@@ -25,6 +25,7 @@
 <script src="<c:url value="/resources/libs/js/angular.js"/>"></script>
 <script src="<c:url value="/resources/libs/js/angular-route.js"/>"></script>
 <script src="<c:url value="/resources/libs/js/ui-bootstrap-tpls-0.12.0.js"/>"></script>
+<script src="<c:url value="/resources/newjs/directives/ng-FitText.js"/>"></script>
 <script src="<c:url value="/resources/newjs/directives/timer.js"/>"></script>
 <script src="<c:url value="/resources/newjs/directives/customDirectives.js"/>"></script>
 <script src="<c:url value="/resources/newjs/services/customServices.js"/>"></script>
