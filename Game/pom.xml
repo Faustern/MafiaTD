@@ -100,6 +100,7 @@
                             <value>8090</value>
                         </systemProperty>
                     </systemProperties>
+                    <daemon>true</daemon>
                     <stopPort>8084</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
@@ -111,7 +112,6 @@
                             <goal>deploy-war</goal>
                         </goals>
                         <configuration>
-                            <daemon>true</daemon>
                             <reload>manual</reload>
                         </configuration>
                     </execution>
