@@ -103,10 +103,10 @@
                     <stopPort>8084</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
-         <!--       <executions>
+                <executions>
                     <execution>
-                        <id>start-jetty</id>
-                        <phase>test-compile</phase>
+                        <id>deploy</id>
+                        <phase>install</phase>
                         <goals>
                             <goal>deploy-war</goal>
                         </goals>
@@ -115,14 +115,7 @@
                             <reload>manual</reload>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>   -->
+                </executions>
             </plugin>
         </plugins>
     </build>
