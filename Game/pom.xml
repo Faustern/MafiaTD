@@ -104,7 +104,7 @@
                     <stopPort>8084</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
-                <executions>
+            <!--    <executions>
                     <execution>
                         <id>deploy</id>
                         <phase>install</phase>
@@ -115,7 +115,7 @@
                             <reload>manual</reload>
                         </configuration>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
         </plugins>
     </build>
