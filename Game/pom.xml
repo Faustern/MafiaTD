@@ -100,7 +100,7 @@
                             <value>8090</value>
                         </systemProperty>
                     </systemProperties>
-                    <daemon>true</daemon>
+                 <!--   <daemon>true</daemon> -->
                     <stopPort>8084</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
