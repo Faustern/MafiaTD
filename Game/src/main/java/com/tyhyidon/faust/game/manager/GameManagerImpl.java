@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+
 
 @Repository
 public class GameManagerImpl implements GameManager{
@@ -15,6 +17,12 @@ public class GameManagerImpl implements GameManager{
 
     @Autowired
     private JdbcTemplate template;
+
+    @PostConstruct
+    private void inti() {
+        int count = template.queryForInt("SELECT count(*) FROM User");
+        count++;
+    }
 
     @Override
     public void addGame(Game game) {
