@@ -28,13 +28,13 @@ public class PlayerManagerImpl implements PlayerManager {
         return template.query("SELECT  p.*, g.result, m.vkontakte FROM Player p " +
                 "inner join Game g on p.game_id = g.id  " +
                 "inner join Member m on p.nickname = m.nickname " +
-                "where g.season = ?", new PlayerEntityConverter(), season);
+                (season != 0 ? "where g.season = " + season: ""), new PlayerEntityConverter());
     }
 
     @Override
     public void addPlayers(List<Player> players) {
         template.update("INSERT INTO Player (nickname, game_id, number, role, life, best_voices, final_decision, fouls)" +
-                "VALUES " + players.stream().map(p -> "('" + p.getMember() + "'," + 202 + "," +
+                "VALUES " + players.stream().map(p -> "('" + p.getMember() + "'," + p.getGameId() + "," +
                 p.getNumber() + "," + p.getRole().ordinal() + "," + p.getLife().ordinal() + "," + p.getBestVoices() + "," +
                 p.getFinalDecision() + "," + p.getFouls() + ")").reduce((x, y) -> x + "," + y).orElse(""));
     }

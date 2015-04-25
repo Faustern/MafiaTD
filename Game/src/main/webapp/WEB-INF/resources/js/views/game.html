@@ -20,7 +20,7 @@
         </thead>
         <tr>
             <td><select ng-model="game.season">
-                <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
+                <option ng-repeat="i in SEASONS track by $index" value="{{$index + 2}}">{{i}}</option>
             </select></td>
             <td><p class="input-group datepicker-group">
                 <input type="text" class="form-control" datepicker-popup="{{gameDate.format}}" ng-model="gameDate.data"
@@ -84,7 +84,7 @@
     <button ng-click="addNewPlayer(newPlayer)">Add New Player</button>
     <br><br>
     <select ng-model="ratingSeason">
-        <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
+        <option ng-repeat="i in RATING_SEASONS track by $index" value="{{$index}}">{{i}}</option>
     </select>
     <button ng-click="showRating(ratingSeason)">Show Rating</button>
     <table><tr ng-repeat="i in ratingStrings"><td style="text-align:left">{{i}}</td></tr></table>

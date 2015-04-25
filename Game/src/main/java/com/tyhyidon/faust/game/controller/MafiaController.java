@@ -67,5 +67,4 @@ public class MafiaController {
         return gameService.addGame(game);
     }
 
-
 }

@@ -100,22 +100,9 @@
                             <value>8090</value>
                         </systemProperty>
                     </systemProperties>
-                 <!--   <daemon>true</daemon> -->
                     <stopPort>8084</stopPort>
                     <stopKey>foo</stopKey>
                 </configuration>
-            <!--    <executions>
-                    <execution>
-                        <id>deploy</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>deploy-war</goal>
-                        </goals>
-                        <configuration>
-                            <reload>manual</reload>
-                        </configuration>
-                    </execution>
-                </executions>-->
             </plugin>
         </plugins>
     </build>

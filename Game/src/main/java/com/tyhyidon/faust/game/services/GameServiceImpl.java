@@ -1,6 +1,7 @@
 package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.entity.Game;
+import com.tyhyidon.faust.game.entity.Member;
 import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.Result;
 import com.tyhyidon.faust.game.manager.GameManager;
@@ -43,12 +44,12 @@ public class GameServiceImpl {
     }
 
     public List<String> getMembers() {
-        return memberManager.getMembers().stream().map(player -> player.getNickname()).collect(toList());
+        return memberManager.getMembers().stream().map(Member::getNickname).collect(toList());
     }
 
     public List<RatingSnapshot> showRating(Integer season) {
         return ratingCalculator.calculateSeasonRating(playerManager.getPlayers(season).stream().
-                collect(groupingBy(p -> p.getMember())).values());
+                collect(groupingBy(Player::getMember)).values());
     }
 
     public List<String> addMember(String nickname) {
@@ -56,10 +57,9 @@ public class GameServiceImpl {
         return getMembers();
     }
 
-    @Transactional
     public boolean addGame(Game game) {
-        gameManager.addGame(game);
-        playerManager.addPlayers(game.getPlayers().stream().map(p -> {p.setGameId(game.getId());return p;}).
+        long gameId = gameManager.addGame(game);
+        playerManager.addPlayers(game.getPlayers().stream().map(p -> {p.setGameId(gameId);return p;}).
                 collect(toList()));
         return true;
     }

@@ -7,6 +7,6 @@ import com.tyhyidon.faust.game.entity.Game;
  */
 public interface GameManager {
 
-    public void addGame(Game game);
+    public long addGame(Game game);
 
 }

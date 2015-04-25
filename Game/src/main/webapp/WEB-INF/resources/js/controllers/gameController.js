@@ -15,11 +15,13 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
 
         $scope.PLAYERS_AMOUNT = 10;
         $scope.MAX_FOULS_AMOUNT = 4;
-        $scope.SEASONS = ["All seasons","Winter 13/14","Spring 14","Autumn 14","Winter 14/15"];
+        $scope.SEASONS = ["Spring 15"];
+        $scope.RATING_SEASONS = ["All seasons","Winter 13/14", "Spring 15"];
+        $scope.ratingSeason = 0;
 
         $scope.game = {
-            season: 1,
-            master: "Vilka",
+            season: 2,
+            master: "Faust",
             date: "2015/01/17",
             result: 0,
             players: []
