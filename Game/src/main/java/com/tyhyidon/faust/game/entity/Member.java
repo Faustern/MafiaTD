@@ -9,8 +9,10 @@ import java.util.Set;
 /**
  * Created by Василий on 12.01.14.
  */
+@Entity
 public class Member {
 
+    @Id
     private String nickname;
 
     private String vkontakte;
@@ -20,6 +22,16 @@ public class Member {
     private String mail;
 
     private String telephone;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
+    private Set<Player> players;
+
+    public Member() {
+    }
+
+    public Member(String nickname) {
+        this.nickname = nickname;
+    }
 
     public String getNickname() {
         return nickname;
@@ -61,4 +73,11 @@ public class Member {
         this.telephone = telephone;
     }
 
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
 }

@@ -1,7 +1,7 @@
 package com.tyhyidon.faust.game.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tyhyidon.faust.game.entity.enums.Result;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,8 +10,11 @@ import java.util.List;
 /**
  * Created by Василий on 12.01.14.
  */
+@Entity
 public class Game {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
@@ -23,7 +26,15 @@ public class Game {
 
     private String master;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
     private List<Player> players;
+
+    public Game() {
+    }
+
+    public Game(Result result) {
+        this.result = result;
+    }
 
     public long getId() {
         return id;

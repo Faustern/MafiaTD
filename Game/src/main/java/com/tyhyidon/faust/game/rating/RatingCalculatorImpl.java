@@ -18,28 +18,28 @@ public class RatingCalculatorImpl implements RatingCalculator {
 
     @Override
     public Double calcResultRating(Player player) {
-        return getRating(player.getResult() + "." + player.getRole() + ".RESULT");
+        return getRating(player.getGame().getResult() + "." + player.getRole() + ".RESULT");
     }
 
     @Override
     public Double calcLifeRating(Player player) {
-        return getRating(player.getResult() + "." + player.getRole() + ".LIFE." + player.getLife());
+        return getRating(player.getGame().getResult() + "." + player.getRole() + ".LIFE." + player.getLife());
     }
 
     @Override
     public Double calcVoicesRating(Player player) {
-        return player.getBestVoices() * getRating(player.getResult()  + "." + player.getRole()  + ".VOICES");
+        return player.getBestVoices() * getRating(player.getGame().getResult()  + "." + player.getRole()  + ".VOICES");
     }
 
     @Override
     public Double calcDecisionRating(Player player) {
-        return player.getFinalDecision()>0 ? getRating(player.getResult()  + "." + player.getRole()  + ".DECISION")/
+        return player.getFinalDecision()>0 ? getRating(player.getGame().getResult()  + "." + player.getRole()  + ".DECISION")/
                 player.getFinalDecision() : 0.0;
     }
 
     @Override
     public Double calcFoulsRating(Player player) {
-        return getRating(player.getResult()  + "." + player.getRole()  + ".FOULS." + player.getFouls());
+        return getRating(player.getGame().getResult()  + "." + player.getRole()  + ".FOULS." + player.getFouls());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class RatingCalculatorImpl implements RatingCalculator {
     public List<RatingSnapshot> calculateSeasonRating(Collection<List<Player>> data) {
 
         Map<Boolean, List<RatingSnapshot>> map = data.parallelStream().map(
-                l -> (new RatingSnapshot(l.get(0).getMember(), calculateTotalRating(l), l.size()))).
+                l -> (new RatingSnapshot(l.get(0).getMember().getNickname(), calculateTotalRating(l), l.size()))).
                 collect(partitioningBy(r -> r.getGames() >= 11));
 
         int max =  data.stream().map(List::size).max(Comparator.comparing(Integer::intValue)).orElse(0);

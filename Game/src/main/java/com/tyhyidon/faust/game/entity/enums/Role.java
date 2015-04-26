@@ -1,4 +1,4 @@
-package com.tyhyidon.faust.game.entity;
+package com.tyhyidon.faust.game.entity.enums;
 
 /**
  * Created by vasylsavytskyi on 01.02.15.

@@ -3,17 +3,16 @@ package com.tyhyidon.faust.game.entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 
 /**
  * Created by vasylsavytskyi on 29.12.14.
  */
+@Entity
 public class User implements UserDetails{
 
+    @Id
     private String username;
 
     private String password;

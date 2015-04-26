@@ -1,17 +1,27 @@
 package com.tyhyidon.faust.game.entity;
 
+import com.tyhyidon.faust.game.entity.enums.Life;
+import com.tyhyidon.faust.game.entity.enums.Role;
+
+import javax.persistence.*;
+
 /**
  * Created by Василий on 12.01.14.
  */
+@Entity
 public class Player {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long gameId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gameId")
+    private Game game;
 
-    private String member;
-
-    private Result result;
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinColumn(name = "nickname")
+    private Member member;
 
     private int number;
 
@@ -33,28 +43,21 @@ public class Player {
         this.id = id;
     }
 
-    public long getGameId() {
-        return gameId;
+
+    public Game getGame() {
+        return game;
     }
 
-    public void setGameId(long gameId) {
-        this.gameId = gameId;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-    public String getMember() {
+    public Member getMember() {
         return member;
     }
 
-    public void setMember(String member) {
+    public void setMember(Member member) {
         this.member = member;
-    }
-
-    public Result getResult() {
-        return result;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
     }
 
     public int getNumber() {

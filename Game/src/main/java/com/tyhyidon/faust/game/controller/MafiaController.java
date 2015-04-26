@@ -1,9 +1,9 @@
 package com.tyhyidon.faust.game.controller;
 
 import com.tyhyidon.faust.game.entity.Game;
-import com.tyhyidon.faust.game.entity.Life;
-import com.tyhyidon.faust.game.entity.Result;
-import com.tyhyidon.faust.game.entity.Role;
+import com.tyhyidon.faust.game.entity.enums.Life;
+import com.tyhyidon.faust.game.entity.enums.Result;
+import com.tyhyidon.faust.game.entity.enums.Role;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 import com.tyhyidon.faust.game.services.GameServiceImpl;
 import org.slf4j.Logger;
