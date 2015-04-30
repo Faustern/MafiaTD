@@ -58,8 +58,8 @@ public class RatingCalculatorImpl implements RatingCalculator {
     public List<RatingSnapshot> calculateSeasonRating(Collection<List<Player>> data) {
 
         Map<Boolean, List<RatingSnapshot>> map = data.parallelStream().map(
-                l -> (new RatingSnapshot(l.get(0).getMember().getNickname(), calculateTotalRating(l), l.size()))).
-                collect(partitioningBy(r -> r.getGames() >= 11));
+                l -> (new RatingSnapshot(l.get(0).getMember().getNickname(), l.get(0).getMember().getVkontakte(),
+                        calculateTotalRating(l), l.size()))).collect(partitioningBy(r -> r.getGames() >= 11));
 
         int max =  data.stream().map(List::size).max(Comparator.comparing(Integer::intValue)).orElse(0);
         map.get(true).parallelStream().forEach(r -> r.setRating(r.getRating() * (1 - (max - r.getGames()) / (2.0 * max))));

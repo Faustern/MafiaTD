@@ -12,12 +12,15 @@ public class RatingSnapshot {
 
     private String nickname;
 
+    private String vkontakte;
+
     private double rating;
 
     private int games;
 
-    public RatingSnapshot(String nickname, double rating, int games) {
+    public RatingSnapshot(String nickname, String vkontakte, double rating, int games) {
         this.nickname = nickname;
+        this.vkontakte = vkontakte;
         this.rating = rating;
         this.games = games;
     }
@@ -28,6 +31,14 @@ public class RatingSnapshot {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getVkontakte() {
+        return vkontakte;
+    }
+
+    public void setVkontakte(String vkontakte) {
+        this.vkontakte = vkontakte;
     }
 
     public double getRating() {
