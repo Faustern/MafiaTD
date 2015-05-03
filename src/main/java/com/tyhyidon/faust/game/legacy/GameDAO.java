@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
-import java.util.List;
 
 /**
  * Created by Василий on 18.01.14.

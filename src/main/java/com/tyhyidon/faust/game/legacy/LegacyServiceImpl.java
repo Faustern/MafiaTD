@@ -7,10 +7,6 @@ import com.tyhyidon.faust.game.legacy.filter.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by vasylsavytskyi on 20.01.15.
  */

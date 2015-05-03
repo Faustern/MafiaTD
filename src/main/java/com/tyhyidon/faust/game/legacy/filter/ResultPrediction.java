@@ -2,9 +2,6 @@ package com.tyhyidon.faust.game.legacy.filter;
 
 import com.tyhyidon.faust.game.entity.Game;
 
-
-import java.util.List;
-
 /**
  */
 public class ResultPrediction {

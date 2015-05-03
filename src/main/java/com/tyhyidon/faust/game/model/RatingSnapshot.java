@@ -3,8 +3,6 @@ package com.tyhyidon.faust.game.model;
 import com.tyhyidon.faust.game.entity.Member;
 import com.tyhyidon.faust.game.entity.Player;
 
-import java.util.List;
-
 /**
  * Created by vasylsavytskyi on 20.01.15.
  */

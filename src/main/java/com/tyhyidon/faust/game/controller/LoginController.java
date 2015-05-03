@@ -26,11 +26,11 @@ public class LoginController {
 
     @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
     public String index() {
-        return "/index";
+        return "index";
     }
 
     @RequestMapping(value = "/newindex", method = RequestMethod.GET)
     public String home() {
-        return "/newindex";
+        return "newindex";
     }
 }
