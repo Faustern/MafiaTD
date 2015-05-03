@@ -14,8 +14,6 @@
 
 	<util:properties id="ratingProperties" location="classpath:rating.properties"/>
 
-	<bean id="successHandler" class="com.tyhyidon.faust.game.security.AuthenticationSuccessHandler"/>
-	<bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
 	<bean id="authenticationService" class="com.tyhyidon.faust.game.security.AuthenticationServiceImpl"/>
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
 	<bean id="authenticationProvider" class="com.tyhyidon.faust.game.security.MafiaAuthenticationProvider">
