@@ -16,21 +16,13 @@ public class LoginController {
 
     private Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+ /*   @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         if (SecurityUtils.getCurrentUser() != null) {
             return "redirect:/index";
         }
         return "login";
-    }
+    }*/
 
-    @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
-    public String index() {
-        return "index";
-    }
 
-    @RequestMapping(value = "/newindex", method = RequestMethod.GET)
-    public String home() {
-        return "newindex";
-    }
 }

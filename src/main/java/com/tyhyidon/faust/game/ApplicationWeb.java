@@ -3,6 +3,7 @@ package com.tyhyidon.faust.game;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.velocity.VelocityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
@@ -12,8 +13,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.concurrent.TimeUnit;
@@ -25,12 +29,14 @@ import java.util.concurrent.TimeUnit;
 
 @ImportResource("classpath:ApplicationContext.xml")
 @SpringBootApplication
-public class ApplicationWeb extends SpringBootServletInitializer {
-
+public class ApplicationWeb extends WebMvcConfigurerAdapter {
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ApplicationWeb .class);
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/index").setViewName("index");
+        registry.addViewController("/newindex").setViewName("newindex");
+        registry.addViewController("/login").setViewName("login");
     }
 
     public static void main(String[] args) throws Exception {
@@ -38,3 +44,4 @@ public class ApplicationWeb extends SpringBootServletInitializer {
     }
 
 }
+

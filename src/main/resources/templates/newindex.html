@@ -1,0 +1,30 @@
+<html ng-app="mafia">
+<head>
+  <title>Mafia</title>
+  <link rel="stylesheet" href="libs/css/jquery-ui-1.10.3.css">
+  <link rel="stylesheet" href="libs/css/bootstrap.css">
+  <link rel="stylesheet" href="newcss/main.css">
+</head>
+<body>
+
+  <div id="loadingWidget" class="row-fluid ui-corner-all">
+    <div class="loadingContent">
+      <p><div class="loading-image"></div>
+    </div>
+  </div>
+
+  <div class="container" ng-view id="main-page-wrapper"></div>
+
+  <script src="libs/js/jquery-1.10.2.js"></script>
+  <script src="libs/js/jquery-ui-1.10.3.js"></script>
+  <script src="libs/js/angular.js"></script>
+  <script src="libs/js/angular-route.js"></script>
+  <script src="libs/js/ui-bootstrap-tpls-0.12.0.js"></script>
+  <script src="newjs/directives/ng-FitText.js"></script>
+  <script src="newjs/directives/timer.js"></script>
+  <script src="newjs/directives/customDirectives.js"></script>
+  <script src="newjs/services/customServices.js"></script>
+  <script src="newjs/controllers/gameController.js"></script>
+  <script src="newjs/app.js"></script>
+</body>
+</html>
