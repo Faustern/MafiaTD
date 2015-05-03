@@ -2,6 +2,7 @@ package com.tyhyidon.faust.game.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -9,17 +10,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by vasylsavytskyi on 29.12.14.
  */
+@Component
 public class MafiaAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider{
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
+    @Autowired
     private UserDetailsService userDetailsService;
-
-    private PasswordEncoder passwordEncoder;
 
     public UserDetailsService getUserDetailsService() {
         return userDetailsService;
@@ -27,10 +29,6 @@ public class MafiaAuthenticationProvider extends AbstractUserDetailsAuthenticati
 
     public void setUserDetailsService(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-    }
-
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -50,14 +48,13 @@ public class MafiaAuthenticationProvider extends AbstractUserDetailsAuthenticati
     }
 
     private boolean isPasswordValid(String username, String password) {
-        String encodedPassword = null;
         try {
-           encodedPassword = this.passwordEncoder.encode(password);
+            return password.equals("komdon");
         } catch (Exception e) {
            LOG.debug(String.format("Unable to encode %s password ['%s']", username, password));
         }
+        return false;
         //TODO
-        return password.equals("komdon");
     }
 
 
