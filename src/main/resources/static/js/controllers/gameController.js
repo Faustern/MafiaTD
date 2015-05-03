@@ -196,7 +196,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
 
         $scope.openMessageModal = function(message, level) {
             $modal.open({
-                templateUrl: '/resources/js/views/partial/modal/' + level + '.html',
+                templateUrl: 'js/views/partial/modal/' + level + '.html',
                 controller: 'messageModalController',
                 resolve: {
                     message: function () {
@@ -244,7 +244,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
         $scope.open = function (size) {
 
             var modalInstance = $modal.open({
-                templateUrl: '/resources/js/views/modal.html',
+                templateUrl: 'js/views/modal.html',
                 controller: 'modalController',
                 size: size,
                 resolve: {

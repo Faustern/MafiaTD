@@ -8,7 +8,7 @@ angular.module('mafia', [
         function ($routeProvider) {
             $routeProvider
                 .when('/game', {
-                    templateUrl: '/resources/newjs/views/game.html'})
+                    templateUrl: 'newjs/views/game.html'})
                 .otherwise({
-                    templateUrl: '/resources/newjs/views/game.html'})
+                    templateUrl: 'newjs/views/game.html'})
     }]);
