@@ -23,7 +23,7 @@ public class Member {
 
     private String telephone;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<Player> players;
 
     public Member() {

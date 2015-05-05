@@ -16,7 +16,7 @@ public class Player {
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gameid")
+    @JoinColumn(name = "gameId")
     private Game game;
 
     @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
@@ -42,7 +42,6 @@ public class Player {
     public void setId(long id) {
         this.id = id;
     }
-
 
     public Game getGame() {
         return game;

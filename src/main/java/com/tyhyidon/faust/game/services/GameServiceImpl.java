@@ -12,16 +12,15 @@ import com.tyhyidon.faust.game.repositories.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.*;
 
-/**
- */
-@Component
+
+@Service
 public class GameServiceImpl {
 
     private static Logger LOG = LoggerFactory.getLogger(GameServiceImpl.class);
@@ -51,17 +50,43 @@ public class GameServiceImpl {
     public List<RatingSnapshot> showRating(Integer season) {
         return ratingCalculator.calculateSeasonRating((season != 0 ? playerRepository.findByGameSeason(season).
                 stream() : StreamSupport.stream(playerRepository.findAll().spliterator(), true))
-        .collect(groupingBy(Player::getMember)).values());
+                .collect(groupingBy(Player::getMember)).values());
     }
 
-    public List<String> addMember(String nickname) {
-        memberRepository.save(new Member(nickname));
-        return getMembers();
+    public Member addMember(Member member) {
+        return memberRepository.save(member);
     }
 
-    public boolean addGame(Game game) {
+    public Member findMember(String nickname) {
+        return memberRepository.findOne(nickname);
+    }
+
+    public void removeMember(Member member) {
+        memberRepository.delete(member);
+    }
+
+    public Game addGame(Game game) {
         game.getPlayers().stream().forEach(p -> p.setGame(game));
-        gameRepository.save(game);
-        return true;
+        return gameRepository.save(game);
+    }
+
+    public Game findGame(long id) {
+        return gameRepository.findOne(id);
+    }
+
+    public void removeGame(Game game) {
+        gameRepository.delete(game);
+    }
+
+    public long gamesAmount() {
+        return gameRepository.count();
+    }
+
+    public long membersAmount() {
+        return memberRepository.count();
+    }
+
+    public long playersAmount() {
+        return playerRepository.count();
     }
 }

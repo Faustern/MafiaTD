@@ -123,7 +123,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
 
         $scope.addNewPlayer = function(player) {
             httpService.post("member", player,
-                function(results) {
+                function() {
                     $scope.ALL_PLAYERS.push(player);
                     $scope.openInfoModal("Player successfully added!");
                 },
@@ -169,7 +169,7 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
             $scope.validation();
             if ($scope.validationErrors.length == 0) {
                 httpService.post("game", $scope.game,
-                    function (results) {
+                    function () {
                         $scope.openInfoModal('game successfully saved!');
                     },
                     function (error) {

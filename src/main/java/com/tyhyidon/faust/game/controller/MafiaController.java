@@ -1,6 +1,7 @@
 package com.tyhyidon.faust.game.controller;
 
 import com.tyhyidon.faust.game.entity.Game;
+import com.tyhyidon.faust.game.entity.Member;
 import com.tyhyidon.faust.game.entity.enums.Life;
 import com.tyhyidon.faust.game.entity.enums.Result;
 import com.tyhyidon.faust.game.entity.enums.Role;
@@ -49,8 +50,8 @@ public class MafiaController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"/member"})
-    public List<String> addMember(@RequestBody String nickname) {
-        return gameService.addMember(nickname);
+    public void addMember(@RequestBody String nickname) {
+        gameService.addMember(new Member(nickname));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"/rating"})
@@ -65,8 +66,8 @@ public class MafiaController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = {"/game"})
-    public boolean addGame(@RequestBody Game game) {
-        return gameService.addGame(game);
+    public void addGame(@RequestBody Game game) {
+        gameService.addGame(game);
     }
 
 }
