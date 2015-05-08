@@ -41,38 +41,38 @@ public class GameTest {
     @Test
     public void testAddRemoveMember() {
         Member stubMember = getStubMember("stubMember");
-        long initialMemberAmount = gameService.membersAmount();
-        gameService.addMember(stubMember);
-        assertEquals(initialMemberAmount + 1, gameService.membersAmount());
-        Member dbStubMember = gameService.findMember("stubMember");
+        long initialMemberAmount = memberService.amount();
+        memberService.add(stubMember);
+        assertEquals(initialMemberAmount + 1, memberService.amount());
+        Member dbStubMember = memberService.find("stubMember");
         assertNotNull(dbStubMember);
         assertEquals("stubMember", dbStubMember.getNickname());
-        gameService.removeMember(dbStubMember);
-        assertEquals(initialMemberAmount, gameService.membersAmount());
-        assertNull(gameService.findMember("stubMember"));
+        memberService.remove(dbStubMember);
+        assertEquals(initialMemberAmount, memberService.amount());
+        assertNull(memberService.find("stubMember"));
     }
 
     @Test
     public void testAddRemoveGame() {
-        long initialPlayerAmount = gameService.playersAmount();
-        long initialGameAmount = gameService.gamesAmount();
-        Member dbStubMember = gameService.addMember(getStubMember("stubMember"));
+        long initialPlayerAmount = playerService.amount();
+        long initialGameAmount = gameService.amount();
+        Member dbStubMember = memberService.add(getStubMember("stubMember"));
         Game game = getStubGame(dbStubMember.getNickname(), new ArrayList<>());
         Iterable<Member> dbStubMembers = Stream.iterate(1, n -> n + 1).limit(10).
-                map(i -> gameService.addMember(getStubMember("stubMember" + i))).collect(toList());
+                map(i -> memberService.add(getStubMember("stubMember" + i))).collect(toList());
         dbStubMembers.forEach(m -> game.getPlayers().add(getStubPlayer(game, m)));
-        Game dbStubGame = gameService.addGame(game);
+        Game dbStubGame = gameService.add(game);
         assertNotNull(dbStubGame);
-        dbStubGame = gameService.findGame(dbStubGame.getId());
+        dbStubGame = gameService.find(dbStubGame.getId());
         assertNotNull(dbStubGame);
         testGame(dbStubGame);
-        assertEquals(initialPlayerAmount + 10, gameService.playersAmount());
-        assertEquals(initialGameAmount + 1, gameService.gamesAmount());
-        gameService.removeGame(dbStubGame);
-        assertEquals(initialPlayerAmount, gameService.playersAmount());
-        assertEquals(initialGameAmount, gameService.gamesAmount());
-        dbStubMembers.forEach(gameService::removeMember);
-        gameService.removeMember(dbStubMember);
+        assertEquals(initialPlayerAmount + 10, playerService.amount());
+        assertEquals(initialGameAmount + 1, gameService.amount());
+        gameService.remove(dbStubGame);
+        assertEquals(initialPlayerAmount, playerService.amount());
+        assertEquals(initialGameAmount, gameService.amount());
+        dbStubMembers.forEach(memberService::remove);
+        memberService.remove(dbStubMember);
     }
 
     private Member getStubMember(String nickname) {
