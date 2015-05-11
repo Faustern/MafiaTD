@@ -41,4 +41,8 @@ public class PlayerServiceImpl {
     public long amount() {
         return playerRepository.count();
     }
+
+    public List<Player> getGamePlayers(long gameId) {
+        return playerRepository.findByGameId(gameId);
+    }
 }

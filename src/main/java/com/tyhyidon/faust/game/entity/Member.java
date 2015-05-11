@@ -23,6 +23,7 @@ public class Member {
 
     private String telephone;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<Player> players;
 

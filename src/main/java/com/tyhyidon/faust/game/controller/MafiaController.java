@@ -2,9 +2,11 @@ package com.tyhyidon.faust.game.controller;
 
 import com.tyhyidon.faust.game.entity.Game;
 import com.tyhyidon.faust.game.entity.Member;
+import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.enums.Life;
 import com.tyhyidon.faust.game.entity.enums.Result;
 import com.tyhyidon.faust.game.entity.enums.Role;
+import com.tyhyidon.faust.game.entity.enums.Season;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 import com.tyhyidon.faust.game.services.GameServiceImpl;
 import com.tyhyidon.faust.game.services.MemberServiceImpl;
@@ -52,6 +54,11 @@ public class MafiaController {
         return Life.values();
     }
 
+    @RequestMapping(value = {"/seasons"})
+    public Season[] getSeasons() {
+        return Season.values();
+    }
+
     @RequestMapping(value = {"/members"})
     public List<String> getMembers() {
         return memberService.all();
@@ -72,10 +79,23 @@ public class MafiaController {
         return playerService.showRating(season);
     }
 
-
     @RequestMapping(method = RequestMethod.POST, value = {"/game"})
-    public void addGame(@RequestBody Game game) {
-        gameService.add(game);
+    public void addUpdateGame(@RequestBody Game game) {
+        gameService.addUpdate(game);
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = {"/game"})
+    public void removeGame(@RequestParam int gameId) {
+        gameService.remove(gameId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = {"/games"})
+    public List<Game> getGames(@RequestParam Season season) {
+        return gameService.findBySeason(season);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = {"/players"})
+    public List<Player> getGamePlayers(@RequestParam int gameId) {
+        return playerService.getGamePlayers(gameId);
+    }
 }

@@ -7,6 +7,7 @@ import com.tyhyidon.faust.game.entity.enums.Result;
 import com.tyhyidon.faust.game.entity.enums.Role;
 import static org.junit.Assert.*;
 
+import com.tyhyidon.faust.game.entity.enums.Season;
 import com.tyhyidon.faust.game.services.GameServiceImpl;
 import com.tyhyidon.faust.game.services.MemberServiceImpl;
 import com.tyhyidon.faust.game.services.PlayerServiceImpl;
@@ -61,18 +62,24 @@ public class GameTest {
         Iterable<Member> dbStubMembers = Stream.iterate(1, n -> n + 1).limit(10).
                 map(i -> memberService.add(getStubMember("stubMember" + i))).collect(toList());
         dbStubMembers.forEach(m -> game.getPlayers().add(getStubPlayer(game, m)));
-        Game dbStubGame = gameService.add(game);
+        Game dbStubGame = gameService.addUpdate(game);
         assertNotNull(dbStubGame);
         dbStubGame = gameService.find(dbStubGame.getId());
         assertNotNull(dbStubGame);
         testGame(dbStubGame);
         assertEquals(initialPlayerAmount + 10, playerService.amount());
         assertEquals(initialGameAmount + 1, gameService.amount());
-        gameService.remove(dbStubGame);
+        gameService.remove(dbStubGame.getId());
         assertEquals(initialPlayerAmount, playerService.amount());
         assertEquals(initialGameAmount, gameService.amount());
         dbStubMembers.forEach(memberService::remove);
         memberService.remove(dbStubMember);
+    }
+
+    @Test
+    public void testGamesUpdate() {
+        List<Game> bySeason = gameService.findBySeason(Season.SPRING_15);
+        assertNull(bySeason.get(0).getPlayers());
     }
 
     private Member getStubMember(String nickname) {

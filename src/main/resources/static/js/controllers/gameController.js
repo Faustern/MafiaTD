@@ -15,8 +15,6 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
 
         $scope.PLAYERS_AMOUNT = 10;
         $scope.MAX_FOULS_AMOUNT = 4;
-        $scope.SEASONS = ["Spring 15"];
-        $scope.RATING_SEASONS = ["All seasons","Winter 13/14", "Spring 15"];
         $scope.ratingSeason = 0;
 
         $scope.game = {
@@ -54,6 +52,10 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
 
         httpService.get('lives', {}, function(result) {
             $scope.LIVES = result;
+        });
+
+        httpService.get('seasons', {}, function(result) {
+            $scope.SEASONS = result;
         });
 
         $scope.accusations = [];

@@ -2,7 +2,8 @@ angular.module('mafia', [
     'ngRoute',
     'customServices',
     'main.controllers',
-    'mafia.controllers'
+    'mafia.controllers',
+    'admin.controllers'
 ])
     .config(['$routeProvider',
         function ($routeProvider) {
@@ -13,6 +14,8 @@ angular.module('mafia', [
                     templateUrl: 'newjs/views/game.html'})
                 .when('/index', {
                     templateUrl: 'js/views/index.html'})
+                .when('/games', {
+                    templateUrl: 'js/views/games.html'})
                 .otherwise({
                     templateUrl: 'js/views/game.html'})
     }]);

@@ -1,8 +1,9 @@
 <div id="gameContainer" ng-controller="gameController">
-    <button class="btn btn-default" ng-click="open()">Open me!</button>
+  <!--  <button class="btn btn-default" ng-click="open()">Open me!</button>
     <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
     <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-    <a href="/newindex"> To new page</a>
+    <a href="/newindex"> To new page</a>   -->
+    <a href="/#/games"> Admin games </a>
     <div ng-show="selected">Selection from a modal: {{ selected }}</div>
 
     <h2><timer auto-start="false" max-time-unit="'second'" countdown="countdown" interval="1000">{{seconds}}</timer></h2>
@@ -20,7 +21,7 @@
         </thead>
         <tr>
             <td><select ng-model="game.season">
-                <option ng-repeat="i in SEASONS track by $index" value="{{$index + 2}}">{{i}}</option>
+                <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
             </select></td>
             <td><p class="input-group datepicker-group">
                 <input type="text" class="form-control" datepicker-popup="{{gameDate.format}}" ng-model="gameDate.data"
@@ -84,7 +85,7 @@
     <button ng-click="addNewPlayer(newPlayer)">Add New Player</button>
     <br><br>
     <select ng-model="ratingSeason">
-        <option ng-repeat="i in RATING_SEASONS track by $index" value="{{$index}}">{{i}}</option>
+        <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
     </select>
     <button ng-click="showRating(ratingSeason)">Show Rating</button>
     <table><tr ng-repeat="i in ratingStrings"><td style="text-align:left">{{i}}</td></tr></table>

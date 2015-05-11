@@ -1,14 +1,8 @@
 package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.entity.Game;
-import com.tyhyidon.faust.game.entity.Member;
-import com.tyhyidon.faust.game.entity.Player;
-import com.tyhyidon.faust.game.entity.enums.Result;
-import com.tyhyidon.faust.game.model.RatingSnapshot;
-import com.tyhyidon.faust.game.rating.RatingCalculator;
+import com.tyhyidon.faust.game.entity.enums.Season;
 import com.tyhyidon.faust.game.repositories.GameRepository;
-import com.tyhyidon.faust.game.repositories.MemberRepository;
-import com.tyhyidon.faust.game.repositories.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +22,21 @@ public class GameServiceImpl {
     @Autowired
     private GameRepository gameRepository;
 
-    public Game add(Game game) {
-        game.getPlayers().stream().forEach(p -> p.setGame(game));
+    public Game addUpdate(Game game) {
+        Optional.ofNullable(game.getPlayers()).ifPresent(v -> v.stream().forEach(p -> p.setGame(game)));
         return gameRepository.save(game);
+    }
+
+    public List<Game> findBySeason(Season season) {
+        return StreamSupport.stream(gameRepository.findBySeason(season).spliterator(), true).collect(toList());
     }
 
     public Game find(long id) {
         return gameRepository.findOne(id);
     }
 
-    public void remove(Game game) {
-        gameRepository.delete(game);
+    public void remove(long gameId) {
+        gameRepository.delete(gameId);
     }
 
     public long amount() {

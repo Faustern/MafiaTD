@@ -1,7 +1,10 @@
 package com.tyhyidon.faust.game.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tyhyidon.faust.game.entity.enums.Result;
+import com.tyhyidon.faust.game.entity.enums.Season;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,11 +25,12 @@ public class Game {
 
     private Result result;
 
-    private int season;
+    private Season season;
 
     private String master;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "game")
     private List<Player> players;
 
     public Game() {
@@ -68,18 +72,20 @@ public class Game {
         this.master = master;
     }
 
-    public int getSeason() {
+    public Season getSeason() {
         return season;
     }
 
-    public void setSeason(int season) {
+    public void setSeason(Season season) {
         this.season = season;
     }
 
+    @JsonIgnore
     public List<Player> getPlayers() {
         return players;
     }
 
+    @JsonProperty
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
