@@ -17,8 +17,6 @@ public class ApplicationWeb extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
-        registry.addViewController("/index").setViewName("index");
-        registry.addViewController("/newindex").setViewName("newindex");
         registry.addViewController("/login").setViewName("login");
     }
 
@@ -32,8 +30,6 @@ public class ApplicationWeb extends WebMvcConfigurerAdapter {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ApplicationWeb.class, args);
     }
-
-
 
 }
 
