@@ -75,7 +75,7 @@ public class MafiaController {
     }
 
     @RequestMapping(value = {"/rating"})
-    public List<RatingSnapshot> getRating(@RequestParam int season) {
+    public List<RatingSnapshot> getRating(@RequestParam Season season) {
         return playerService.showRating(season);
     }
 

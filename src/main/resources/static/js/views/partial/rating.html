@@ -1,1 +1,3 @@
-<div>not yet implemented</div>
+<select ng-model="season" required ng-options='option for option in SEASONS'></select>
+<button ng-click="showRating(season)">Show Rating</button>
+<table><tr ng-repeat="i in ratingStrings"><td style="text-align:left">{{i}}</td></tr></table>

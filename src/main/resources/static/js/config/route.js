@@ -7,48 +7,53 @@
 
             var resolvePath = function(type, filename) {
                 switch (type) {
-                    case "base":
+                    case 'base':
                         return view + filename + ".html";
-                    case "partial":
-                        return view + "partial/" + filename + ".html";
-                    case "partialModal":
-                        return view + "partial/modal/" + filename + ".html";
+                    case 'partial':
+                        return view + 'partial/' + filename + '.html';
+                    case 'partialModal':
+                        return view + 'partial/modal/' + filename + '.html';
                 }
             };
 
             $stateProvider
-                .state("admin", {
-                    url: "/admin",
+                .state('admin', {
+                    url: '/admin',
                     views: {
                         '@': {
-                            templateUrl: resolvePath("base","admin")
+                            templateUrl: resolvePath('base', 'admin')
                         },
                         'game@admin': {
-                            templateUrl: resolvePath("partial", "game")
+                            templateUrl: resolvePath('partial', 'game'),
+                            controller: 'gameController'
                         },
                         'games@admin': {
-                            templateUrl: resolvePath("partial","games")
+                            templateUrl: resolvePath('partial', 'games'),
+                            controller: 'gamesController'
                         },
                         'members@admin': {
-                            templateUrl: resolvePath("partial","members")
+                            templateUrl: resolvePath('partial', 'members'),
+                            controller: 'membersController'
                         },
                         'rating@admin': {
-                            templateUrl: resolvePath("partial","rating")
+                            templateUrl: resolvePath('partial', 'rating'),
+                            controller: 'ratingController'
                         },
                         'statistics@admin': {
-                            templateUrl: resolvePath("partial","statistics")
+                            templateUrl: resolvePath('partial', 'statistics'),
+                            controller: 'statisticsController'
                         }
                     }
                 })
-                .state("test", {
-                    url: "/index",
+                .state('test', {
+                    url: '/index',
                     views: {
                         '@': {
-                            templateUrl: resolvePath("base","index")
+                            templateUrl: resolvePath('base', 'index')
                         }
                     }
                 });
-            $urlRouterProvider.otherwise("/admin");
+            $urlRouterProvider.otherwise('/admin');
         });
 })();
 

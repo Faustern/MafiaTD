@@ -1,5 +1,4 @@
-<div ng-controller="gameController">
-  <!--  <button class="btn btn-default" ng-click="open()">Open me!</button>
+<!--  <button class="btn btn-default" ng-click="open()">Open me!</button>
     <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
     <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
     <a href="/newindex"> To new page</a>   -->
@@ -80,12 +79,3 @@
             <td><label>{{rating[$index]}}</label></td>
         </tr>
     </table>
-    <input ng-model="newPlayer">
-    <button ng-click="addNewPlayer(newPlayer)">Add New Player</button>
-    <br><br>
-    <select ng-model="ratingSeason">
-        <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
-    </select>
-    <button ng-click="showRating(ratingSeason)">Show Rating</button>
-    <table><tr ng-repeat="i in ratingStrings"><td style="text-align:left">{{i}}</td></tr></table>
-</div>

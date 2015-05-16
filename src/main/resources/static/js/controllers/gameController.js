@@ -1,8 +1,8 @@
-angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
+angular.module('admin.controllers')
     .controller('gameController', function($scope, $modal, $log, httpService) {
 
         $scope.range = function (count, defaultValue) {
-            var array = Array.apply(null, new Array(count))
+            var array = Array.apply(null, new Array(count));
             switch(typeof defaultValue) {
                 case "undefined":
                     return array.map(String.prototype.valueOf, "");
@@ -107,33 +107,6 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
                 $scope.openWarningModal('Time Is out');
             }
         });
-
-        $scope.showRating = function(season) {
-            httpService.get("rating", {season: season},
-                function(results) {
-                    $scope.ratingStrings = [];
-                    angular.forEach(results, function (result, index) {
-                        var games = result.games;
-                        var rating = result.rating.toString().match('^[0-9]+[.]*[0-9]{0,2}')[0];
-                        var prefix = games > 10 ? index + 1 + '. ' : '';
-                        $scope.ratingStrings.push(
-                            prefix+'@'+result.vkontakte+' ('+result.nickname+')  '+rating+'% ('+games+')');
-                    });
-                }
-            );
-        };
-
-        $scope.addNewPlayer = function(player) {
-            httpService.post("member", player,
-                function() {
-                    $scope.ALL_PLAYERS.push(player);
-                    $scope.openInfoModal("Player successfully added!");
-                },
-                function(error) {
-                    $scope.openErrorModal("player FAILED to add;");
-                }
-            );
-        };
 
         $scope.validation = function() {
             $scope.uniqueNicknames = [];
@@ -262,6 +235,5 @@ angular.module('mafia.controllers',['customDirectives','timer','ui.bootstrap'])
                 $log.info('Modal dismissed at: ' + new Date());
             });
         };
-
 
     });

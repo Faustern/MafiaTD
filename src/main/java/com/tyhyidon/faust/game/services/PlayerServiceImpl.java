@@ -3,6 +3,7 @@ package com.tyhyidon.faust.game.services;
 import com.tyhyidon.faust.game.entity.Game;
 import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.enums.Result;
+import com.tyhyidon.faust.game.entity.enums.Season;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
 import com.tyhyidon.faust.game.rating.RatingCalculator;
 import com.tyhyidon.faust.game.repositories.PlayerRepository;
@@ -32,8 +33,9 @@ public class PlayerServiceImpl {
                 collect(toList());
     }
 
-    public List<RatingSnapshot> showRating(Integer season) {
-        return ratingCalculator.calculateSeasonRating((season != 0 ? playerRepository.findByGameSeason(season).
+    public List<RatingSnapshot> showRating(Season season) {
+        return ratingCalculator.calculateSeasonRating((!season.equals(Season.ALL) ?
+                playerRepository.findByGameSeason(season).
                 stream() : StreamSupport.stream(playerRepository.findAll().spliterator(), true))
                 .collect(groupingBy(Player::getMember)).values());
     }

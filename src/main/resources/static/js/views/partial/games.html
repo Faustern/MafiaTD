@@ -1,4 +1,7 @@
-<div ng-controller="gameTableController">
+<select ng-model="season" required ng-options='option for option in SEASONS'></select>
+<button ng-click="getGames(season)">Show Rating</button>
+
+
     <table ng-repeat="game in games track by $index" class="table table-striped table-hover">
         <tr>
             <td><label>{{$index + 1}}</label></td>
@@ -45,4 +48,3 @@
             </table>
         </td></tr>
     </table>
-</div>
