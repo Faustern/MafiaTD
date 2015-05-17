@@ -1,5 +1,6 @@
 angular.module('admin.controllers')
-        .controller('gamesController', function ($scope, $modal, httpService, modalService, rangeService) {
+        .controller('gamesController', function ($scope, $modal, httpService, modalService, rangeService,
+                                                 gameValidationService) {
 
             httpService.get('seasons', {}, function(result) {
                 $scope.SEASONS = result;
@@ -11,6 +12,7 @@ angular.module('admin.controllers')
             $scope.openWarningModal = modalService.openWarningModal;
             $scope.openErrorModal = modalService.openErrorModal;
             $scope.intRange = rangeService.intRange;
+            $scope.validation = gameValidationService.validate;
 
 
             $scope.PLAYERS_AMOUNT = 10;
@@ -42,8 +44,6 @@ angular.module('admin.controllers')
                 $scope.gameDate[index].isOpened = true;
             };
 
-            $scope.validationErrors = [];
-
             httpService.get('members', {}, function (result) {
                 $scope.ALL_PLAYERS = result;
             });
@@ -72,8 +72,8 @@ angular.module('admin.controllers')
             };
 
             $scope.saveGame = function (game) {
-                $scope.validation(game);
-                if ($scope.validationErrors.length == 0) {
+                var validationErrors = $scope.validation(game, $scope.ALL_PLAYERS);
+                if (validationErrors.length == 0) {
                     httpService.post("game", game,
                         function () {
                             $scope.openInfoModal('game successfully saved!');
@@ -83,8 +83,7 @@ angular.module('admin.controllers')
                         }
                     );
                 } else {
-                    $scope.openErrorModal($scope.validationErrors);
-                    $scope.validationErrors = [];
+                    $scope.openErrorModal(validationErrors);
                 }
             };
 
@@ -104,52 +103,5 @@ angular.module('admin.controllers')
                 );
             };
 
-            $scope.validation = function (game) {
-                $scope.uniqueNicknames = [];
-                $scope.uniqueNicknamesNumbers = [];
-                $scope.duplicates = [];
-                $scope.duplicateNumbers = [];
-
-                angular.forEach(game.players, function (player, number) {
-                    $scope.checkNickname(player.member.nickname, number);
-                });
-
-                angular.forEach($scope.duplicates, function (duplicate, index) {
-                    $scope.validationErrors.push('Players ' + $scope.duplicateNumbers[index] + ' have the same nickname: "' +
-                    duplicate + '"');
-                });
-                $scope.checkMaster(game.master);
-            };
-
-            $scope.checkNickname = function (nickname, number) {
-                number++;
-                if (nickname == null || nickname == "") {
-                    $scope.validationErrors.push('Nickname field for player ' + number + ' is empty');
-                } else if ($scope.ALL_PLAYERS.indexOf(nickname) == -1) {
-                    $scope.validationErrors.push('Player number ' + number + ': there are no no player with nickname "' +
-                    nickname + '"');
-                } else if ($scope.uniqueNicknames.indexOf(nickname) != -1) {
-                    if ($scope.duplicates.indexOf(nickname) == -1) {
-                        $scope.duplicates.push(nickname);
-                        $scope.duplicateNumbers.push([$scope.uniqueNicknamesNumbers[$scope.uniqueNicknames.indexOf(nickname)], number]);
-                    } else {
-                        $scope.duplicateNumbers[$scope.duplicates.indexOf(nickname)].push(number);
-                    }
-                } else {
-                    $scope.uniqueNicknames.push(nickname);
-                    $scope.uniqueNicknamesNumbers.push(number);
-                }
-            };
-
-            $scope.checkMaster = function (master) {
-                if (master == null || master == "") {
-                    $scope.validationErrors.push('Master field is empty');
-                } else if ($scope.ALL_PLAYERS.indexOf(master) == -1) {
-                    $scope.validationErrors.push('Master field: There are no player with nickname "' + master + '"!');
-                } else if ($scope.uniqueNicknames.indexOf(master) != -1) {
-                    $scope.validationErrors.push('Master field: "' + master + '" could not be player  number ' +
-                    ($scope.uniqueNicknames.indexOf(master) + 1) + ' and master');
-                }
-            };
         });
 

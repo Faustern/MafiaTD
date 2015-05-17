@@ -43,7 +43,7 @@
                     <td><select ng-model="player.life" required ng-options='option for option in LIVES'></select></td>
                     <td><select ng-model="player.bestVoices" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
                     <td><select ng-model="player.finalDecision" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
-                    <td><select ng-model="player.fouls" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
+                    <td><select ng-model="player.fouls" required ng-options='option for option in intRange(MAX_FOULS_AMOUNT)'></select></td>
                 </tr>
             </table>
         </td></tr>

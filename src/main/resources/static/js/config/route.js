@@ -42,6 +42,9 @@
                         'statistics@admin': {
                             templateUrl: resolvePath('partial', 'statistics'),
                             controller: 'statisticsController'
+                        },
+                        'gameTable@admin': {
+                            templateUrl: resolvePath('partial', 'gameTable')
                         }
                     }
                 })

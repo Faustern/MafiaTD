@@ -1,0 +1,22 @@
+<table class="table table-striped table-hover">
+    <thead>
+    <th>Number</th>
+    <th>NickName</th>
+    <th>Role</th>
+    <th>Life</th>
+    <th>Best Voices</th>
+    <th>Final Decision</th>
+    <th>Fouls</th>
+    <th>Rating</th>
+    </thead>
+    <tr ng-repeat="player in game.players track by $index">
+        <td>{{$index+1}}</td>
+        <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="player.member.nickname"></td>
+        <td><select ng-model="player.role" required ng-options='option for option in ROLES'></select></td>
+        <td><select ng-model="player.life" required ng-options='option for option in LIVES'></select></td>
+        <td><select ng-model="player.bestVoices" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
+        <td><select ng-model="player.finalDecision" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
+        <td><select ng-model="player.fouls" required ng-options='option for option in intRange(MAX_FOULS_AMOUNT)'></select></td>
+        <td><label>{{rating[$index]}}</label></td>
+    </tr>
+</table>
