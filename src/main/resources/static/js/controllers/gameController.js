@@ -2,6 +2,7 @@ angular.module('admin.controllers')
     .controller('gameController', function($scope, $modal, $log, httpService, modalService, rangeService,
                                            gameValidationService) {
 
+        $scope.masterGame = true;
         $scope.intRange = rangeService.intRange;
         $scope.range = rangeService.range;
         $scope.openInfoModal = modalService.openInfoModal;
@@ -33,7 +34,7 @@ angular.module('admin.controllers')
         $scope.rating = $scope.range($scope.PLAYERS_AMOUNT);
 
         httpService.get('members', {}, function(result) {
-            $scope.ALL_PLAYERS = result;
+            $scope.ALL_MEMBERS = result;
         });
 
         httpService.get('results', {}, function(result) {
@@ -58,19 +59,6 @@ angular.module('admin.controllers')
             $scope.SEASONS = result;
         });
 
-        $scope.accusations = [];
-        $scope.addAccusation = function(){
-            $scope.accusations.push({ accuse: $scope.accuse, accused: $scope.accused});
-            $scope.accused = "";
-            $scope.accuse = "";
-        };
-        $scope.removeAccusation = function(){
-            $scope.accusations = $scope.accusations.slice(0, $scope.accusations.length - 1);
-        };
-        $scope.clearVoting = function(){
-            $scope.accusations = [];
-        };
-
         $scope.gameDate = {
             data: $.datepicker.formatDate("yy/mm/dd", new Date()),
             format:'yyyy/MM/dd',
@@ -87,27 +75,6 @@ angular.module('admin.controllers')
             $scope.gameDate.isOpened = true;
         };
 
-        $scope.timerRunning = false;
-
-        $scope.countdown = 60;
-        $scope.time = 60;
-        $scope.startTimer = function (time){
-            $scope.$broadcast('timer-set-countdown', time);
-            $scope.$broadcast('timer-start');
-            $scope.timerRunning  = true;
-        };
-
-        $scope.stopTimer = function (){
-            $scope.$broadcast('timer-stop');
-        };
-
-        $scope.$on('timer-stopped', function (event, data){
-            $scope.timerRunning = false;
-            if (data.millis == 0) {
-                $scope.openWarningModal('Time Is out');
-            }
-        });
-
         $scope.calculateRating = function() {
             httpService.post("rating", $scope.game,
                 function (results) {
@@ -119,7 +86,7 @@ angular.module('admin.controllers')
         };
 
         $scope.saveGame = function() {
-            var validationErrors = $scope.validation($scope.game, $scope.ALL_PLAYERS);
+            var validationErrors = $scope.validation($scope.game, $scope.ALL_MEMBERS);
             if (validationErrors.length == 0) {
                 httpService.post("game", $scope.game,
                     function () {

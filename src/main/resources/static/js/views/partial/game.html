@@ -1,54 +1,5 @@
-<!--  <button class="btn btn-default" ng-click="open()">Open me!</button>
-    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-    <a href="/newindex"> To new page</a>   -->
- <!--   <div ng-show="selected">Selection from a modal: {{ selected }}</div>-->
-
-    <h2><timer auto-start="false" max-time-unit="'second'" countdown="countdown" interval="1000">{{seconds}}</timer></h2>
-    <button ng-click="startTimer(60)">Start 60sec Timer</button>
-    <button ng-click="startTimer(30)">Start 30sec Timer</button>
-    <button ng-click="startTimer(time)">Start Timer</button>
-    <input type="text" ng-model="time">
-    <button ng-click="stopTimer()" ng-disabled="!timerRunning">Stop Timer</button>
-    <table class="table table-striped table-hover">
-        <tr><td>Accused</td><td ng-repeat="a in accusations" class="accusation">{{a.accused}}</td></tr>
-        <tr><td>Accuse</td><td ng-repeat="a in accusations" class="accusation">{{a.accuse}}</td></tr>
-        <tr><td>Voices</td><td ng-repeat="a in accusations"class="accusation"><input placeholder="Voices"></td></tr>
-    </table>
-    <input type="text" ng-model="accused" placeholder="Accused">
-    <input type="text" ng-model="accuse" placeholder="Accuse">
-    <button ng-click="addAccusation()">Add Accusation</button>
-    <button ng-click="removeAccusation()">Remove Accusation</button>
-    <button ng-click="clearVoting()">Clear Voting</button>
-
-<table class="table table-striped table-hover">
-    <thead>
-    <th>Season</th>
-    <th>Date</th>
-    <th>Result</th>
-    <th>Master</th>
-    </thead>
-    <tr>
-        <td><select ng-model="game.season">
-            <option ng-repeat="i in SEASONS track by $index" value="{{$index}}">{{i}}</option>
-        </select></td>
-        <td><p class="input-group datepicker-group">
-            <input type="text" class="form-control" datepicker-popup="{{gameDate.format}}" ng-model="gameDate.data"
-                   is-open="gameDate.isOpened" datepicker-options="gameDate.options"
-                   ng-required="true" close-text="Close" />
-                <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="openDatePicker($event)">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                </button></span>
-        </p></td>
-        <td><select ng-model="game.result">
-            <option ng-repeat="i in RESULTS track by $index" value="{{$index}}">{{i}}</option>
-        </select></td>
-        <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="game.master"></td>
-        <td><button ng-click="calculateRating()">Calculate Rating</button></td>
-        <td><button ng-click="saveGame()">Save To DB</button></td>
-    </tr>
-</table>
-
+<div ui-view="gameTimer"></div>
+<div ui-view="gameAccusation"></div>
 <div ui-view="gameTable"></div>
 
 

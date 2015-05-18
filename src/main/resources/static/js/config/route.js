@@ -43,6 +43,14 @@
                             templateUrl: resolvePath('partial', 'statistics'),
                             controller: 'statisticsController'
                         },
+                        'gameTimer@admin': {
+                            templateUrl: resolvePath('partial', 'gameTimer'),
+                            controller: 'gameTimerController'
+                        },
+                        'gameAccusation@admin': {
+                            templateUrl: resolvePath('partial', 'gameAccusation'),
+                            controller: 'gameAccusationController'
+                        },
                         'gameTable@admin': {
                             templateUrl: resolvePath('partial', 'gameTable')
                         }

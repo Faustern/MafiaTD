@@ -7,7 +7,7 @@ angular.module('admin.controllers')
                 $scope.season = $scope.SEASONS[$scope.SEASONS.length - 1];
             });
 
-
+            $scope.masterGame = false;
             $scope.openInfoModal = modalService.openInfoModal;
             $scope.openWarningModal = modalService.openWarningModal;
             $scope.openErrorModal = modalService.openErrorModal;
@@ -45,7 +45,7 @@ angular.module('admin.controllers')
             };
 
             httpService.get('members', {}, function (result) {
-                $scope.ALL_PLAYERS = result;
+                $scope.ALL_MEMBERS = result;
             });
 
             httpService.get('results', {}, function (result) {
@@ -71,8 +71,8 @@ angular.module('admin.controllers')
                     }) : game.players = [];
             };
 
-            $scope.saveGame = function (game) {
-                var validationErrors = $scope.validation(game, $scope.ALL_PLAYERS);
+            $scope.updateGame = function (game) {
+                var validationErrors = $scope.validation(game, $scope.ALL_MEMBERS);
                 if (validationErrors.length == 0) {
                     httpService.post("game", game,
                         function () {

@@ -1,22 +1,51 @@
 <table class="table table-striped table-hover">
-    <thead>
-    <th>Number</th>
-    <th>NickName</th>
-    <th>Role</th>
-    <th>Life</th>
-    <th>Best Voices</th>
-    <th>Final Decision</th>
-    <th>Fouls</th>
-    <th>Rating</th>
-    </thead>
-    <tr ng-repeat="player in game.players track by $index">
-        <td>{{$index+1}}</td>
-        <td><input auto-complete ui-items="ALL_PLAYERS" ng-model="player.member.nickname"></td>
-        <td><select ng-model="player.role" required ng-options='option for option in ROLES'></select></td>
-        <td><select ng-model="player.life" required ng-options='option for option in LIVES'></select></td>
-        <td><select ng-model="player.bestVoices" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
-        <td><select ng-model="player.finalDecision" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
-        <td><select ng-model="player.fouls" required ng-options='option for option in intRange(MAX_FOULS_AMOUNT)'></select></td>
-        <td><label>{{rating[$index]}}</label></td>
+    <tr>
+        <td ng-if="!masterGame"><label>{{$index + 1}}</label></td>
+        <td><select ng-model="game.season" required ng-options='option for option in SEASONS'></select></td>
+        <td><p class="input-group datepicker-group">
+            <input type="text" class="form-control"
+                   datepicker-popup="{{gameDate[$index].format}}"
+                   ng-model="game.date"
+                   is-open="gameDate[$index].isOpened"
+                   datepicker-options="gameDate[$index].options"
+                   ng-required="true"
+                   close-text="Close" />
+                <span class="input-group-btn"><button type="button" class="btn btn-default"
+                                                      ng-click="openDatePicker($event, $index)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button></span>
+        </p></td>
+        <td><select ng-model="game.result" required ng-options='option for option in RESULTS'></select></td>
+        <td><input auto-complete ui-items="ALL_MEMBERS" ng-model="game.master"></td>
+        <td ng-if="!masterGame"><button ng-click="showPlayers(game)">Show/Hide details</button></td>
+        <td ng-if="!masterGame"><button ng-click="updateGame(game)">Update Game</button></td>
+        <td ng-if="!masterGame"><button ng-click="deleteGame(game.id)">Delete Game</button></td>
+        <td ng-if="masterGame"><button ng-click="calculateRating()">Calculate Rating</button></td>
+        <td ng-if="masterGame"><button ng-click="saveGame()">Save To DB</button></td>
     </tr>
+    <tr ng-if="game.players != null && game.players.length > 0">
+        <td colspan="8">
+        <table class="table table-striped table-hover">
+            <thead>
+            <th>Number</th>
+            <th>NickName</th>
+            <th>Role</th>
+            <th>Life</th>
+            <th>Best Voices</th>
+            <th>Final Decision</th>
+            <th>Fouls</th>
+            <th ng-if="masterGame">Rating</th>
+            </thead>
+            <tr ng-repeat="player in game.players track by $index">
+                <td>{{$index+1}}</td>
+                <td><input auto-complete ui-items="ALL_MEMBERS" ng-model="player.member.nickname"></td>
+                <td><select ng-model="player.role" required ng-options='option for option in ROLES'></select></td>
+                <td><select ng-model="player.life" required ng-options='option for option in LIVES'></select></td>
+                <td><select ng-model="player.bestVoices" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
+                <td><select ng-model="player.finalDecision" required ng-options='option for option in intRange(PLAYERS_AMOUNT)'></select></td>
+                <td><select ng-model="player.fouls" required ng-options='option for option in intRange(MAX_FOULS_AMOUNT)'></select></td>
+                <td ng-if="masterGame"><label>{{rating[$index]}}</label></td>
+            </tr>
+        </table>
+    </td></tr>
 </table>

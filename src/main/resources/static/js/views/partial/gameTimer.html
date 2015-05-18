@@ -1,0 +1,6 @@
+<h2><timer auto-start="false" max-time-unit="'second'" countdown="countdown" interval="1000">{{seconds}}</timer></h2>
+<button ng-click="startTimer(60)">Start 60sec Timer</button>
+<button ng-click="startTimer(30)">Start 30sec Timer</button>
+<button ng-click="startTimer(time)">Start Timer</button>
+<input type="text" ng-model="time">
+<button ng-click="stopTimer()" ng-disabled="!timerRunning">Stop Timer</button>

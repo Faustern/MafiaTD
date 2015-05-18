@@ -1,0 +1,10 @@
+<table class="table table-striped table-hover">
+    <tr><td>Accused</td><td ng-repeat="a in accusations" class="accusation">{{a.accused}}</td></tr>
+    <tr><td>Accuse</td><td ng-repeat="a in accusations" class="accusation">{{a.accuse}}</td></tr>
+    <tr><td>Voices</td><td ng-repeat="a in accusations"class="accusation"><input placeholder="Voices"></td></tr>
+</table>
+<input type="text" ng-model="accused" placeholder="Accused">
+<input type="text" ng-model="accuse" placeholder="Accuse">
+<button ng-click="addAccusation()">Add Accusation</button>
+<button ng-click="removeAccusation()">Remove Accusation</button>
+<button ng-click="clearVoting()">Clear Voting</button>
