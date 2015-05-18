@@ -20,7 +20,6 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date date;
 
     private Result result;

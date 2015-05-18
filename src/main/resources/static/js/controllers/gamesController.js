@@ -1,32 +1,18 @@
 angular.module('admin.controllers')
         .controller('gamesController', function ($scope, $modal, httpService, modalService, rangeService,
-                                                 gameValidationService) {
-
-            httpService.get('seasons', {}, function(result) {
-                $scope.SEASONS = result;
-                $scope.season = $scope.SEASONS[$scope.SEASONS.length - 1];
-            });
+                                                 gameValidationService, gameService) {
 
             $scope.masterGame = false;
-            $scope.openInfoModal = modalService.openInfoModal;
-            $scope.openWarningModal = modalService.openWarningModal;
-            $scope.openErrorModal = modalService.openErrorModal;
             $scope.intRange = rangeService.intRange;
-            $scope.validation = gameValidationService.validate;
 
-
-            $scope.PLAYERS_AMOUNT = 10;
-            $scope.MAX_FOULS_AMOUNT = 4;
             $scope.games = [];
             $scope.gameDate = [];
-
             $scope.getGames = function(season) {
                 $scope.games = [];
                 httpService.get('games', {season: season}, function (results) {
-                    angular.forEach(results, function (result, index) {
+                    angular.forEach(results.slice().reverse(), function (result, index) {
                         $scope.games[index] = result;
                         $scope.gameDate[index] = {
-                            data: $.datepicker.formatDate("yy/mm/dd", new Date()),
                             format: 'yyyy/MM/dd',
                             isOpened: false,
                             options: {
@@ -44,24 +30,9 @@ angular.module('admin.controllers')
                 $scope.gameDate[index].isOpened = true;
             };
 
-            httpService.get('members', {}, function (result) {
-                $scope.ALL_MEMBERS = result;
-            });
-
-            httpService.get('results', {}, function (result) {
-                $scope.RESULTS = result;
-            });
-
-            httpService.get('seasons', {}, function (result) {
-                $scope.SEASONS = result;
-            });
-
-            httpService.get('roles', {}, function (result) {
-                $scope.ROLES = result;
-            });
-
-            httpService.get('lives', {}, function (result) {
-                $scope.LIVES = result;
+            gameService.parameters.then(function(result) {
+                $scope.params = result;
+                $scope.season = result.SEASONS[result.SEASONS.length - 1];
             });
 
             $scope.showPlayers = function (game) {
@@ -72,18 +43,18 @@ angular.module('admin.controllers')
             };
 
             $scope.updateGame = function (game) {
-                var validationErrors = $scope.validation(game, $scope.ALL_MEMBERS);
+                var validationErrors = gameValidationService.validate(game, $scope.params.ALL_MEMBERS);
                 if (validationErrors.length == 0) {
                     httpService.post("game", game,
                         function () {
-                            $scope.openInfoModal('game successfully saved!');
+                            modalService.openInfoModal('game successfully saved!');
                         },
                         function (error) {
-                            $scope.openErrorModal('game FAILED to save');
+                            modalService.openErrorModal('game FAILED to save');
                         }
                     );
                 } else {
-                    $scope.openErrorModal(validationErrors);
+                    modalService.openErrorModal(validationErrors);
                 }
             };
 
@@ -95,10 +66,10 @@ angular.module('admin.controllers')
                                 $scope.games.splice(index, 1);
                             }
                         });
-                        $scope.openInfoModal('game successfully deleted!');
+                        modalService.openInfoModal('game successfully deleted!');
                     },
                     function (error) {
-                        $scope.openErrorModal('game FAILED to delete');
+                        modalService.openErrorModal('game FAILED to delete');
                     }
                 );
             };

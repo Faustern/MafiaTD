@@ -146,4 +146,35 @@ angular.module('customServices',[])
                     .concat(checkMaster(game.master));
             }
         }
+    })
+    .factory('gameService', function($q, $http) {
+
+        var results = $q.defer();
+        var seasons = $q.defer();
+        var members = $q.defer();
+        var roles = $q.defer();
+        var lives = $q.defer();
+
+        $http.get('results').then(function(result) {results.resolve(result.data)});
+        $http.get('seasons').then(function(result) {seasons.resolve(result.data)});
+        $http.get('members').then(function(result) {members.resolve(result.data)});
+        $http.get('roles').then(function(result) {roles.resolve(result.data)});
+        $http.get('lives').then(function(result) {lives.resolve(result.data)});
+
+        return {
+            parameters: $q.all([results.promise, seasons.promise, members.promise, roles.promise, lives.promise]).then(
+                    function(result) {
+                        return {
+                            RESULTS: result[0],
+                            SEASONS: result[1],
+                            ALL_MEMBERS: result[2],
+                            ROLES: result[3],
+                            LIVES: result[4],
+                            PLAYERS_AMOUNT: 10,
+                            MAX_FOULS_AMOUNT: 4
+                        }
+                    }
+            )
+        }
+
     });
