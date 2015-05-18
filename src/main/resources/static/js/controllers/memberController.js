@@ -1,20 +1,33 @@
 angular.module('admin.controllers')
     .controller('membersController', function ($scope, httpService, modalService) {
 
-        $scope.openInfoModal = modalService.openInfoModal;
-        $scope.openWarningModal = modalService.openWarningModal;
-        $scope.openErrorModal = modalService.openErrorModal;
+        $scope.members = [];
+        $scope.getMembers = function() {
+            $scope.members = [];
+            httpService.get('members', {}, function (results) {
+                $scope.members = results;
+            });
+        };
 
-        $scope.addNewPlayer = function(player) {
-            httpService.post("member", player,
+        $scope.addMember = function(nickname, vkontakte) {
+            httpService.post("member", {nickname: nickname, vkontakte: vkontakte},
                 function() {
-                //    $scope.ALL_PLAYERS.push(player);
-                    $scope.openInfoModal("Player successfully added!");
+                    modalService.openInfoModal("Player successfully added!");
                 },
                 function(error) {
-                    $scope.openErrorModal("player FAILED to add;");
+                    modalService.openErrorModal("player FAILED to add;");
                 }
             );
         };
-        
+
+        $scope.updateMember = function (member) {
+            httpService.post("member", member,
+                function () {
+                    modalService.openInfoModal('member successfully updated!');
+                },
+                function (error) {
+                    modalService.openErrorModal('member FAILED to update');
+                }
+            );
+        }
     });

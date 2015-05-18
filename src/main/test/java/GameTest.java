@@ -43,7 +43,7 @@ public class GameTest {
     public void testAddRemoveMember() {
         Member stubMember = getStubMember("stubMember");
         long initialMemberAmount = memberService.amount();
-        memberService.add(stubMember);
+        memberService.addUpdate(stubMember);
         assertEquals(initialMemberAmount + 1, memberService.amount());
         Member dbStubMember = memberService.find("stubMember");
         assertNotNull(dbStubMember);
@@ -57,10 +57,10 @@ public class GameTest {
     public void testAddRemoveGame() {
         long initialPlayerAmount = playerService.amount();
         long initialGameAmount = gameService.amount();
-        Member dbStubMember = memberService.add(getStubMember("stubMember"));
+        Member dbStubMember = memberService.addUpdate(getStubMember("stubMember"));
         Game game = getStubGame(dbStubMember.getNickname(), new ArrayList<>());
         Iterable<Member> dbStubMembers = Stream.iterate(1, n -> n + 1).limit(10).
-                map(i -> memberService.add(getStubMember("stubMember" + i))).collect(toList());
+                map(i -> memberService.addUpdate(getStubMember("stubMember" + i))).collect(toList());
         dbStubMembers.forEach(m -> game.getPlayers().add(getStubPlayer(game, m)));
         Game dbStubGame = gameService.addUpdate(game);
         assertNotNull(dbStubGame);

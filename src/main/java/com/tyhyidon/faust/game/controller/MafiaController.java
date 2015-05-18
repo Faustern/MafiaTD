@@ -59,14 +59,19 @@ public class MafiaController {
         return Season.values();
     }
 
+    @RequestMapping(value = {"/memberNicknames"})
+    public List<String> getMemberNicknames() {
+        return memberService.allNicknames();
+    }
+
     @RequestMapping(value = {"/members"})
-    public List<String> getMembers() {
+    public List<Member> getMembers() {
         return memberService.all();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"/member"})
-    public void addMember(@RequestBody String nickname) {
-        memberService.add(new Member(nickname));
+    public void addMember(@RequestBody Member member) {
+        memberService.addUpdate(member);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"/rating"})

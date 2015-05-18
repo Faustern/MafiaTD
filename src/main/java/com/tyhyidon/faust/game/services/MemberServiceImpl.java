@@ -19,7 +19,7 @@ public class MemberServiceImpl {
     @Autowired
     private MemberRepository memberRepository;
 
-    public Member add(Member member) {
+    public Member addUpdate(Member member) {
         return memberRepository.save(member);
     }
 
@@ -35,8 +35,12 @@ public class MemberServiceImpl {
         return memberRepository.count();
     }
 
-    public List<String> all() {
+    public List<String> allNicknames() {
         return StreamSupport.stream(memberRepository.findAll().spliterator(), true).
                 map(Member::getNickname).collect(toList());
+    }
+
+    public List<Member> all() {
+        return StreamSupport.stream(memberRepository.findAll().spliterator(), true).collect(toList());
     }
 }
