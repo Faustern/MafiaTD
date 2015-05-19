@@ -34,7 +34,7 @@ public class MafiaController {
     @Autowired
     private MemberServiceImpl memberService;
 
-    
+
     @RequestMapping(value = {"/main"})
     public String main() {
         return "main";
