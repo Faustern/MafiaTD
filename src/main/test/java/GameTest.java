@@ -48,7 +48,7 @@ public class GameTest {
         Member dbStubMember = memberService.find("stubMember");
         assertNotNull(dbStubMember);
         assertEquals("stubMember", dbStubMember.getNickname());
-        memberService.remove(dbStubMember);
+        memberService.remove(dbStubMember.getNickname());
         assertEquals(initialMemberAmount, memberService.amount());
         assertNull(memberService.find("stubMember"));
     }
@@ -72,8 +72,8 @@ public class GameTest {
         gameService.remove(dbStubGame.getId());
         assertEquals(initialPlayerAmount, playerService.amount());
         assertEquals(initialGameAmount, gameService.amount());
-        dbStubMembers.forEach(memberService::remove);
-        memberService.remove(dbStubMember);
+        dbStubMembers.forEach(m -> memberService.remove(m.getNickname()));
+        memberService.remove(dbStubMember.getNickname());
     }
 
     @Test

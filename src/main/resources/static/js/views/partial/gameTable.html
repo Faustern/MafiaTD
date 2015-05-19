@@ -32,7 +32,7 @@
         <td><input auto-complete ui-items="ALL_MEMBERS" ng-model="game.master"></td>
         <td ng-if="!masterGame"><button ng-click="showPlayers(game)">Show/Hide details</button></td>
         <td ng-if="!masterGame"><button ng-click="updateGame(game)">Update Game</button></td>
-        <td ng-if="!masterGame"><button ng-click="deleteGame(game.id)">Delete Game</button></td>
+        <td ng-if="!masterGame"><button ng-click="deleteGame(game.id, $index)">Delete Game</button></td>
         <td ng-if="masterGame"><button ng-click="calculateRating()">Calculate Rating</button></td>
         <td ng-if="masterGame"><button ng-click="saveGame()">Save To DB</button></td>
     </tr>

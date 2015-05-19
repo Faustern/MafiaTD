@@ -1,6 +1,7 @@
 package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.entity.Member;
+import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class MemberServiceImpl {
         return memberRepository.findOne(nickname);
     }
 
-    public void remove(Member member) {
-        memberRepository.delete(member);
+    public void remove(String nickname) {
+        memberRepository.delete(nickname);
     }
 
     public long amount() {
@@ -42,5 +43,9 @@ public class MemberServiceImpl {
 
     public List<Member> all() {
         return StreamSupport.stream(memberRepository.findAll().spliterator(), true).collect(toList());
+    }
+
+    public int getMemberGameNumber(String nickname) {
+        return memberRepository.findOne(nickname).getPlayers().size();
     }
 }

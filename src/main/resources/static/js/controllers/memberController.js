@@ -12,6 +12,7 @@ angular.module('admin.controllers')
         $scope.addMember = function(nickname, vkontakte) {
             httpService.post("member", {nickname: nickname, vkontakte: vkontakte},
                 function() {
+                    $scope.members = [{nickname: nickname, vkontakte: vkontakte}].concat($scope.members);
                     modalService.openInfoModal("Player successfully added!");
                 },
                 function(error) {
@@ -29,5 +30,29 @@ angular.module('admin.controllers')
                     modalService.openErrorModal('member FAILED to update');
                 }
             );
-        }
+        };
+
+        $scope.deleteMember = function (nickname, index) {
+            httpService.get("member/games-number", {nickname: nickname},
+                function (number) {
+                    if (number> 0) {
+                        modalService.openErrorModal('Unable to delete ' + nickname + '. This member has already played ' +
+                            number + ' games');
+                    } else {
+                        httpService.delete("member", {nickname: nickname},
+                            function () {
+                                $scope.members.splice(index, 1);
+                                modalService.openInfoModal('member successfully deleted!');
+                            },
+                            function (error) {
+                                modalService.openErrorModal('member FAILED to delete');
+                            }
+                        );
+                    }
+                },
+                function (error) {
+                    modalService.openErrorModal('member FAILED to delete');
+                }
+            );
+        };
     });

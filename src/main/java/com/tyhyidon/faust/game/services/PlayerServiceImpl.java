@@ -36,7 +36,7 @@ public class PlayerServiceImpl {
     public List<RatingSnapshot> showRating(Season season) {
         return ratingCalculator.calculateSeasonRating((!season.equals(Season.ALL) ?
                 playerRepository.findByGameSeason(season).
-                stream() : StreamSupport.stream(playerRepository.findAll().spliterator(), true))
+                        stream() : StreamSupport.stream(playerRepository.findAll().spliterator(), true))
                 .collect(groupingBy(Player::getMember)).values());
     }
 
@@ -47,4 +47,5 @@ public class PlayerServiceImpl {
     public List<Player> getGamePlayers(long gameId) {
         return playerRepository.findByGameId(gameId);
     }
+
 }

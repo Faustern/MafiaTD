@@ -157,7 +157,7 @@ angular.module('customServices',[])
 
         $http.get('results').then(function(result) {results.resolve(result.data)});
         $http.get('seasons').then(function(result) {seasons.resolve(result.data)});
-        $http.get('memberNicknames').then(function(result) {members.resolve(result.data)});
+        $http.get('member-nicknames').then(function(result) {members.resolve(result.data)});
         $http.get('roles').then(function(result) {roles.resolve(result.data)});
         $http.get('lives').then(function(result) {lives.resolve(result.data)});
 

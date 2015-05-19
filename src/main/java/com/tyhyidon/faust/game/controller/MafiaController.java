@@ -59,7 +59,7 @@ public class MafiaController {
         return Season.values();
     }
 
-    @RequestMapping(value = {"/memberNicknames"})
+    @RequestMapping(value = {"/member-nicknames"})
     public List<String> getMemberNicknames() {
         return memberService.allNicknames();
     }
@@ -79,6 +79,11 @@ public class MafiaController {
         return playerService.calculateRating(game.getPlayers(), game.getResult());
     }
 
+    @RequestMapping(value = {"/member/games-number"})
+    public int getMemberGamesAmount(String nickname) {
+        return memberService.getMemberGameNumber(nickname);
+    }
+
     @RequestMapping(value = {"/rating"})
     public List<RatingSnapshot> getRating(@RequestParam Season season) {
         return playerService.showRating(season);
@@ -89,9 +94,9 @@ public class MafiaController {
         gameService.addUpdate(game);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = {"/game"})
-    public void removeGame(@RequestParam int gameId) {
-        gameService.remove(gameId);
+    @RequestMapping(method = RequestMethod.DELETE, value = {"/member"})
+    public void removeMember(@RequestParam String nickname) {
+        memberService.remove(nickname);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/games"})

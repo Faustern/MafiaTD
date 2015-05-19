@@ -58,14 +58,10 @@ angular.module('admin.controllers')
                 }
             };
 
-            $scope.deleteGame = function (id) {
+            $scope.deleteGame = function (id, index) {
                 httpService.delete("game", {gameId: id},
                     function () {
-                        angular.forEach($scope.games, function (game, index) {
-                            if (game.id == id) {
-                                $scope.games.splice(index, 1);
-                            }
-                        });
+                        $scope.games.splice(index, 1);
                         modalService.openInfoModal('game successfully deleted!');
                     },
                     function (error) {
