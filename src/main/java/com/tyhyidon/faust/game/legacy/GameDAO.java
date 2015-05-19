@@ -16,7 +16,7 @@ import javax.persistence.criteria.*;
 //@Transactional
 public class GameDAO {
 
-    private int forKickCommit;
+    private int forKickCommitt;
 
   /*  @PersistenceContext
     private EntityManager entityManager;
