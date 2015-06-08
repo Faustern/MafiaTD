@@ -1,6 +1,7 @@
 angular.module('admin.controllers')
     .controller('gameController', function($scope, $modal, $log, httpService, modalService, rangeService,
                                            gameValidationService, gameService) {
+
         $scope.masterGame = true;
         $scope.intRange = rangeService.intRange;
 

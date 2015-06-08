@@ -8,17 +8,18 @@ import com.tyhyidon.faust.game.entity.enums.Result;
 import com.tyhyidon.faust.game.entity.enums.Role;
 import com.tyhyidon.faust.game.entity.enums.Season;
 import com.tyhyidon.faust.game.model.RatingSnapshot;
+import com.tyhyidon.faust.game.model.statistics.MemberStatistics;
 import com.tyhyidon.faust.game.services.GameServiceImpl;
 import com.tyhyidon.faust.game.services.MemberServiceImpl;
 import com.tyhyidon.faust.game.services.PlayerServiceImpl;
+import com.tyhyidon.faust.game.services.StatisticsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Stack;
 
 @RestController
 public class MafiaController {
@@ -33,6 +34,9 @@ public class MafiaController {
 
     @Autowired
     private MemberServiceImpl memberService;
+
+    @Autowired
+    private StatisticsServiceImpl statisticsService;
 
 
     @RequestMapping(value = {"/main"})
@@ -100,6 +104,11 @@ public class MafiaController {
         memberService.remove(nickname);
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = {"/game"})
+    public void removeGame(@RequestParam long gameId) {
+        gameService.remove(gameId);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = {"/games"})
     public List<Game> getGames(@RequestParam Season season) {
         return gameService.findBySeason(season);
@@ -108,5 +117,10 @@ public class MafiaController {
     @RequestMapping(method = RequestMethod.GET, value = {"/players"})
     public List<Player> getGamePlayers(@RequestParam int gameId) {
         return playerService.getGamePlayers(gameId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = {"/statistics"})
+    public MemberStatistics getGamePlayers(@RequestParam String nickname, @RequestParam Season season) {
+        return statisticsService.getMemberStatistics(nickname, season);
     }
 }

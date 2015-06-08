@@ -7,6 +7,7 @@ angular.module('mafia', [
     'customServices',
     'main.controllers',
     'admin.controllers',
-    'ui.router'
+    'ui.router',
+    'chart.js'
 ]);
 

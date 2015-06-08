@@ -11,6 +11,9 @@ import java.util.List;
  * Created by vasylsavytskyi on 25.04.15.
  */
 public interface PlayerRepository extends CrudRepository<Player, Long> {
+
+    List<Player> findByMemberNicknameAndGameSeason(String nickname, Season season);
+
     List<Player> findByGameSeason(Season season);
 
     List<Player> findByGameId(long id);
