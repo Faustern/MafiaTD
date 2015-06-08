@@ -3,6 +3,7 @@
 <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
 
 <div style="width:400px; height:200px">
+    <select ng-model="positionRole" required ng-options='option for option in POSITION_ROLES'></select>
     <canvas id="positions" class="chart chart-bar" data="statistics.positions.data" labels="statistics.positions.labels"></canvas>
 </div>
 <div style="width:400px; height:200px">

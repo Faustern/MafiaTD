@@ -2,11 +2,15 @@ package com.tyhyidon.faust.game.model.statistics;
 
 import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.enums.Life;
+import com.tyhyidon.faust.game.entity.enums.Role;
 import com.tyhyidon.faust.game.utils.GamesUtils;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -25,6 +29,10 @@ public class LivesStatistics {
         games = players.stream().collect(byLifeCollector);
         winningGames = players.stream().filter(GamesUtils::isWin).collect(byLifeCollector);
         blackGames = players.stream().filter(GamesUtils::isBlack).collect(byLifeCollector);
+        Arrays.asList(Life.values()).stream().forEach(l -> {
+            games.putIfAbsent(l, 0L);
+            winningGames.putIfAbsent(l, 0L);
+        });
     }
 
     public Map<Life, Long> getGames() {

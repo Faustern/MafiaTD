@@ -4,10 +4,9 @@ import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.enums.Role;
 import com.tyhyidon.faust.game.utils.GamesUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -30,6 +29,16 @@ public class PositionsStatistics {
         winningGames = players.stream().filter(GamesUtils::isWin).collect(byPositionCollector);
         roleGames = players.stream().collect(byRoleAndPositonCollector);
         roleWinningGames = players.stream().filter(GamesUtils::isWin).collect(byRoleAndPositonCollector);
+        IntStream.range(1, 11).forEach(p -> {
+            games.putIfAbsent(p, 0L);
+            winningGames.putIfAbsent(p, 0L);
+            Arrays.asList(Role.values()).stream().forEach(r -> {
+                roleGames.putIfAbsent(r, new HashMap<>());
+                roleGames.get(r).putIfAbsent(p, 0L);
+                roleWinningGames.putIfAbsent(r, new HashMap<>());
+                roleWinningGames.get(r).putIfAbsent(p, 0L);
+            });
+        });
     }
 
     public Map<Integer, Long> getGames() {
