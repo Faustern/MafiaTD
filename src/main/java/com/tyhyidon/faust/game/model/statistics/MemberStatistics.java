@@ -16,37 +16,51 @@ public class MemberStatistics {
     private FoulsStatistics fouls;
     private ResultsStatistics results;
 
-    public MemberStatistics(List<Player> players) {
-        positions = new PositionsStatistics(players);
-        roles = new RolesStatistics(players);
-        lives = new LivesStatistics(players);
-        bestVoices = new BestVoicesStatistics(players);
-        fouls = new FoulsStatistics(players);
-        results = new ResultsStatistics(players);
-    }
-
     public PositionsStatistics getPositions() {
         return positions;
+    }
+
+    public void setPositions(PositionsStatistics positions) {
+        this.positions = positions;
     }
 
     public RolesStatistics getRoles() {
         return roles;
     }
 
+    public void setRoles(RolesStatistics roles) {
+        this.roles = roles;
+    }
+
     public LivesStatistics getLives() {
         return lives;
+    }
+
+    public void setLives(LivesStatistics lives) {
+        this.lives = lives;
     }
 
     public BestVoicesStatistics getBestVoices() {
         return bestVoices;
     }
 
+    public void setBestVoices(BestVoicesStatistics bestVoices) {
+        this.bestVoices = bestVoices;
+    }
+
     public FoulsStatistics getFouls() {
         return fouls;
+    }
+
+    public void setFouls(FoulsStatistics fouls) {
+        this.fouls = fouls;
     }
 
     public ResultsStatistics getResults() {
         return results;
     }
 
+    public void setResults(ResultsStatistics results) {
+        this.results = results;
+    }
 }

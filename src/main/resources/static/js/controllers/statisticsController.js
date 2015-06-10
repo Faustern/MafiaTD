@@ -8,7 +8,7 @@ angular.module('admin.controllers')
             $scope.SEASONS = result.SEASONS;
             $scope.ROLES = result.ROLES;
             $scope.POSITION_ROLES = ['ALL'].concat(result.ROLES);
-             $scope.positionRole = $scope.POSITION_ROLES[0];
+            $scope.positionRole = $scope.POSITION_ROLES[0];
             $scope.LIVES = result.LIVES;
             $scope.season = $scope.SEASONS[$scope.SEASONS.length - 1];
         });
@@ -24,37 +24,28 @@ angular.module('admin.controllers')
         };
 
         var showPositionsStatistics = function(positionsStatistics) {
-            $scope.statistics.positions['ALL'] = [[], []];
+            $scope.statistics.positions['ALL'] = [];
+            $scope.statistics.positions['ALL'].push(positionsStatistics.games);
+            $scope.statistics.positions['ALL'].push(positionsStatistics.winningGames);
             angular.forEach($scope.ROLES , function (role, index) {
-                $scope.statistics.positions[role] = [[], []];
+                $scope.statistics.positions[role] = [];
+                $scope.statistics.positions[role].push(positionsStatistics.roleGames[role]);
+                $scope.statistics.positions[role].push(positionsStatistics.roleWinningGames[role])
             });
-
-            angular.forEach(rangeService.range($scope.PLAYERS_AMOUNT) , function (item, position) {
-                $scope.statistics.positions['ALL'][0].push(positionsStatistics.games[position +1]);
-                $scope.statistics.positions['ALL'][1].push(positionsStatistics.winningGames[position + 1]);
-                angular.forEach($scope.ROLES , function (role, index) {
-                    $scope.statistics.positions[role][0].push(positionsStatistics.roleGames[role][position +1]);
-                    $scope.statistics.positions[role][1].push(positionsStatistics.roleWinningGames[role][position +1])
-                });
-                $scope.statistics.positions.labels.push(position + 1);
-            });
+            $scope.statistics.positions.labels = [1,2,3,4,5,6,7,8,9,10];
             $scope.positionRole == 'ALL' ? changePositionData() : $scope.positionRole = 'ALL';
         };
 
         var showRolesStatistics = function(rolesStatistics) {
-            angular.forEach($scope.ROLES , function (role, index) {
-                $scope.statistics.roles.data[0].push(rolesStatistics.games[role]);
-                $scope.statistics.roles.data[1].push(rolesStatistics.winningGames[role]);
-                $scope.statistics.roles.labels.push(role)
-            });
+            $scope.statistics.roles.data.push(rolesStatistics.games);
+            $scope.statistics.roles.data.push(rolesStatistics.winningGames);
+            $scope.statistics.roles.labels = $scope.ROLES;
         };
 
         var showLivesStatistics = function(livesStatistics) {
-            angular.forEach($scope.LIVES , function (life, index) {
-                $scope.statistics.lives.data[0].push(livesStatistics.games[life]);
-                $scope.statistics.lives.data[1].push(livesStatistics.winningGames[life]);
-                $scope.statistics.lives.labels.push(life)
-            });
+            $scope.statistics.lives.data.push(livesStatistics.games);
+            $scope.statistics.lives.data.push(livesStatistics.winningGames);
+            $scope.statistics.lives.labels = $scope.LIVES;
         };
 
         var changePositionData = function() {
@@ -68,15 +59,15 @@ angular.module('admin.controllers')
         var resetStatistics = function() {
             $scope.statistics = {
                 positions: {
-                    data: [[], []],
+                    data: [],
                     labels: []
                 },
                 roles: {
-                    data: [[], []],
+                    data: [],
                     labels: []
                 },
                 lives: {
-                    data: [[], []],
+                    data: [],
                     labels: []
                 }
             };

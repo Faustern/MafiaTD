@@ -120,7 +120,7 @@ public class MafiaController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/statistics"})
-    public MemberStatistics getGamePlayers(@RequestParam String nickname, @RequestParam Season season) {
+    public MemberStatistics getGamePlayers(@RequestParam String nickname, @RequestParam Season season) throws IllegalAccessException, InstantiationException {
         return statisticsService.getMemberStatistics(nickname, season);
     }
 }

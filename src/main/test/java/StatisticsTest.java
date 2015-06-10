@@ -19,7 +19,7 @@ public class StatisticsTest {
     StatisticsServiceImpl statisticsService;
 
     @Test
-    public void stubTest() {
+    public void stubTest() throws IllegalAccessException, InstantiationException {
         MemberStatistics memberStatistics = statisticsService.getMemberStatistics("Амахонда", Season.WINTER_13_14);
         memberStatistics.getBestVoices();
     }
