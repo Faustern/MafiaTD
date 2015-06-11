@@ -7,6 +7,7 @@ public class BaseStatistics {
 
     private List<Long> all = new ArrayList<>();
     private List<Long> wins = new ArrayList<>();
+    private List<Long> clearWins = new ArrayList<>();
 
     public List<Long> getAll() {
         return all;
@@ -22,5 +23,13 @@ public class BaseStatistics {
 
     public void setWins(List<Long> wins) {
         this.wins = wins;
+    }
+
+    public List<Long> getClearWins() {
+        return clearWins;
+    }
+
+    public void setClearWins(List<Long> clearWins) {
+        this.clearWins = clearWins;
     }
 }

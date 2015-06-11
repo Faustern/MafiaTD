@@ -30,6 +30,26 @@ public class GamesUtils {
         return false;
     }
 
+    public static boolean isClearWin(Player player) {
+        Result result = player.getGame().getResult();
+        switch (player.getRole()) {
+            case CITIZEN:
+            case SHERIFF:
+                switch (result) {
+                    case CITY_CLEAR:
+                        return true;
+                }
+                break;
+            case MAFIA:
+            case DON:
+                switch (result) {
+                    case MAFIA_CLEAR:
+                        return true;
+                }
+        }
+        return false;
+    }
+
     public static boolean isBlack(Player player) {
         switch (player.getRole()) {
             case MAFIA:

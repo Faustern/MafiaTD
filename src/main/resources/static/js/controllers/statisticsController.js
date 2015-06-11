@@ -29,20 +29,20 @@ angular.module('admin.controllers')
         };
 
         var showBaseByRoleStatistics = function(choice, chart, data, labels) {
-            chart['ALL'] = [];
-            chart['ALL'].push(data.all);
-            chart['ALL'].push(data.wins);
+            showBaseStatistics(chart, data, labels);
+            chart['ALL'] = chart.data;
             angular.forEach($scope.ROLES , function (role, index) {
                 chart[role] = [];
                 chart[role].push(data.allByRole[role]);
-                chart[role].push(data.winsByRole[role])
+                chart[role].push(data.winsByRole[role]);
+                chart[role].push(data.clearWinsByRole[role]);
             });
-            chart.labels = labels;
         };
 
         var showBaseStatistics = function(chart, data, labels) {
             chart.data.push(data.all);
             chart.data.push(data.wins);
+            chart.data.push(data.clearWins);
             chart.labels = labels;
         };
 

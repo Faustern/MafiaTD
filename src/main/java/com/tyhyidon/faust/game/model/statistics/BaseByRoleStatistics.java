@@ -12,6 +12,7 @@ public class BaseByRoleStatistics extends BaseStatistics {
 
     private Map<Role, List<Long>> allByRole;
     private Map<Role, List<Long>> winsByRole;
+    private Map<Role, List<Long>> clearWinsByRole;
 
     public Map<Role, List<Long>> getAllByRole() {
         return allByRole;
@@ -27,5 +28,13 @@ public class BaseByRoleStatistics extends BaseStatistics {
 
     public void setWinsByRole(Map<Role, List<Long>> winsByRole) {
         this.winsByRole = winsByRole;
+    }
+
+    public Map<Role, List<Long>> getClearWinsByRole() {
+        return clearWinsByRole;
+    }
+
+    public void setClearWinsByRole(Map<Role, List<Long>> clearWinsByRole) {
+        this.clearWinsByRole = clearWinsByRole;
     }
 }

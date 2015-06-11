@@ -42,7 +42,7 @@ public class StatisticsServiceImpl {
         List<Player> players = playerRepository.findByMemberNicknameAndGameSeason(nickname, season);
         MemberStatistics memberStatistics = new MemberStatistics();
         Integer[] range = new Integer[PLAYER_AMOUNT];
-        memberStatistics.setPositions((PositionsStatistics)getBaseByRoleStatistics(
+        memberStatistics.setPositions((PositionsStatistics) getBaseByRoleStatistics(
                 players, byPositionCollector, byRoleAndPositonCollector,
                 IntStream.rangeClosed(1, PLAYER_AMOUNT - 1).boxed().collect(toList()).toArray(range),
                 PositionsStatistics.class));
@@ -61,21 +61,27 @@ public class StatisticsServiceImpl {
             throws IllegalAccessException, InstantiationException {
         Map<Role, List<Long>> allByRole = new HashMap<>();
         Map<Role, List<Long>> winsByRole = new HashMap<>();
+        Map<Role, List<Long>> clearWinsByRole = new HashMap<>();
         Map<Role, Map<T, Long>> allByRoleMap = players.stream().collect(byRoleCollector);
         Map<Role, Map<T, Long>> winsByRoleMap =
                 players.stream().filter(GamesUtils::isWin).collect(byRoleCollector);
+        Map<Role, Map<T, Long>> clearWinsByRoleMap =
+                players.stream().filter(GamesUtils::isClearWin).collect(byRoleCollector);
         Arrays.asList(factorArray).stream().forEach(f -> {
             Arrays.asList(Role.values()).stream().forEach(r -> {
                 allByRole.putIfAbsent(r, new ArrayList<>());
                 allByRole.get(r).add(allByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
                 winsByRole.putIfAbsent(r, new ArrayList<>());
                 winsByRole.get(r).add(winsByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
+                clearWinsByRole.putIfAbsent(r, new ArrayList<>());
+                clearWinsByRole.get(r).add(winsByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
             });
         });
         BaseByRoleStatistics baseByRoleStatistics =
                 (BaseByRoleStatistics)getBaseStatistics(players, collector, factorArray, clazz);
         baseByRoleStatistics.setAllByRole(allByRole);
         baseByRoleStatistics.setWinsByRole(winsByRole);
+        baseByRoleStatistics.setClearWinsByRole(clearWinsByRole);
         return baseByRoleStatistics;
     }
 
@@ -84,15 +90,19 @@ public class StatisticsServiceImpl {
             Class<? extends BaseStatistics> clazz) throws IllegalAccessException, InstantiationException {
         List<Long> all = new ArrayList<>();
         List<Long> wins = new ArrayList<>();
+        List<Long> clearWins = new ArrayList<>();
         Map<T, Long> allMap = players.stream().collect(collector);
         Map<T, Long> winsMap = players.stream().filter(GamesUtils::isWin).collect(collector);
+        Map<T, Long> clearWinsMap = players.stream().filter(GamesUtils::isClearWin).collect(collector);
         Arrays.asList(factorArray).stream().forEach(f -> {
             all.add(allMap.getOrDefault(f, 0L));
             wins.add(winsMap.getOrDefault(f, 0L));
+            clearWins.add(clearWinsMap.getOrDefault(f, 0L));
         });
         BaseStatistics baseStatistics = clazz.newInstance();
         baseStatistics.setAll(all);
         baseStatistics.setWins(wins);
+        baseStatistics.setClearWins(clearWins);
         return baseStatistics;
     }
 
