@@ -7,6 +7,7 @@ angular.module('admin.controllers')
             $scope.PLAYERS_AMOUNT = result.PLAYERS_AMOUNT;
             $scope.SEASONS = result.SEASONS;
             $scope.ROLES = result.ROLES;
+            $scope.RESULTS = result.RESULTS;
             $scope.ALL_WITH_ROLES = ['ALL'].concat(result.ROLES);
             $scope.positionRole = $scope.ALL_WITH_ROLES[0];
             $scope.lifeRole = $scope.ALL_WITH_ROLES[0];
@@ -22,6 +23,7 @@ angular.module('admin.controllers')
                         memberStatistics.positions, [1,2,3,4,5,6,7,8,9,10]);
                     showBaseStatistics($scope.statistics.roles, memberStatistics.roles, $scope.ROLES);
                     showBaseByRoleStatistics($scope.lifeRole, $scope.statistics.lives, memberStatistics.lives, $scope.LIVES);
+                    showBaseStatistics($scope.statistics.results, memberStatistics.results, $scope.RESULTS);
                     switchToAll();
                 });
         };
@@ -80,6 +82,10 @@ angular.module('admin.controllers')
                     labels: []
                 },
                 lives: {
+                    data: [],
+                    labels: []
+                },
+                results: {
                     data: [],
                     labels: []
                 }

@@ -2,6 +2,7 @@ package com.tyhyidon.faust.game.services;
 
 import com.tyhyidon.faust.game.entity.Player;
 import com.tyhyidon.faust.game.entity.enums.Life;
+import com.tyhyidon.faust.game.entity.enums.Result;
 import com.tyhyidon.faust.game.entity.enums.Role;
 import com.tyhyidon.faust.game.entity.enums.Season;
 import com.tyhyidon.faust.game.model.statistics.*;
@@ -30,6 +31,8 @@ public class StatisticsServiceImpl {
     private Collector<Player, ?, Map<Integer, Long>> byPositionCollector = groupingBy(Player::getNumber, counting());
     private Collector<Player, ?, Map<Role, Map<Integer, Long>>> byRoleAndPositonCollector =
             groupingBy(Player::getRole, byPositionCollector);
+    private Collector<Player, ?, Map<Result, Long>> byResultCollector =
+            groupingBy(p -> p.getGame().getResult(), counting());
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -43,10 +46,12 @@ public class StatisticsServiceImpl {
                 players, byPositionCollector, byRoleAndPositonCollector,
                 IntStream.rangeClosed(1, PLAYER_AMOUNT - 1).boxed().collect(toList()).toArray(range),
                 PositionsStatistics.class));
-        memberStatistics.setRoles((RolesStatistics)getBaseStatistics(
+        memberStatistics.setRoles((RolesStatistics) getBaseStatistics(
                 players, byRoleCollector, Role.values(), RolesStatistics.class));
-        memberStatistics.setLives((LivesStatistics)getBaseByRoleStatistics(
+        memberStatistics.setLives((LivesStatistics) getBaseByRoleStatistics(
                 players, byLifeCollector, byRoleAndLifeCollector, Life.values(), LivesStatistics.class));
+        memberStatistics.setResults((ResultsStatistics) getBaseStatistics(
+                players, byResultCollector, Result.values(), ResultsStatistics.class));
         return memberStatistics;
     }
 
