@@ -5,22 +5,22 @@ import java.util.List;
 
 public class BaseStatistics {
 
-    private List<Long> games = new ArrayList<>();
-    private List<Long> winningGames = new ArrayList<>();
+    private List<Long> all = new ArrayList<>();
+    private List<Long> wins = new ArrayList<>();
 
-    public List<Long> getGames() {
-        return games;
+    public List<Long> getAll() {
+        return all;
     }
 
-    public void setGames(List<Long> games) {
-        this.games = games;
+    public void setAll(List<Long> all) {
+        this.all = all;
     }
 
-    public List<Long> getWinningGames() {
-        return winningGames;
+    public List<Long> getWins() {
+        return wins;
     }
 
-    public void setWinningGames(List<Long> winningGames) {
-        this.winningGames = winningGames;
+    public void setWins(List<Long> wins) {
+        this.wins = wins;
     }
 }

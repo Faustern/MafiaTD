@@ -7,8 +7,9 @@ angular.module('admin.controllers')
             $scope.PLAYERS_AMOUNT = result.PLAYERS_AMOUNT;
             $scope.SEASONS = result.SEASONS;
             $scope.ROLES = result.ROLES;
-            $scope.POSITION_ROLES = ['ALL'].concat(result.ROLES);
-            $scope.positionRole = $scope.POSITION_ROLES[0];
+            $scope.ALL_WITH_ROLES = ['ALL'].concat(result.ROLES);
+            $scope.positionRole = $scope.ALL_WITH_ROLES[0];
+            $scope.lifeRole = $scope.ALL_WITH_ROLES[0];
             $scope.LIVES = result.LIVES;
             $scope.season = $scope.SEASONS[$scope.SEASONS.length - 1];
         });
@@ -17,44 +18,56 @@ angular.module('admin.controllers')
             resetStatistics();
             httpService.get("statistics", {nickname: nickname, season: season},
                 function(memberStatistics) {
-                    showPositionsStatistics(memberStatistics.positions);
-                    showRolesStatistics(memberStatistics.roles);
-                    showLivesStatistics(memberStatistics.lives);
+                    showBaseByRoleStatistics($scope.positionRole, $scope.statistics.positions,
+                        memberStatistics.positions, [1,2,3,4,5,6,7,8,9,10]);
+                    showBaseStatistics($scope.statistics.roles, memberStatistics.roles, $scope.ROLES);
+                    showBaseByRoleStatistics($scope.lifeRole, $scope.statistics.lives, memberStatistics.lives, $scope.LIVES);
+                    switchToAll();
                 });
         };
 
-        var showPositionsStatistics = function(positionsStatistics) {
-            $scope.statistics.positions['ALL'] = [];
-            $scope.statistics.positions['ALL'].push(positionsStatistics.games);
-            $scope.statistics.positions['ALL'].push(positionsStatistics.winningGames);
+        var showBaseByRoleStatistics = function(choice, chart, data, labels) {
+            chart['ALL'] = [];
+            chart['ALL'].push(data.all);
+            chart['ALL'].push(data.wins);
             angular.forEach($scope.ROLES , function (role, index) {
-                $scope.statistics.positions[role] = [];
-                $scope.statistics.positions[role].push(positionsStatistics.roleGames[role]);
-                $scope.statistics.positions[role].push(positionsStatistics.roleWinningGames[role])
+                chart[role] = [];
+                chart[role].push(data.allByRole[role]);
+                chart[role].push(data.winsByRole[role])
             });
-            $scope.statistics.positions.labels = [1,2,3,4,5,6,7,8,9,10];
-            $scope.positionRole == 'ALL' ? changePositionData() : $scope.positionRole = 'ALL';
+            chart.labels = labels;
         };
 
-        var showRolesStatistics = function(rolesStatistics) {
-            $scope.statistics.roles.data.push(rolesStatistics.games);
-            $scope.statistics.roles.data.push(rolesStatistics.winningGames);
-            $scope.statistics.roles.labels = $scope.ROLES;
+        var showBaseStatistics = function(chart, data, labels) {
+            chart.data.push(data.all);
+            chart.data.push(data.wins);
+            chart.labels = labels;
         };
 
-        var showLivesStatistics = function(livesStatistics) {
-            $scope.statistics.lives.data.push(livesStatistics.games);
-            $scope.statistics.lives.data.push(livesStatistics.winningGames);
-            $scope.statistics.lives.labels = $scope.LIVES;
+        var changeChartData = function(choice, chart) {
+            chart.data = chart[choice];
         };
 
-        var changePositionData = function() {
-            $scope.statistics.positions.data = $scope.statistics.positions[$scope.positionRole];
+        var changePositionRole = function() {
+            changeChartData($scope.positionRole, $scope.statistics.positions);
+        };
+
+        var changeLifeRole = function() {
+            changeChartData($scope.lifeRole, $scope.statistics.lives);
         };
 
         $scope.$watch('positionRole', function() {
-            changePositionData();
+            changePositionRole();
         });
+
+        $scope.$watch('lifeRole', function() {
+            changeLifeRole();
+        });
+
+        var switchToAll = function() {
+            $scope.positionRole == 'ALL' ? changePositionRole() : $scope.positionRole = 'ALL';
+            $scope.lifeRole == 'ALL' ? changeLifeRole() : $scope.lifeRole = 'ALL';
+        };
 
         var resetStatistics = function() {
             $scope.statistics = {

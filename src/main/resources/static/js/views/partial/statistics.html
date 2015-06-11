@@ -3,12 +3,13 @@
 <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
 
 <div style="width:400px; height:200px">
-    <select ng-model="positionRole" required ng-options='option for option in POSITION_ROLES'></select>
+    <select ng-model="positionRole" required ng-options='option for option in ALL_WITH_ROLES'></select>
     <canvas id="positions" class="chart chart-bar" data="statistics.positions.data" labels="statistics.positions.labels"></canvas>
 </div>
 <div style="width:400px; height:200px">
     <canvas id="roles" class="chart chart-bar" data="statistics.roles.data" labels="statistics.roles.labels"></canvas>
 </div>
 <div style="width:800px; height:400px">
+    <select ng-model="lifeRole" required ng-options='option for option in ALL_WITH_ROLES'></select>
     <canvas id="lives" class="chart chart-bar" data="statistics.lives.data" labels="statistics.lives.labels"></canvas>
 </div>

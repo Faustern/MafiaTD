@@ -14,8 +14,7 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
 
 /**
  * Created by vasylsavytskyi on 07.06.15.
@@ -23,10 +22,13 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 public class StatisticsServiceImpl {
 
+    private static final int PLAYER_AMOUNT = 10;
     private Collector<Player, ?, Map<Role, Long>> byRoleCollector = groupingBy(Player::getRole, counting());
     private Collector<Player, ?, Map<Life, Long>> byLifeCollector = groupingBy(Player::getLife, counting());
-    Collector<Player, ?, Map<Integer, Long>> byPositionCollector = groupingBy(Player::getNumber, counting());
-    Collector<Player, ?, Map<Role, Map<Integer, Long>>> byRoleAndPositonCollector =
+    private Collector<Player, ?, Map<Role, Map<Life, Long>>> byRoleAndLifeCollector =
+            groupingBy(Player::getRole, byLifeCollector);
+    private Collector<Player, ?, Map<Integer, Long>> byPositionCollector = groupingBy(Player::getNumber, counting());
+    private Collector<Player, ?, Map<Role, Map<Integer, Long>>> byRoleAndPositonCollector =
             groupingBy(Player::getRole, byPositionCollector);
 
     @Autowired
@@ -36,57 +38,56 @@ public class StatisticsServiceImpl {
             throws InstantiationException, IllegalAccessException {
         List<Player> players = playerRepository.findByMemberNicknameAndGameSeason(nickname, season);
         MemberStatistics memberStatistics = new MemberStatistics();
-        memberStatistics.setPositions(getPositionStatistics(players));
+        Integer[] range = new Integer[PLAYER_AMOUNT];
+        memberStatistics.setPositions((PositionsStatistics)getBaseByRoleStatistics(
+                players, byPositionCollector, byRoleAndPositonCollector,
+                IntStream.rangeClosed(1, PLAYER_AMOUNT - 1).boxed().collect(toList()).toArray(range),
+                PositionsStatistics.class));
         memberStatistics.setRoles((RolesStatistics)getBaseStatistics(
                 players, byRoleCollector, Role.values(), RolesStatistics.class));
-        memberStatistics.setLives((LivesStatistics)getBaseStatistics(
-                players, byLifeCollector, Life.values(), LivesStatistics.class));
+        memberStatistics.setLives((LivesStatistics)getBaseByRoleStatistics(
+                players, byLifeCollector, byRoleAndLifeCollector, Life.values(), LivesStatistics.class));
         return memberStatistics;
     }
 
-    public PositionsStatistics getPositionStatistics(List<Player> players) {
-        List<Long> games = new ArrayList<>();
-        List<Long> winningGames = new ArrayList<>();
-        Map<Role, List<Long>> roleGames = new HashMap<>();
-        Map<Role, List<Long>> roleWinningGames = new HashMap<>();
-
-        Map<Integer, Long> gamesMap = players.stream().collect(byPositionCollector);
-        Map<Integer, Long> winningGamesMap = players.stream().filter(GamesUtils::isWin).collect(byPositionCollector);
-        Map<Role, Map<Integer, Long>> roleGamesMap = players.stream().collect(byRoleAndPositonCollector);
-        Map<Role, Map<Integer, Long>> roleWinningGamesMap =
-                players.stream().filter(GamesUtils::isWin).collect(byRoleAndPositonCollector);
-        IntStream.range(1, 11).forEach(p -> {
-            games.add(gamesMap.getOrDefault(p, 0L));
-            winningGames.add(winningGamesMap.getOrDefault(p, 0L));
+    public <T> BaseByRoleStatistics getBaseByRoleStatistics(List<Player> players,
+            Collector<Player, ?, Map<T, Long>> collector, Collector<Player, ?, Map<Role, Map<T, Long>>> byRoleCollector,
+            T[] factorArray, Class<? extends BaseByRoleStatistics> clazz)
+            throws IllegalAccessException, InstantiationException {
+        Map<Role, List<Long>> allByRole = new HashMap<>();
+        Map<Role, List<Long>> winsByRole = new HashMap<>();
+        Map<Role, Map<T, Long>> allByRoleMap = players.stream().collect(byRoleCollector);
+        Map<Role, Map<T, Long>> winsByRoleMap =
+                players.stream().filter(GamesUtils::isWin).collect(byRoleCollector);
+        Arrays.asList(factorArray).stream().forEach(f -> {
             Arrays.asList(Role.values()).stream().forEach(r -> {
-                roleGames.putIfAbsent(r, new ArrayList<>());
-                roleGames.get(r).add(roleGamesMap.getOrDefault(r, new HashMap<>()).getOrDefault(p, 0L));
-                roleWinningGames.putIfAbsent(r, new ArrayList<>());
-                roleWinningGames.get(r).add(roleWinningGamesMap.getOrDefault(r, new HashMap<>()).getOrDefault(p, 0L));
+                allByRole.putIfAbsent(r, new ArrayList<>());
+                allByRole.get(r).add(allByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
+                winsByRole.putIfAbsent(r, new ArrayList<>());
+                winsByRole.get(r).add(winsByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
             });
         });
-        PositionsStatistics positionStatistics = new PositionsStatistics();
-        positionStatistics.setGames(games);
-        positionStatistics.setWinningGames(winningGames);
-        positionStatistics.setRoleGames(roleGames);
-        positionStatistics.setRoleWinningGames(roleWinningGames);
-        return positionStatistics;
+        BaseByRoleStatistics baseByRoleStatistics =
+                (BaseByRoleStatistics)getBaseStatistics(players, collector, factorArray, clazz);
+        baseByRoleStatistics.setAllByRole(allByRole);
+        baseByRoleStatistics.setWinsByRole(winsByRole);
+        return baseByRoleStatistics;
     }
 
-    private  <T> BaseStatistics getBaseStatistics(
+    private <T> BaseStatistics getBaseStatistics(
             List<Player> players, Collector<Player, ?, Map<T, Long>> collector, T[] factorArray ,
             Class<? extends BaseStatistics> clazz) throws IllegalAccessException, InstantiationException {
-        List<Long> games = new ArrayList<>();
-        List<Long> winningGames = new ArrayList<>();
-        Map<T, Long> gamesMap = players.stream().collect(collector);
-        Map<T, Long> winningGamesMap = players.stream().filter(GamesUtils::isWin).collect(collector);
+        List<Long> all = new ArrayList<>();
+        List<Long> wins = new ArrayList<>();
+        Map<T, Long> allMap = players.stream().collect(collector);
+        Map<T, Long> winsMap = players.stream().filter(GamesUtils::isWin).collect(collector);
         Arrays.asList(factorArray).stream().forEach(f -> {
-            games.add(gamesMap.getOrDefault(f, 0L));
-            winningGames.add(winningGamesMap.getOrDefault(f, 0L));
+            all.add(allMap.getOrDefault(f, 0L));
+            wins.add(winsMap.getOrDefault(f, 0L));
         });
         BaseStatistics baseStatistics = clazz.newInstance();
-        baseStatistics.setGames(games);
-        baseStatistics.setWinningGames(winningGames);
+        baseStatistics.setAll(all);
+        baseStatistics.setWins(wins);
         return baseStatistics;
     }
 
