@@ -23,6 +23,8 @@ angular.module('admin.controllers')
                         memberStatistics.positions, [1,2,3,4,5,6,7,8,9,10]);
                     showBaseStatistics($scope.statistics.roles, memberStatistics.roles, $scope.ROLES);
                     showBaseByRoleStatistics($scope.lifeRole, $scope.statistics.lives, memberStatistics.lives, $scope.LIVES);
+                    showAverageByRoleStatistics($scope.statistics.bestVoices, memberStatistics.bestVoices);
+                    showAverageByRoleStatistics($scope.statistics.fouls, memberStatistics.fouls);
                     showBaseStatistics($scope.statistics.results, memberStatistics.results, $scope.RESULTS);
                     switchToAll();
                 });
@@ -44,6 +46,11 @@ angular.module('admin.controllers')
             chart.data.push(data.wins);
             chart.data.push(data.clearWins);
             chart.labels = labels;
+        };
+
+        var showAverageByRoleStatistics = function(chart, data) {
+            chart.data.push(data.averageByRole);
+            chart.labels = $scope.ROLES;
         };
 
         var changeChartData = function(choice, chart) {
@@ -73,22 +80,12 @@ angular.module('admin.controllers')
 
         var resetStatistics = function() {
             $scope.statistics = {
-                positions: {
-                    data: [],
-                    labels: []
-                },
-                roles: {
-                    data: [],
-                    labels: []
-                },
-                lives: {
-                    data: [],
-                    labels: []
-                },
-                results: {
-                    data: [],
-                    labels: []
-                }
+                positions: { data: [], labels: []},
+                roles: { data: [], labels: [] },
+                lives: { data: [], labels: [] },
+                bestVoices: { data: [], labels: [] },
+                fouls: { data: [], labels: [] },
+                results: { data: [], labels: [] }
             };
         };
 

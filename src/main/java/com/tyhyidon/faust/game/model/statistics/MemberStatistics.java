@@ -1,9 +1,5 @@
 package com.tyhyidon.faust.game.model.statistics;
 
-import com.tyhyidon.faust.game.entity.Player;
-
-import java.util.List;
-
 /**
  * Created by vasylsavytskyi on 06.06.15.
  */

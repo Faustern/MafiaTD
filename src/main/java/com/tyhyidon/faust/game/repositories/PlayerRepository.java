@@ -16,5 +16,7 @@ public interface PlayerRepository extends CrudRepository<Player, Long> {
 
     List<Player> findByGameSeason(Season season);
 
+    List<Player> findByMemberNickname(String nickname);
+
     List<Player> findByGameId(long id);
 }

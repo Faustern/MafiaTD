@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.*;
 
@@ -33,13 +34,17 @@ public class StatisticsServiceImpl {
             groupingBy(Player::getRole, byPositionCollector);
     private Collector<Player, ?, Map<Result, Long>> byResultCollector =
             groupingBy(p -> p.getGame().getResult(), counting());
+    private Collector<Player, ?, Map<Role,Double>> byRoleAndBestVoicesAverageCollector =
+            groupingBy(Player::getRole, averagingInt(Player::getBestVoices));
+    private Collector<Player, ?, Map<Role,Double>> byRoleAndFoulsAverageCollector =
+            groupingBy(Player::getRole, averagingInt(Player::getFouls));
 
     @Autowired
     private PlayerRepository playerRepository;
 
     public MemberStatistics getMemberStatistics(String nickname, Season season)
             throws InstantiationException, IllegalAccessException {
-        List<Player> players = playerRepository.findByMemberNicknameAndGameSeason(nickname, season);
+        List<Player> players = getPlayers(nickname, season);
         MemberStatistics memberStatistics = new MemberStatistics();
         Integer[] range = new Integer[PLAYER_AMOUNT];
         memberStatistics.setPositions((PositionsStatistics) getBaseByRoleStatistics(
@@ -50,6 +55,10 @@ public class StatisticsServiceImpl {
                 players, byRoleCollector, Role.values(), RolesStatistics.class));
         memberStatistics.setLives((LivesStatistics) getBaseByRoleStatistics(
                 players, byLifeCollector, byRoleAndLifeCollector, Life.values(), LivesStatistics.class));
+        memberStatistics.setBestVoices((BestVoicesStatistics)
+                getAverageByRoleStatistics(players, byRoleAndBestVoicesAverageCollector, BestVoicesStatistics.class));
+        memberStatistics.setFouls((FoulsStatistics) getAverageByRoleStatistics(players, byRoleAndFoulsAverageCollector,
+                FoulsStatistics.class));
         memberStatistics.setResults((ResultsStatistics) getBaseStatistics(
                 players, byResultCollector, Result.values(), ResultsStatistics.class));
         return memberStatistics;
@@ -74,7 +83,7 @@ public class StatisticsServiceImpl {
                 winsByRole.putIfAbsent(r, new ArrayList<>());
                 winsByRole.get(r).add(winsByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
                 clearWinsByRole.putIfAbsent(r, new ArrayList<>());
-                clearWinsByRole.get(r).add(winsByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
+                clearWinsByRole.get(r).add(clearWinsByRoleMap.getOrDefault(r, new HashMap<>()).getOrDefault(f, 0L));
             });
         });
         BaseByRoleStatistics baseByRoleStatistics =
@@ -83,6 +92,19 @@ public class StatisticsServiceImpl {
         baseByRoleStatistics.setWinsByRole(winsByRole);
         baseByRoleStatistics.setClearWinsByRole(clearWinsByRole);
         return baseByRoleStatistics;
+    }
+
+    private List<Player> getPlayers(String nickname, Season season) {
+        switch (season){
+            case ALL:
+                return nickname.equals("")
+                        ? StreamSupport.stream(playerRepository.findAll().spliterator(), true).collect(toList())
+                        : playerRepository.findByMemberNickname(nickname);
+            default:
+                return nickname.equals("")
+                        ? playerRepository.findByGameSeason(season)
+                        : playerRepository.findByMemberNicknameAndGameSeason(nickname, season);
+        }
     }
 
     private <T> BaseStatistics getBaseStatistics(
@@ -104,6 +126,19 @@ public class StatisticsServiceImpl {
         baseStatistics.setWins(wins);
         baseStatistics.setClearWins(clearWins);
         return baseStatistics;
+    }
+
+    public AverageByRoleStatistics getAverageByRoleStatistics(List<Player> players,
+            Collector<Player, ?, Map<Role, Double>> byRoleCollector, Class<? extends AverageByRoleStatistics> clazz)
+            throws IllegalAccessException, InstantiationException {
+        List<Double> averageByRole= new ArrayList<>();
+        Map<Role, Double> averageByRoleMap = players.stream().collect(byRoleCollector);
+        Arrays.asList(Role.values()).stream().forEach(r -> {
+            averageByRole.add(averageByRoleMap.getOrDefault(r, 0.0));
+        });
+        AverageByRoleStatistics averageByRoleStatistics = clazz.newInstance();
+        averageByRoleStatistics.setAverageByRole(averageByRole);
+        return averageByRoleStatistics;
     }
 
 }

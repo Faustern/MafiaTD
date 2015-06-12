@@ -2,17 +2,73 @@
 <select ng-model="season" required ng-options='option for option in SEASONS'></select>
 <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
 
-<div style="width:400px; height:200px">
-    <select ng-model="positionRole" required ng-options='option for option in ALL_WITH_ROLES'></select>
-    <canvas id="positions" class="chart chart-bar" data="statistics.positions.data" labels="statistics.positions.labels"></canvas>
-</div>
-<div style="width:400px; height:200px">
-    <canvas id="roles" class="chart chart-bar" data="statistics.roles.data" labels="statistics.roles.labels"></canvas>
-</div>
-<div style="width:800px; height:400px">
-    <select ng-model="lifeRole" required ng-options='option for option in ALL_WITH_ROLES'></select>
-    <canvas id="lives" class="chart chart-bar" data="statistics.lives.data" labels="statistics.lives.labels"></canvas>
-</div>
-<div style="width:400px; height:200px">
-    <canvas id="results" class="chart chart-bar" data="statistics.results.data" labels="statistics.results.labels"></canvas>
-</div>
+<table style="width: 100%">
+    <tr>
+        <td>
+            <select ng-model="positionRole"
+                    required ng-options='option for option in ALL_WITH_ROLES'></select>
+            <canvas id="positions"
+                    class="chart chart-bar"
+                    data="statistics.positions.data"
+                    labels="statistics.positions.labels"></canvas>
+        </td>
+        <td><canvas id="positionsDoughnut"
+                    class="chart chart-doughnut"
+                    data="statistics.positions.data[0]"
+                    labels="statistics.positions.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td><canvas id="roles"
+                    class="chart chart-bar"
+                    data="statistics.roles.data"
+                    labels="statistics.roles.labels"></canvas></td>
+        <td><canvas id="rolesDoughnut"
+                    class="chart chart-doughnut"
+                    data="statistics.roles.data[0]"
+                    labels="statistics.roles.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td>
+            <select ng-model="lifeRole"
+                    required ng-options='option for option in ALL_WITH_ROLES'></select>
+            <canvas id="lives"
+                    class="chart chart-bar"
+                    data="statistics.lives.data"
+                    labels="statistics.lives.labels"></canvas>
+        </td>
+        <td><canvas id="livesDoughnut"
+                    class="chart chart-doughnut"
+                    data="statistics.lives.data[0]"
+                    labels="statistics.lives.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td><canvas id="bestVoices"
+                    class="chart chart-bar"
+                    data="statistics.bestVoices.data"
+                    labels="statistics.bestVoices.labels"></canvas></td>
+        <td><canvas id="bestVoicesDoughnut"
+                    class="chart chart-doughnut"
+                    data="statistics.bestVoices.data[0]"
+                    labels="statistics.bestVoices.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td><canvas id="fouls"
+                    class="chart chart-bar"
+                    data="statistics.fouls.data"
+                    labels="statistics.fouls.labels"></canvas></td>
+        <td><canvas id="foulsDoughnut"
+                    class="chart chart-doughnut"
+                    data="statistics.fouls.data[0]"
+                    labels="statistics.fouls.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td><canvas id="results"
+                    class="chart chart-bar"
+                    data="statistics.results.data"
+                    labels="statistics.results.labels"></canvas></td>
+        <td><canvas id="resultsDoughnut"
+                    class="chart chart-doughnut"
+                    data="statistics.results.data[0]"
+                    labels="statistics.results.labels"></canvas></td>
+    </tr>
+</table>

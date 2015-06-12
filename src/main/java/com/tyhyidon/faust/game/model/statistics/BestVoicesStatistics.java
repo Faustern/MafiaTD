@@ -13,25 +13,5 @@ import static java.util.stream.Collectors.groupingBy;
 /**
  * Created by vasylsavytskyi on 07.06.15.
  */
-public class BestVoicesStatistics {
-
-    private Map<Integer, Long> games;
-    private Map<Role, Map<Integer, Long>> roleGames;
-
-    public BestVoicesStatistics(List<Player> players) {
-        Collector<Player, ?, Map<Integer, Long>> byBestVoiceCollector = groupingBy(Player::getBestVoices, counting());
-        Collector<Player, ?, Map<Role, Map<Integer, Long>>> byRoleAndBestVoiceCollector =
-                groupingBy(Player::getRole, byBestVoiceCollector);
-        games = players.stream().collect(byBestVoiceCollector);
-        roleGames = players.stream().collect(byRoleAndBestVoiceCollector);
-    }
-
-    public Map<Integer, Long> getGames() {
-        return games;
-    }
-
-    public Map<Role, Map<Integer, Long>> getRoleGames() {
-        return roleGames;
-    }
-
+public class BestVoicesStatistics extends AverageByRoleStatistics {
 }
