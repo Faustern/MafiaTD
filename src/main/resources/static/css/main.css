@@ -17,3 +17,15 @@ th, td{
     padding-left: 45%;
     background-color: rgba(0, 0, 0, 0.7);
 }
+
+#statistics-table, #statistics-table td {
+    border: 1px solid black;
+    padding: 2%;
+}
+
+.role-select-label {
+    margin-left: 5%;
+}
+.statistic-table-title {
+    font-size: large;
+}

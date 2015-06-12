@@ -2,11 +2,18 @@
 <select ng-model="season" required ng-options='option for option in SEASONS'></select>
 <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
 
-<table style="width: 100%">
+<table id="statistics-table" style="width: 100%;">
+    <tr>
+        <td colspan="2" class="statistic-table-title">
+            Games Count vs. Table Position
+            <label class="role-select-label" for="position-role">For role:</label>
+            <select id="position-role"
+                    ng-model="positionRole"
+                    required ng-options='option for option in ALL_WITH_ROLES'></select>
+        </td>
+    </tr>
     <tr>
         <td>
-            <select ng-model="positionRole"
-                    required ng-options='option for option in ALL_WITH_ROLES'></select>
             <canvas id="positions"
                     class="chart chart-bar"
                     data="statistics.positions.data"
@@ -16,6 +23,11 @@
                     class="chart chart-doughnut"
                     data="statistics.positions.data[0]"
                     labels="statistics.positions.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="statistic-table-title">
+            Games Count vs. Role
+        </td>
     </tr>
     <tr>
         <td><canvas id="roles"
@@ -28,9 +40,16 @@
                     labels="statistics.roles.labels"></canvas></td>
     </tr>
     <tr>
-        <td>
-            <select ng-model="lifeRole"
+        <td colspan="2" class="statistic-table-title">
+            Games Count vs. Life
+            <label class="role-select-label" for="life-role">For role:</label>
+            <select id="life-role"
+                    ng-model="lifeRole"
                     required ng-options='option for option in ALL_WITH_ROLES'></select>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <canvas id="lives"
                     class="chart chart-bar"
                     data="statistics.lives.data"
@@ -40,6 +59,11 @@
                     class="chart chart-doughnut"
                     data="statistics.lives.data[0]"
                     labels="statistics.lives.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="statistic-table-title">
+            Best Voices/Game vs. Role
+        </td>
     </tr>
     <tr>
         <td><canvas id="bestVoices"
@@ -52,6 +76,11 @@
                     labels="statistics.bestVoices.labels"></canvas></td>
     </tr>
     <tr>
+        <td colspan="2" class="statistic-table-title">
+            Fouls/Game vs. Role
+        </td>
+    </tr>
+    <tr>
         <td><canvas id="fouls"
                     class="chart chart-bar"
                     data="statistics.fouls.data"
@@ -60,6 +89,11 @@
                     class="chart chart-doughnut"
                     data="statistics.fouls.data[0]"
                     labels="statistics.fouls.labels"></canvas></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="statistic-table-title">
+            Games Count vs. Game Result
+        </td>
     </tr>
     <tr>
         <td><canvas id="results"
