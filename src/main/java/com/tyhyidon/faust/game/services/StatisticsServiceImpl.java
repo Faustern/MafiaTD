@@ -49,7 +49,7 @@ public class StatisticsServiceImpl {
         Integer[] range = new Integer[PLAYER_AMOUNT];
         memberStatistics.setPositions((PositionsStatistics) getBaseByRoleStatistics(
                 players, byPositionCollector, byRoleAndPositonCollector,
-                IntStream.rangeClosed(1, PLAYER_AMOUNT - 1).boxed().collect(toList()).toArray(range),
+                IntStream.rangeClosed(1, PLAYER_AMOUNT).boxed().collect(toList()).toArray(range),
                 PositionsStatistics.class));
         memberStatistics.setRoles((RolesStatistics) getBaseStatistics(
                 players, byRoleCollector, Role.values(), RolesStatistics.class));

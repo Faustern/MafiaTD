@@ -1,6 +1,12 @@
 angular.module('admin.controllers')
     .controller('statisticsController', function ($scope, httpService, gameService, rangeService) {
 
+        $scope.nickname = "";
+        $scope.series = ["All Games", "Wins", "Clear Wins"];
+        $scope.bestVoicesSeries = ["BestVoices Per Games"];
+        $scope.foulsSeries = ["Fouls Per Game"];
+        $scope.colours = ["#483D8B", "#008000", "#DAA520"];
+
         gameService.parameters.then(function(result) {
             $scope.params = result;
             $scope.ALL_MEMBERS = result.ALL_MEMBERS;

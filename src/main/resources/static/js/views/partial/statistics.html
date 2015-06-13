@@ -2,7 +2,7 @@
 <select ng-model="season" required ng-options='option for option in SEASONS'></select>
 <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
 
-<table id="statistics-table" style="width: 100%;">
+<table id="statistics-table">
     <tr>
         <td colspan="2" class="statistic-table-title">
             Games Count vs. Table Position
@@ -17,7 +17,10 @@
             <canvas id="positions"
                     class="chart chart-bar"
                     data="statistics.positions.data"
-                    labels="statistics.positions.labels"></canvas>
+                    labels="statistics.positions.labels"
+                    series="series"
+                    legend="true"
+                    colours="colours"></canvas>
         </td>
         <td><canvas id="positionsDoughnut"
                     class="chart chart-doughnut"
@@ -33,7 +36,10 @@
         <td><canvas id="roles"
                     class="chart chart-bar"
                     data="statistics.roles.data"
-                    labels="statistics.roles.labels"></canvas></td>
+                    labels="statistics.roles.labels"
+                    series="series"
+                    legend="true"
+                    colours="colours"></canvas></td>
         <td><canvas id="rolesDoughnut"
                     class="chart chart-doughnut"
                     data="statistics.roles.data[0]"
@@ -53,7 +59,10 @@
             <canvas id="lives"
                     class="chart chart-bar"
                     data="statistics.lives.data"
-                    labels="statistics.lives.labels"></canvas>
+                    labels="statistics.lives.labels"
+                    series="series"
+                    legend="true"
+                    colours="colours"></canvas>
         </td>
         <td><canvas id="livesDoughnut"
                     class="chart chart-doughnut"
@@ -69,7 +78,10 @@
         <td><canvas id="bestVoices"
                     class="chart chart-bar"
                     data="statistics.bestVoices.data"
-                    labels="statistics.bestVoices.labels"></canvas></td>
+                    labels="statistics.bestVoices.labels"
+                    series="bestVoicesSeries"
+                    legend="true"
+                    colours="colours"></canvas></td>
         <td><canvas id="bestVoicesDoughnut"
                     class="chart chart-doughnut"
                     data="statistics.bestVoices.data[0]"
@@ -84,7 +96,10 @@
         <td><canvas id="fouls"
                     class="chart chart-bar"
                     data="statistics.fouls.data"
-                    labels="statistics.fouls.labels"></canvas></td>
+                    labels="statistics.fouls.labels"
+                    series="foulsSeries"
+                    legend="true"
+                    colours="colours"></canvas></td>
         <td><canvas id="foulsDoughnut"
                     class="chart chart-doughnut"
                     data="statistics.fouls.data[0]"
@@ -99,7 +114,10 @@
         <td><canvas id="results"
                     class="chart chart-bar"
                     data="statistics.results.data"
-                    labels="statistics.results.labels"></canvas></td>
+                    labels="statistics.results.labels"
+                    series="series"
+                    legend="true"
+                    colours="colours"></canvas></td>
         <td><canvas id="resultsDoughnut"
                     class="chart chart-doughnut"
                     data="statistics.results.data[0]"
