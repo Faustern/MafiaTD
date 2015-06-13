@@ -1,9 +1,10 @@
 angular.module('admin.controllers')
     .controller('statisticsController', function ($scope, httpService, gameService, rangeService) {
 
+        $scope.hidden = true;
         $scope.nickname = "";
-        $scope.series = ["All Games", "Wins", "Clear Wins"];
-        $scope.bestVoicesSeries = ["BestVoices Per Games"];
+        $scope.series = ["Все игры", "Победы", "Сухие победы"];
+        $scope.bestVoicesSeries = ["BestVoices Per Game"];
         $scope.foulsSeries = ["Fouls Per Game"];
         $scope.colours = ["#483D8B", "#008000", "#DAA520"];
 
@@ -22,9 +23,11 @@ angular.module('admin.controllers')
         });
 
         $scope.showStatistics = function(nickname, season) {
+            $scope.hidden = false;
             resetStatistics();
             httpService.get("statistics", {nickname: nickname, season: season},
                 function(memberStatistics) {
+                    $scope.statistics.table = memberStatistics.table;
                     showBaseByRoleStatistics($scope.positionRole, $scope.statistics.positions,
                         memberStatistics.positions, [1,2,3,4,5,6,7,8,9,10]);
                     showBaseStatistics($scope.statistics.roles, memberStatistics.roles, $scope.ROLES);
@@ -86,6 +89,7 @@ angular.module('admin.controllers')
 
         var resetStatistics = function() {
             $scope.statistics = {
+                table: {},
                 positions: { data: [], labels: []},
                 roles: { data: [], labels: [] },
                 lives: { data: [], labels: [] },

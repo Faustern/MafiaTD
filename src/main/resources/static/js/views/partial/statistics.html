@@ -2,7 +2,103 @@
 <select ng-model="season" required ng-options='option for option in SEASONS'></select>
 <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
 
-<table id="statistics-table">
+<table ng-hide="hidden" id="statistics-table">
+    <tr>
+        <td colspan="2" class="statistic-table-title">
+            Base Statistics
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 50%;">
+            <canvas id="fouls"
+                    class="chart chart-bar"
+                    data="statistics.fouls.data"
+                    labels="statistics.fouls.labels"
+                    series="foulsSeries"
+                    legend="true"
+                    colours="colours"></canvas>
+            <canvas id="bestVoices"
+                    class="chart chart-bar"
+                    data="statistics.bestVoices.data"
+                    labels="statistics.bestVoices.labels"
+                    series="bestVoicesSeries"
+                    legend="true"
+                    colours="colours"></canvas>
+
+        </td>
+        <td>
+            <table id="base-statistics-table">
+                <tr>
+                    <td>Количество сыгранных игр</td>
+                    <td>{{statistics.table.all}}</td>
+                </tr>
+                <tr>
+                    <td>Процент побед</td>
+                    <td>{{statistics.table.wins | number:0}}</td>
+                </tr>
+                <tr>
+                    <td>Количество сыгранных игр доном</td>
+                    <td>{{statistics.table.allDon}}</td>
+                </tr>
+                <tr>
+                    <td>Процент побед доном</td>
+                    <td>{{statistics.table.winsDon | number:0}}</td>
+                </tr>
+                <tr>
+                    <td>Количество сыгранных игр мафией</td>
+                    <td>{{statistics.table.allMafia}}</td>
+                </tr>
+                <tr>
+                    <td>Процент побед мафией</td>
+                    <td>{{statistics.table.winsMafia | number:0}}</td>
+                </tr>
+                <tr>
+                    <td>Количество сыгранных игр мирным</td>
+                    <td>{{statistics.table.allCitizen}}</td>
+                </tr>
+                <tr>
+                    <td>Процент побед мирным</td>
+                    <td>{{statistics.table.winsCitizen | number:0}}</td>
+                </tr>
+                <tr>
+                    <td>Количество сыгранных игр шерифом</td>
+                    <td>{{statistics.table.allSheriff}}</td>
+                </tr>
+                <tr>
+                    <td>Процент побед шерифом</td>
+                    <td>{{statistics.table.winsSheriff | number:0}}</td>
+                </tr>
+                <tr>
+                    <td>Количество голосов за лучшего в среднем за игру</td>
+                    <td>{{statistics.table.bestVoicesPerGame | number:2}}</td>
+                </tr>
+                <tr>
+                    <td>Количество фолов в среднем за игру</td>
+                    <td>{{statistics.table.foulsPerGame | number:2}}</td>
+                </tr>
+                <tr>
+                    <td>Убивался в первую ночь (кол. раз)</td>
+                    <td>{{statistics.table.killed}}</td>
+                </tr>
+                <tr>
+                    <td>Убивался вообще (кол. раз)</td>
+                    <td>{{statistics.table.killedFirst}}</td>
+                </tr>
+                <tr>
+                    <td>Уходил красным после голосования (кол. раз)</td>
+                    <td>{{statistics.table.outRed}}</td>
+                </tr>
+                <tr>
+                    <td>Сливался красным при девятерых (кол. раз)</td>
+                    <td>{{statistics.table.outFirstRed}}</td>
+                </tr>
+                <tr>
+                    <td>Уходил черным при девятерых</td>
+                    <td>{{statistics.table.outFirstBlack}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
     <tr>
         <td colspan="2" class="statistic-table-title">
             Games Count vs. Table Position
@@ -68,42 +164,6 @@
                     class="chart chart-doughnut"
                     data="statistics.lives.data[0]"
                     labels="statistics.lives.labels"></canvas></td>
-    </tr>
-    <tr>
-        <td colspan="2" class="statistic-table-title">
-            Best Voices/Game vs. Role
-        </td>
-    </tr>
-    <tr>
-        <td><canvas id="bestVoices"
-                    class="chart chart-bar"
-                    data="statistics.bestVoices.data"
-                    labels="statistics.bestVoices.labels"
-                    series="bestVoicesSeries"
-                    legend="true"
-                    colours="colours"></canvas></td>
-        <td><canvas id="bestVoicesDoughnut"
-                    class="chart chart-doughnut"
-                    data="statistics.bestVoices.data[0]"
-                    labels="statistics.bestVoices.labels"></canvas></td>
-    </tr>
-    <tr>
-        <td colspan="2" class="statistic-table-title">
-            Fouls/Game vs. Role
-        </td>
-    </tr>
-    <tr>
-        <td><canvas id="fouls"
-                    class="chart chart-bar"
-                    data="statistics.fouls.data"
-                    labels="statistics.fouls.labels"
-                    series="foulsSeries"
-                    legend="true"
-                    colours="colours"></canvas></td>
-        <td><canvas id="foulsDoughnut"
-                    class="chart chart-doughnut"
-                    data="statistics.fouls.data[0]"
-                    labels="statistics.fouls.labels"></canvas></td>
     </tr>
     <tr>
         <td colspan="2" class="statistic-table-title">

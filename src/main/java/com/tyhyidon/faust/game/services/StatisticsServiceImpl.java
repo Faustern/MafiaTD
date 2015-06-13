@@ -46,7 +46,11 @@ public class StatisticsServiceImpl {
             throws InstantiationException, IllegalAccessException {
         List<Player> players = getPlayers(nickname, season);
         MemberStatistics memberStatistics = new MemberStatistics();
+        if (players == null || players.isEmpty()) {
+            return memberStatistics;
+        }
         Integer[] range = new Integer[PLAYER_AMOUNT];
+        memberStatistics.setTable(getTableStatistics(players));
         memberStatistics.setPositions((PositionsStatistics) getBaseByRoleStatistics(
                 players, byPositionCollector, byRoleAndPositonCollector,
                 IntStream.rangeClosed(1, PLAYER_AMOUNT).boxed().collect(toList()).toArray(range),
@@ -128,7 +132,7 @@ public class StatisticsServiceImpl {
         return baseStatistics;
     }
 
-    public AverageByRoleStatistics getAverageByRoleStatistics(List<Player> players,
+    private AverageByRoleStatistics getAverageByRoleStatistics(List<Player> players,
             Collector<Player, ?, Map<Role, Double>> byRoleCollector, Class<? extends AverageByRoleStatistics> clazz)
             throws IllegalAccessException, InstantiationException {
         List<Double> averageByRole= new ArrayList<>();
@@ -139,6 +143,45 @@ public class StatisticsServiceImpl {
         AverageByRoleStatistics averageByRoleStatistics = clazz.newInstance();
         averageByRoleStatistics.setAverageByRole(averageByRole);
         return averageByRoleStatistics;
+    }
+
+    private TableStatistics getTableStatistics(List<Player> players) {
+        TableStatistics tableStatistics = new TableStatistics();
+
+        tableStatistics.setAll(players.size());
+        tableStatistics.setWins(100.0 * players.stream().filter(GamesUtils::isWin).count() / tableStatistics.getAll());
+
+        Map<Role, List<Player>> playersByRole = players.stream().collect(groupingBy(Player::getRole));
+
+        tableStatistics.setAllDon(playersByRole.get(Role.DON).size());
+        tableStatistics.setWinsDon(100.0 * playersByRole.get(Role.DON).stream().filter(
+                GamesUtils::isWin).count() / tableStatistics.getAllDon());
+
+        tableStatistics.setAllMafia(playersByRole.get(Role.MAFIA).size());
+        tableStatistics.setWinsMafia(100.0 * playersByRole.get(Role.MAFIA).stream().filter(
+                GamesUtils::isWin).count() / tableStatistics.getAllMafia());
+
+        tableStatistics.setAllCitizen(playersByRole.get(Role.CITIZEN).size());
+        tableStatistics.setWinsCitizen(100.0 * playersByRole.get(Role.CITIZEN).stream().filter(
+                GamesUtils::isWin).count() / tableStatistics.getAllCitizen());
+
+        tableStatistics.setAllSheriff(playersByRole.get(Role.SHERIFF).size());
+        tableStatistics.setWinsSheriff(100.0 * playersByRole.get(Role.SHERIFF).stream().filter(
+                GamesUtils::isWin).count() / tableStatistics.getAllSheriff());
+
+        tableStatistics.setBestVoicesPerGame(players.stream().mapToInt(Player::getBestVoices).average().getAsDouble());
+        tableStatistics.setFoulsPerGame(players.stream().mapToInt(Player::getFouls).average().getAsDouble());
+
+        tableStatistics.setKilledFirst(players.stream().filter(p -> p.getLife().equals(Life.KILLED_1ST)).count());
+        tableStatistics.setKilled(players.stream().filter(GamesUtils::wasKilled).count());
+
+        tableStatistics.setOutRed(players.stream().filter(GamesUtils::wasOut).filter(p -> !GamesUtils.isBlack(p)).count());
+        tableStatistics.setOutFirstRed(players.stream().filter(p -> p.getLife().equals(Life.OUT_1ST))
+                .filter(p -> !GamesUtils.isBlack(p)).count());
+        tableStatistics.setOutFirstBlack(players.stream().filter(p -> p.getLife().equals(Life.OUT_1ST))
+                .filter(GamesUtils::isBlack).count());
+
+        return tableStatistics;
     }
 
 }

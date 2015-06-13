@@ -5,12 +5,21 @@ package com.tyhyidon.faust.game.model.statistics;
  */
 public class MemberStatistics {
 
+    private TableStatistics table;
     private PositionsStatistics positions;
     private RolesStatistics roles;
     private LivesStatistics lives;
     private BestVoicesStatistics bestVoices;
     private FoulsStatistics fouls;
     private ResultsStatistics results;
+
+    public TableStatistics getTable() {
+        return table;
+    }
+
+    public void setTable(TableStatistics table) {
+        this.table = table;
+    }
 
     public PositionsStatistics getPositions() {
         return positions;
