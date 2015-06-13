@@ -39,3 +39,7 @@ th, td{
     font-size: large;
     background-color: lightblue;
 }
+
+#statistics-control {
+    margin: 15px;
+}

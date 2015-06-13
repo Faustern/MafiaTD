@@ -27,6 +27,10 @@ angular.module('admin.controllers')
             resetStatistics();
             httpService.get("statistics", {nickname: nickname, season: season},
                 function(memberStatistics) {
+                    if (!memberStatistics.table) {
+                        $scope.hidden = true;
+                        return;
+                    }
                     $scope.statistics.table = memberStatistics.table;
                     showBaseByRoleStatistics($scope.positionRole, $scope.statistics.positions,
                         memberStatistics.positions, [1,2,3,4,5,6,7,8,9,10]);

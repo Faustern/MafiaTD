@@ -1,6 +1,8 @@
-<input auto-complete ui-items="ALL_MEMBERS" ng-model="nickname">
-<select ng-model="season" required ng-options='option for option in SEASONS'></select>
-<button ng-click="showStatistics(nickname, season)">Show Statistics</button>
+<div id="statistics-control">
+    <input auto-complete ui-items="ALL_MEMBERS" ng-model="nickname">
+    <select ng-model="season" required ng-options='option for option in SEASONS'></select>
+    <button ng-click="showStatistics(nickname, season)">Show Statistics</button>
+</div>
 
 <table ng-hide="hidden" id="statistics-table">
     <tr>
