@@ -153,12 +153,12 @@ public class StatisticsServiceImpl {
 
         Map<Role, List<Player>> playersByRole = players.stream().collect(groupingBy(Player::getRole));
 
-        tableStatistics.setAllDon(playersByRole.get(Role.DON).size());
-        tableStatistics.setWinsDon(100.0 * playersByRole.get(Role.DON).stream().filter(
+        tableStatistics.setAllDon(playersByRole.getOrDefault(Role.DON, new ArrayList<>()).size());
+        tableStatistics.setWinsDon(100.0 * playersByRole.getOrDefault(Role.DON, new ArrayList<>()).stream().filter(
                 GamesUtils::isWin).count() / tableStatistics.getAllDon());
 
-        tableStatistics.setAllMafia(playersByRole.get(Role.MAFIA).size());
-        tableStatistics.setWinsMafia(100.0 * playersByRole.get(Role.MAFIA).stream().filter(
+        tableStatistics.setAllMafia(playersByRole.getOrDefault(Role.MAFIA, new ArrayList<>()).size());
+        tableStatistics.setWinsMafia(100.0 * playersByRole.getOrDefault(Role.MAFIA, new ArrayList<>()).stream().filter(
                 GamesUtils::isWin).count() / tableStatistics.getAllMafia());
 
         tableStatistics.setAllCitizen(playersByRole.get(Role.CITIZEN).size());
