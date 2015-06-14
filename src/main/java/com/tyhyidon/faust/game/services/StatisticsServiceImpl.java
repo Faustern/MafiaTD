@@ -161,12 +161,12 @@ public class StatisticsServiceImpl {
         tableStatistics.setWinsMafia(100.0 * playersByRole.getOrDefault(Role.MAFIA, new ArrayList<>()).stream().filter(
                 GamesUtils::isWin).count() / tableStatistics.getAllMafia());
 
-        tableStatistics.setAllCitizen(playersByRole.get(Role.CITIZEN).size());
-        tableStatistics.setWinsCitizen(100.0 * playersByRole.get(Role.CITIZEN).stream().filter(
+        tableStatistics.setAllCitizen(playersByRole.getOrDefault(Role.CITIZEN, new ArrayList<>()).size());
+        tableStatistics.setWinsCitizen(100.0 * playersByRole.getOrDefault(Role.CITIZEN, new ArrayList<>()).stream().filter(
                 GamesUtils::isWin).count() / tableStatistics.getAllCitizen());
 
-        tableStatistics.setAllSheriff(playersByRole.get(Role.SHERIFF).size());
-        tableStatistics.setWinsSheriff(100.0 * playersByRole.get(Role.SHERIFF).stream().filter(
+        tableStatistics.setAllSheriff(playersByRole.getOrDefault(Role.SHERIFF, new ArrayList<>()).size());
+        tableStatistics.setWinsSheriff(100.0 * playersByRole.getOrDefault(Role.SHERIFF, new ArrayList<>()).stream().filter(
                 GamesUtils::isWin).count() / tableStatistics.getAllSheriff());
 
         tableStatistics.setBestVoicesPerGame(players.stream().mapToInt(Player::getBestVoices).average().getAsDouble());
