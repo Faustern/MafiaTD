@@ -108,7 +108,7 @@ angular.module('customServices',[])
                         duplicates.push(nickname);
                         duplicateNumbers.push([uniqueNicknamesNumbers[uniqueNicknames.indexOf(nickname)], number]);
                     } else {
-                        duplicateNumbers[$scope.duplicates.indexOf(nickname)].push(number);
+                        duplicateNumbers[duplicates.indexOf(nickname)].push(number);
                     }
                 } else {
                     uniqueNicknames.push(nickname);
